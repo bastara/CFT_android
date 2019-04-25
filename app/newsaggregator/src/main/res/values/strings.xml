@@ -1,0 +1,32 @@
+<resources>
+    <string name="app_name">Лента</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">CFT Focus Start</string>
+    <string name="nav_header_subtitle">News aggregator</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+    <string name="watchSite">Просмотр сайта</string>
+    <string name="addSite">Дабавить сайт</string>
+    <string name="deleteSite">Удалить сайт</string>
+    <string name="lightTheme">Темная тема</string>
+    <string name="timeRefresh">Время обновления</string>
+    <string name="notification">Уведомления</string>
+    <string name="archives">Архив новостей</string>
+    <string name="language">Язык</string>
+    <string name="arrowIcon">стрелка</string>
+    <string name="textview">TextView</string>
+    <string name="communicate">Связь</string>
+    <string name="share">Поделиться</string>
+    <string name="send">Отправить</string>
+    <string name="refreshTime">Выберите время обновления информации</string>
+    <string name="refreshTime_15">каждые 15 миннут</string>
+    <string name="refreshTime_60">каждый час</string>
+    <string name="refreshTime_6h">каждые 6 часов</string>
+    <string name="refreshTime_24h">ежедневно</string>
+    <string name="site_address">Введита адрес сайта или RSS файла</string>
+    <string name="go_to_site">Перейти на сайт</string>
+    <string name="add_site">добавление сайта</string>
+    <string name="web">просмотр сайта</string>
+    <string name="IconAdd">добавить RSS</string>
+</resources>
