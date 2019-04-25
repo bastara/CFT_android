@@ -6,9 +6,9 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 public class AddPage {
-    public static void addPage(String src, Runnable context) {
+    public static void addPage(String src, Context context) {
         final String TAG = "rssDB";
-        DBHelperSrc dbHelperSrc = new DBHelperSrc((Context) context);
+        DBHelperSrc dbHelperSrc = new DBHelperSrc(context);
 
         SQLiteDatabase database = dbHelperSrc.getWritableDatabase();
 

@@ -101,7 +101,7 @@ public class WebActivity extends AppCompatActivity {
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
-                AddPage.addPage(src, this);
+                AddPage.addPage(src, WebActivity.this);
             }
         });
         thread.start();
