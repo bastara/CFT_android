@@ -1,9 +1,11 @@
-package com.example.newsaggregator;
+package com.example.newsaggregator.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+
+import com.example.newsaggregator.R;
 
 public class RefreshActivity extends AppCompatActivity {
     @Override

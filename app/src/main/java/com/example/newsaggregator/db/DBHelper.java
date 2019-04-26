@@ -1,4 +1,4 @@
-package com.example.newsaggregator;
+package com.example.newsaggregator.db;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;

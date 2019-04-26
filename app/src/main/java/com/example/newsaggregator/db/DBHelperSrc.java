@@ -1,4 +1,4 @@
-package com.example.newsaggregator;
+package com.example.newsaggregator.db;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
@@ -7,11 +7,11 @@ import android.util.Log;
 
 public class DBHelperSrc extends SQLiteOpenHelper {
 
-    public static final String TABLE = "site_table";
+    public static final String TABLE = "tableOfSite";
 
 
     public DBHelperSrc(Context context) {
-        super(context, "RSSDB", null, 1);
+        super(context, "RSSDB2", null, 1);
     }
 
     @Override

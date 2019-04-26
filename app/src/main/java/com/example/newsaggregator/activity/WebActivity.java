@@ -1,4 +1,4 @@
-package com.example.newsaggregator;
+package com.example.newsaggregator.activity;
 
 import android.annotation.TargetApi;
 import android.graphics.Bitmap;
@@ -11,6 +11,11 @@ import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Toast;
+
+import com.example.newsaggregator.R;
+import com.example.newsaggregator.db.AddPage;
+import com.example.newsaggregator.db.ParseXML;
+import com.example.newsaggregator.network.GetData;
 
 public class WebActivity extends AppCompatActivity {
     private WebView webView;
@@ -47,6 +52,7 @@ public class WebActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), srcRSS, Toast.LENGTH_SHORT).show();
             if (srcRSS.substring(srcRSS.length() - 4).equals(".xml")) {
                 doWork(srcRSS);
+
                 Toast.makeText(getApplicationContext(), "RSS файл добавлен в вашу библиотеку", Toast.LENGTH_SHORT).show();
             } else {
                 Toast.makeText(getApplicationContext(), "Это не RSS файл", Toast.LENGTH_SHORT).show();
@@ -102,9 +108,14 @@ public class WebActivity extends AppCompatActivity {
             @Override
             public void run() {
                 AddPage.addPage(src, WebActivity.this);
+                GetData.getData("cp1251", src);
+                ParseXML.parseXML(src, WebActivity.this);
             }
         });
         thread.start();
+//TODO можно подумать над возвращаемым значением и над добавлением через потоки-что б активити не терялось
+//        AddPage.addPage(src, WebActivity.this);
+//        GetData.getData("cp1251", src);
     }
 
 }
