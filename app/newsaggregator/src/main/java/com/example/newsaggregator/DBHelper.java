@@ -17,7 +17,7 @@ public class DBHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         String LOG_TAG = "ЛогКот";
-//        db.execSQL("drop table if exists " + NEWS_TABLE);
+//        db.execSQL("drop table if exists " + TABLE);
         Log.d(LOG_TAG, "--- onCreate database ---");
         // создаем таблицу с полями
         db.execSQL("create table " + NEWS_TABLE + "("

@@ -20,7 +20,7 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="textPersonName"
-        android:text="http://www.mobiledevice.ru" />
+        android:text="http://rss.garant.ru/article/" />
 
     <Button
         android:id="@+id/buttonLoad"
@@ -29,4 +29,89 @@
         android:onClick="onClick"
         android:text="@string/go_to_site" />
 
+    <TextView
+        android:id="@+id/textView6"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Проверка на период тестов" />
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="http://www.mobiledevice.ru/" />
+
+            <Button
+                android:id="@+id/button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="onClick2"
+                android:text="@string/copy_value" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="http://rss.garant.ru/news/" />
+
+            <Button
+                android:id="@+id/button2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="onClick3"
+                android:text="@string/copy_value" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/textView4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="http://rss.garant.ru/article/" />
+
+            <Button
+                android:id="@+id/button3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="onClick4"
+                android:text="@string/copy_value" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/textView5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="http://2tura.ru/category/news/feed/" />
+
+            <Button
+                android:id="@+id/button4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="onClick5"
+                android:text="@string/copy_value" />
+        </TableRow>
+    </TableLayout>
+
 </LinearLayout>
+
+    <!--android:text="http://art-trainer.ru/"--><!--http://www.mobiledevice.ru/rss.xml--><!--https://www.ixbt.com/export/articles.rss--><!--https://pravo.ru/rss/--><!--http://rss.garant.ru/news/--><!--http://rss.garant.ru/article/--><!--https://news.yandex.ru/auto.rss--><!--https://bash.im/rss/--><!--http://2tura.ru/category/news/feed/-->

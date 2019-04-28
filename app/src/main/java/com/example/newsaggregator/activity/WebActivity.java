@@ -15,7 +15,6 @@ import android.widget.Toast;
 import com.example.newsaggregator.R;
 import com.example.newsaggregator.db.AddPage;
 import com.example.newsaggregator.db.ParseXML;
-import com.example.newsaggregator.network.GetData;
 
 public class WebActivity extends AppCompatActivity {
     private WebView webView;
@@ -33,8 +32,8 @@ public class WebActivity extends AppCompatActivity {
 
         // указываем страницу загрузки
 //        webView.loadUrl("http://developer.alexanderklimov.ru/android");
-        webView.loadUrl("http://www.mobiledevice.ru");
-//        webView.loadUrl(srcSite);
+//        webView.loadUrl("http://www.mobiledevice.ru");
+        webView.loadUrl(srcSite);
     }
 
     @Override
@@ -50,7 +49,7 @@ public class WebActivity extends AppCompatActivity {
     public void onClick(MenuItem item) {
         if (pageIsLoaded) {
             Toast.makeText(getApplicationContext(), srcRSS, Toast.LENGTH_SHORT).show();
-            if (srcRSS.substring(srcRSS.length() - 4).equals(".xml")) {
+            if (srcRSS.substring(srcRSS.length() - 4).equals(".xml") || srcRSS.indexOf("rss") >= 0 || srcRSS.indexOf("feed") >= 0) {
                 doWork(srcRSS);
 
                 Toast.makeText(getApplicationContext(), "RSS файл добавлен в вашу библиотеку", Toast.LENGTH_SHORT).show();
@@ -104,19 +103,16 @@ public class WebActivity extends AppCompatActivity {
     }
 
     private void doWork(final String src) {
-        Thread thread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                AddPage.addPage(src, WebActivity.this);
-                GetData.getData("cp1251", src);
-                ParseXML.parseXML(src, WebActivity.this);
-            }
-        });
-        thread.start();
+//        Thread thread = new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//                AddPage.addPage(src, WebActivity.this);
+//                ParseXML.parseXML(src, WebActivity.this);
+//            }
+//        });
+//        thread.start();
 //TODO можно подумать над возвращаемым значением и над добавлением через потоки-что б активити не терялось
-//        AddPage.addPage(src, WebActivity.this);
-//        GetData.getData("cp1251", src);
+        AddPage.addPage(src, WebActivity.this);
+        Toast.makeText(getApplicationContext(), "!!!!!!!!!!!!!!!!!!!", Toast.LENGTH_SHORT).show();
     }
-
 }
-

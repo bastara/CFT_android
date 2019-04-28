@@ -22,26 +22,36 @@
   <component name="DBNavigator.Project.DatabaseBrowserManager">
     <autoscroll-to-editor value="false" />
     <autoscroll-from-editor value="true" />
-    <show-object-properties value="true" />
+    <show-object-properties value="false" />
     <loaded-nodes>
-      <connection connection-id="8a602cb1-a749-4ae7-8480-9bcf134d515a">
-        <schema name="main" object-types="index, column, dataset trigger, view, table, constraint" />
+      <connection connection-id="b93e2654-d4a5-4385-a4e5-59dedd371fe6">
+        <schema name="main" object-types="column, table, view" />
       </connection>
     </loaded-nodes>
   </component>
   <component name="DBNavigator.Project.DatabaseConsoleManager">
-    <connection id="8a602cb1-a749-4ae7-8480-9bcf134d515a">
-      <console name="rss" type="STANDARD" schema="main" session="Main"><![CDATA[select * from site_table;]]></console>
+    <connection id="b93e2654-d4a5-4385-a4e5-59dedd371fe6">
+      <console name="Connection" type="STANDARD" schema="main" session="Main"><![CDATA[select * from news limit 1, 200;
+
+
+
+
+select * from "tableOfSite";
+insert into "tableOfSite"(url_rss) values ("sssddd");
+
+
+
+
+delete from news;
+
+SELECT rowid, id FROM news;]]></console>
     </connection>
   </component>
   <component name="DBNavigator.Project.DatabaseFileManager">
     <open-files />
   </component>
   <component name="DBNavigator.Project.DatabaseSessionManager">
-    <connection id="8a602cb1-a749-4ae7-8480-9bcf134d515a" />
-  </component>
-  <component name="DBNavigator.Project.DatasetFilterManager">
-    <filter-actions connection-id="8a602cb1-a749-4ae7-8480-9bcf134d515a" dataset="main.site_table" active-filter-id="" />
+    <connection id="b93e2654-d4a5-4385-a4e5-59dedd371fe6" />
   </component>
   <component name="DBNavigator.Project.EditorStateManager">
     <last-used-providers />
@@ -66,9 +76,9 @@
   </component>
   <component name="DBNavigator.Project.Settings">
     <connections>
-      <connection id="8a602cb1-a749-4ae7-8480-9bcf134d515a" active="true">
+      <connection id="b93e2654-d4a5-4385-a4e5-59dedd371fe6" active="true">
         <database>
-          <name value="rss" />
+          <name value="Connection" />
           <description value="" />
           <database-type value="SQLITE" />
           <config-type value="BASIC" />
@@ -81,7 +91,7 @@
           <port value="" />
           <database value="" />
           <files>
-            <file path="C:\Users\Shurik\Documents\AndroidStudio\DeviceExplorer\unknown-custom_phone-192.168.19.101_5555\data\data\com.example.newsaggregator\databases\RSSDB1" schema="main" />
+            <file path="C:\Users\Shurik\Documents\AndroidStudio\DeviceExplorer\unknown-custom_phone-192.168.19.101_5555\data\data\com.example.newsaggregator\databases\RSSDB11" schema="main" />
           </files>
           <os-authentication value="false" />
           <empty-authentication value="false" />

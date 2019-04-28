@@ -29,4 +29,5 @@
     <string name="add_site">добавление сайта</string>
     <string name="web">просмотр сайта</string>
     <string name="IconAdd">добавить RSS</string>
+    <string name="copy_value">Заполнить</string>
 </resources>

@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.example.newsaggregator.R;
 import com.example.newsaggregator.activity.WebActivity;
@@ -13,6 +14,10 @@ import com.example.newsaggregator.activity.WebActivity;
 public class AddSiteActivity extends AppCompatActivity {
 
     EditText editText;
+    TextView textView1;
+    TextView textView2;
+    TextView textView3;
+    TextView textView4;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,6 +28,10 @@ public class AddSiteActivity extends AppCompatActivity {
 //        setSupportActionBar(toolbar);
 
         editText = findViewById(R.id.editSiteAddress);
+        textView1 = findViewById(R.id.textView2);
+        textView2 = findViewById(R.id.textView3);
+        textView3 = findViewById(R.id.textView4);
+        textView4 = findViewById(R.id.textView5);
     }
 
     public void onClick(View view) {
@@ -36,5 +45,21 @@ public class AddSiteActivity extends AppCompatActivity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
+    }
+
+    public void onClick2(View view) {
+        editText.setText(textView1.getText().toString());
+    }
+
+    public void onClick3(View view) {
+        editText.setText(textView2.getText().toString());
+    }
+
+    public void onClick4(View view) {
+        editText.setText(textView3.getText().toString());
+    }
+
+    public void onClick5(View view) {
+        editText.setText(textView4.getText().toString());
     }
 }

@@ -5,14 +5,12 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
-import com.example.newsaggregator.db.DBHelperSrc;
-
 public class AddPage {
     public static void addPage(String src, Context context) {
         final String TAG = "rssDB";
-        DBHelperSrc dbHelperSrc = new DBHelperSrc(context);
+        DBHelper dbHelper = new DBHelper(context);
 
-        SQLiteDatabase database = dbHelperSrc.getWritableDatabase();
+        SQLiteDatabase database = dbHelper.getWritableDatabase();
 
         ContentValues cv = new ContentValues();
 
@@ -22,12 +20,27 @@ public class AddPage {
 
             Log.d(TAG, "Вношу данные БД ");
             long rowID = database.insert("tableOfSite", null, cv);
-            Log.d(TAG, "НОМЕР ЗАПИСИ = " + rowID);
-
+            if (rowID == -1) {
+                Log.d(TAG, "Данный ресурс уже добавлен ");
+            } else {
+                Log.d(TAG, "НОМЕР ЗАПИСИ = " + rowID);
+            }
         } catch (Throwable t) {
             Log.d(TAG, "Ошибка при добалении адреса в базу данных: " + t.toString());
         }
-        dbHelperSrc.close();
+        dbHelper.close();
+
+        doWork(src, context);
+    }
+
+    private static void doWork(final String src, final Context context) {
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                ParseXML.parseXML(src, context);
+            }
+        });
+        thread.start();
     }
 }
 
