@@ -1,6 +1,5 @@
 package com.example.newsaggregator.activity;
 
-import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
@@ -8,8 +7,6 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
-import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.newsaggregator.R;
@@ -57,14 +54,14 @@ public class DeleteSiteActivity extends AppCompatActivity {
     }
 
     private void removeItem(long id) {
-        mDatabase.delete(NewsContract.NewsEntry.TABLE_NAME1,
+        mDatabase.delete(NewsContract.NewsEntry.TABLE_NEWS,
                 NewsContract.NewsEntry.COLUMN_ID + "=" + id, null);
         mAdapter.swapCursor(getAllItems());
     }
 
     private Cursor getAllItems() {
         return mDatabase.query(
-                NewsContract.NewsEntry.TABLE_NAME1,
+                NewsContract.NewsEntry.TABLE_NEWS,
                 null,
                 null,
                 null,

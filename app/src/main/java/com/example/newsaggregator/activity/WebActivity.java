@@ -1,6 +1,7 @@
 package com.example.newsaggregator.activity;
 
 import android.annotation.TargetApi;
+import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
@@ -12,9 +13,9 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Toast;
 
+import com.example.newsaggregator.MainActivity;
 import com.example.newsaggregator.R;
 import com.example.newsaggregator.db.AddPage;
-import com.example.newsaggregator.db.ParseXML;
 
 public class WebActivity extends AppCompatActivity {
     private WebView webView;
@@ -22,23 +23,23 @@ public class WebActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_web);
-        String srcSite = getIntent().getStringExtra("url");
+        String url = getIntent().getStringExtra("url");
         webView = findViewById(R.id.webView);
-        // включаем поддержку JavaScript
-        // временно выключил
+//        поддержка JavaScript
 //        webView.getSettings().setJavaScriptEnabled(true);
 
         webView.setWebViewClient(new MyWebViewClient());
 
-        // указываем страницу загрузки
-//        webView.loadUrl("http://developer.alexanderklimov.ru/android");
-//        webView.loadUrl("http://www.mobiledevice.ru");
-        webView.loadUrl(srcSite);
+        webView.loadUrl(url);
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_add, menu);
         return true;
     }
@@ -49,7 +50,7 @@ public class WebActivity extends AppCompatActivity {
     public void onClick(MenuItem item) {
         if (pageIsLoaded) {
             Toast.makeText(getApplicationContext(), srcRSS, Toast.LENGTH_SHORT).show();
-            if (srcRSS.substring(srcRSS.length() - 4).equals(".xml") || srcRSS.indexOf("rss") >= 0 || srcRSS.indexOf("feed") >= 0) {
+            if (srcRSS.substring(srcRSS.length() - 4).equals(".xml") || srcRSS.contains("rss") || srcRSS.contains("feed")) {
                 doWork(srcRSS);
 
                 Toast.makeText(getApplicationContext(), "RSS файл добавлен в вашу библиотеку", Toast.LENGTH_SHORT).show();
@@ -113,6 +114,6 @@ public class WebActivity extends AppCompatActivity {
 //        thread.start();
 //TODO можно подумать над возвращаемым значением и над добавлением через потоки-что б активити не терялось
         AddPage.addPage(src, WebActivity.this);
-        Toast.makeText(getApplicationContext(), "!!!!!!!!!!!!!!!!!!!", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext(), "отработал AddPage", Toast.LENGTH_SHORT).show();
     }
 }

@@ -5,6 +5,8 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import com.example.newsaggregator.MainActivity;
+
 public class AddPage {
     public static void addPage(String src, Context context) {
         final String TAG = "rssDB";

@@ -33,6 +33,7 @@
             android:label="@string/add_site" />
         <activity
             android:name=".activity.WebActivity"
+            android:configChanges="orientation|screenSize"
             android:label="@string/web" />
         <activity
             android:name=".activity.DeleteSiteActivity"

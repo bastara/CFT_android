@@ -5,20 +5,15 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 import android.util.Xml;
-import android.widget.Toast;
 
-import com.example.newsaggregator.R;
+import com.example.newsaggregator.MainActivity;
 
 import org.xmlpull.v1.XmlPullParser;
-import org.xmlpull.v1.XmlPullParserException;
-
-import java.io.IOException;
 import java.io.InputStream;
-import java.io.StringReader;
 import java.net.URL;
 
-public class ParseXML {
-    public static void parseXML(String src, Context context) {
+class ParseXML {
+    static void parseXML(String src, Context context) {
         final String TAG = "ЛогКот";
         DBHelper dbHelper = new DBHelper(context);
 
@@ -52,6 +47,7 @@ public class ParseXML {
                     Log.d(TAG, "Вношу данные БД ");
                     long rowID = database.insert("news", null, cv);
                     Log.d(TAG, "НОМЕР ЗАПИСИ = " + rowID);
+                    MainActivity.newCursor = true;
                     isItem = false;
                     parser.next();
                     continue;

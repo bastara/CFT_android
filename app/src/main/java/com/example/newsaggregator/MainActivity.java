@@ -36,14 +36,16 @@ import com.example.newsaggregator.db.NewsContract;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    private TextView mRefreshTextView;
+    private TextView refreshTextView;
     private String timeRefresh = "15min";
     private static final String TAG = "!REFRESH TIME";
 
-    private SQLiteDatabase mDatabase;
-    private NewsAdapter mAdapter;
-    private TextView mTextName;
-    private TextView mTextViewAmount;
+    private SQLiteDatabase dataBase;
+    private NewsAdapter adapter;
+    private TextView textName;
+    private TextView textViewTMP;
+
+    public static boolean newCursor = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,30 +76,27 @@ public class MainActivity extends AppCompatActivity
         navigationView.setItemIconTintList(null);
 
         MenuItem itemTimeRefresh = navigationView.getMenu().findItem(R.id.nav_refresh);
-        mRefreshTextView = (TextView) itemTimeRefresh.getActionView();
+        refreshTextView = (TextView) itemTimeRefresh.getActionView();
 
         initializeCountDrawer(timeRefresh);
         drawer.openDrawer(GravityCompat.START);
 
-        mSettings = getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE);
-        if (mSettings.contains(APP_PREFERENCES_TIME_REFRESH)) {
+        settings = getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE);
+        if (settings.contains(APP_PREFERENCES_TIME_REFRESH)) {
             // Получаем число из настроек
-            timeRefresh = mSettings.getString(APP_PREFERENCES_TIME_REFRESH, String.valueOf(0));
+            timeRefresh = settings.getString(APP_PREFERENCES_TIME_REFRESH, String.valueOf(0));
 
-            Log.d(TAG, "получили " + timeRefresh);
             // Выводим на экран данные из настроек
-            mRefreshTextView.setText(timeRefresh);
+            refreshTextView.setText(timeRefresh);
         }
 
-
         DBHelper dbHelper = new DBHelper(this);
-        mDatabase = dbHelper.getWritableDatabase();
+        dataBase = dbHelper.getWritableDatabase();
 
         RecyclerView recyclerView = findViewById(R.id.recyclerviewmain);
-//        recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mAdapter = new NewsAdapter(this, getAllItems());
-        recyclerView.setAdapter(mAdapter);
+        adapter = new NewsAdapter(this, getAllItems());
+        recyclerView.setAdapter(adapter);
 
         new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0,
                 ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
@@ -112,19 +111,26 @@ public class MainActivity extends AppCompatActivity
             }
         }).attachToRecyclerView(recyclerView);
 
-        mTextName = findViewById(R.id.tvName);
-        mTextViewAmount = findViewById(R.id.tvDate);
-
-
-
+        textName = findViewById(R.id.tvName);
+        textViewTMP = findViewById(R.id.tvDate);
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if (newCursor) {
+            Intent i = new Intent(this, this.getClass());
+            finish();
+            newCursor = false;
+            this.startActivity(i);
+        }
+    }
 
     private void initializeCountDrawer(String timeView) {
-        mRefreshTextView.setGravity(Gravity.CENTER_VERTICAL);
-        mRefreshTextView.setTypeface(null, Typeface.BOLD);
-        mRefreshTextView.setTextColor(getResources().getColor(R.color.colorAccent));
-        mRefreshTextView.setText(timeView);
+        refreshTextView.setGravity(Gravity.CENTER_VERTICAL);
+        refreshTextView.setTypeface(null, Typeface.BOLD);
+        refreshTextView.setTextColor(getResources().getColor(R.color.colorAccent));
+        refreshTextView.setText(timeView);
     }
 
     @Override
@@ -139,34 +145,24 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-//        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
 //        if (id == R.id.action_settings) {
 //            return true;
 //        }
-
         return super.onOptionsItemSelected(item);
     }
 
-    @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
         if (id == R.id.nav_watchSite) {
-            // Handle the camera action
         } else if (id == R.id.nav_addSite) {
             Intent intent = new Intent(MainActivity.this,
                     AddSiteActivity.class);
@@ -202,15 +198,14 @@ public class MainActivity extends AppCompatActivity
         if (requestCode == 0) {
             if (resultCode == RESULT_OK) {
                 String thiefname = data.getStringExtra(RefreshActivity.THIEF);
-                mRefreshTextView.setText(thiefname);
+                refreshTextView.setText(thiefname);
                 timeRefresh = thiefname;
                 Log.d(TAG, timeRefresh);
             } else {
-                mRefreshTextView.setText(""); // стираем текст
+                refreshTextView.setText(""); // стираем текст
             }
         }
     }
-
 
     // это имя файла настроек
     public static final String APP_PREFERENCES = "mysettings";
@@ -218,28 +213,28 @@ public class MainActivity extends AppCompatActivity
     public static final String APP_PREFERENCES_TIME_REFRESH = "refresher";
     //Создаём переменную, представляющую экземпляр класса SharedPreferences,
     // который отвечает за работу с настройками:
-    private SharedPreferences mSettings;
+    private SharedPreferences settings;
 
     @Override
     protected void onPause() {
         super.onPause();
         Log.d(TAG, "записываем " + timeRefresh);
         // Запоминаем данные
-        SharedPreferences.Editor editor = mSettings.edit();
+        SharedPreferences.Editor editor = settings.edit();
         editor.putString(APP_PREFERENCES_TIME_REFRESH, timeRefresh);
         editor.apply();
     }
 
 
     private void removeItem(long id) {
-        mDatabase.delete(NewsContract.NewsEntry.TABLE_NAME1,
+        dataBase.delete(NewsContract.NewsEntry.TABLE_NEWS,
                 NewsContract.NewsEntry.COLUMN_ID + "=" + id, null);
-        mAdapter.swapCursor(getAllItems());
+        adapter.swapCursor(getAllItems());
     }
 
     private Cursor getAllItems() {
-        return mDatabase.query(
-                NewsContract.NewsEntry.TABLE_NAME1,
+        return dataBase.query(
+                NewsContract.NewsEntry.TABLE_NEWS,
                 null,
                 null,
                 null,

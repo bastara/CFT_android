@@ -2,6 +2,7 @@ package com.example.newsaggregator.adapter;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,20 +13,20 @@ import com.example.newsaggregator.R;
 import com.example.newsaggregator.db.NewsContract;
 
 public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder> {
-    private Context mContext;
-    private Cursor mCursor;
+    private Context context;
+    private Cursor cursor;
 
     public NewsAdapter(Context context, Cursor cursor) {
-        mContext = context;
-        mCursor = cursor;
+        this.context = context;
+        this.cursor = cursor;
     }
 
-    public class NewsViewHolder extends RecyclerView.ViewHolder {
-        public TextView nameText;
-        public TextView dateText;
-        public TextView newsText;
+    class NewsViewHolder extends RecyclerView.ViewHolder {
+        TextView nameText;
+        TextView dateText;
+        TextView newsText;
 
-        public NewsViewHolder(View itemView) {
+        NewsViewHolder(View itemView) {
             super(itemView);
 
             nameText = itemView.findViewById(R.id.tvName);
@@ -34,22 +35,23 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder
         }
     }
 
+    @NonNull
     @Override
-    public NewsViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        LayoutInflater inflater = LayoutInflater.from(mContext);
+    public NewsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        LayoutInflater inflater = LayoutInflater.from(context);
         View view = inflater.inflate(R.layout.news_item, parent, false);
         return new NewsViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(NewsViewHolder holder, int position) {
-        if (!mCursor.moveToPosition(position)) {
+    public void onBindViewHolder(@NonNull NewsViewHolder holder, int position) {
+        if (!cursor.moveToPosition(position)) {
             return;
         }
 
-        String name = mCursor.getString(mCursor.getColumnIndex(NewsContract.NewsEntry.COLUMN_TITLE));
-        String date = mCursor.getString(mCursor.getColumnIndex(NewsContract.NewsEntry.COLUMN_PUBDATE));
-        String news = mCursor.getString(mCursor.getColumnIndex(NewsContract.NewsEntry.COLUMN_DESCRIPTION));
+        String name = cursor.getString(cursor.getColumnIndex(NewsContract.NewsEntry.COLUMN_TITLE));
+        String date = cursor.getString(cursor.getColumnIndex(NewsContract.NewsEntry.COLUMN_PUBDATE));
+        String news = cursor.getString(cursor.getColumnIndex(NewsContract.NewsEntry.COLUMN_DESCRIPTION));
 
         holder.nameText.setText(name);
         holder.dateText.setText(date);
@@ -58,15 +60,15 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder
 
     @Override
     public int getItemCount() {
-        return mCursor.getCount();
+        return cursor.getCount();
     }
 
     public void swapCursor(Cursor newCursor) {
-        if (mCursor != null) {
-            mCursor.close();
+        if (cursor != null) {
+            cursor.close();
         }
 
-        mCursor = newCursor;
+        cursor = newCursor;
 
         if (newCursor != null) {
             notifyDataSetChanged();
