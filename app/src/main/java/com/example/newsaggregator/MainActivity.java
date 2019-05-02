@@ -3,6 +3,8 @@ package com.example.newsaggregator;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -13,7 +15,10 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
@@ -22,14 +27,23 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.example.newsaggregator.activity.AddSiteActivity;
+import com.example.newsaggregator.activity.DeleteSiteActivity;
 import com.example.newsaggregator.activity.RefreshActivity;
+import com.example.newsaggregator.adapter.NewsAdapter;
+import com.example.newsaggregator.db.DBHelper;
+import com.example.newsaggregator.db.NewsContract;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private TextView mRefreshTextView;
-    private String timeRefresh = "15mTn";
+    private String timeRefresh = "15min";
     private static final String TAG = "!REFRESH TIME";
+
+    private SQLiteDatabase mDatabase;
+    private NewsAdapter mAdapter;
+    private TextView mTextName;
+    private TextView mTextViewAmount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,7 +88,37 @@ public class MainActivity extends AppCompatActivity
             // Выводим на экран данные из настроек
             mRefreshTextView.setText(timeRefresh);
         }
+
+
+        DBHelper dbHelper = new DBHelper(this);
+        mDatabase = dbHelper.getWritableDatabase();
+
+        RecyclerView recyclerView = findViewById(R.id.recyclerviewmain);
+//        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        mAdapter = new NewsAdapter(this, getAllItems());
+        recyclerView.setAdapter(mAdapter);
+
+        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0,
+                ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+            @Override
+            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
+                removeItem((long) viewHolder.itemView.getTag());
+            }
+        }).attachToRecyclerView(recyclerView);
+
+        mTextName = findViewById(R.id.tvName);
+        mTextViewAmount = findViewById(R.id.tvDate);
+
+
+
     }
+
 
     private void initializeCountDrawer(String timeView) {
         mRefreshTextView.setGravity(Gravity.CENTER_VERTICAL);
@@ -128,7 +172,9 @@ public class MainActivity extends AppCompatActivity
                     AddSiteActivity.class);
             startActivity(intent);
         } else if (id == R.id.nav_deleteSite) {
-
+            Intent intent = new Intent(MainActivity.this,
+                    DeleteSiteActivity.class);
+            startActivity(intent);
         } else if (id == R.id.nav_darkTheme) {
 
         } else if (id == R.id.nav_refresh) {
@@ -184,4 +230,24 @@ public class MainActivity extends AppCompatActivity
         editor.apply();
     }
 
+
+    private void removeItem(long id) {
+        mDatabase.delete(NewsContract.NewsEntry.TABLE_NAME1,
+                NewsContract.NewsEntry.COLUMN_ID + "=" + id, null);
+        mAdapter.swapCursor(getAllItems());
+    }
+
+    private Cursor getAllItems() {
+        return mDatabase.query(
+                NewsContract.NewsEntry.TABLE_NAME1,
+                null,
+                null,
+                null,
+                null,
+                null,
+                NewsContract.NewsEntry.COLUMN_ID + " DESC"
+        );
+    }
 }
+
+

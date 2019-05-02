@@ -34,6 +34,9 @@
         <activity
             android:name=".activity.WebActivity"
             android:label="@string/web" />
+        <activity
+            android:name=".activity.DeleteSiteActivity"
+            android:label="@string/delete_site" />
     </application>
 
 </manifest>

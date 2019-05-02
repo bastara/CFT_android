@@ -25,13 +25,13 @@
     <show-object-properties value="false" />
     <loaded-nodes>
       <connection connection-id="b93e2654-d4a5-4385-a4e5-59dedd371fe6">
-        <schema name="main" object-types="column, table, view" />
+        <schema name="main" object-types="view, column, table" />
       </connection>
     </loaded-nodes>
   </component>
   <component name="DBNavigator.Project.DatabaseConsoleManager">
     <connection id="b93e2654-d4a5-4385-a4e5-59dedd371fe6">
-      <console name="Connection" type="STANDARD" schema="main" session="Main"><![CDATA[select * from news limit 1, 200;
+      <console name="Connection" type="STANDARD" schema="main" session="Main"><![CDATA[select * from news limit 100, 200;
 
 
 
