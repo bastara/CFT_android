@@ -25,6 +25,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.newsaggregator.activity.AddSiteActivity;
 import com.example.newsaggregator.activity.DeleteSiteActivity;
@@ -34,7 +35,7 @@ import com.example.newsaggregator.db.DBHelper;
 import com.example.newsaggregator.db.NewsContract;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener, NewsAdapter.ItemClickListener {
 
     private TextView refreshTextView;
     private String timeRefresh = "15min";
@@ -96,20 +97,21 @@ public class MainActivity extends AppCompatActivity
         RecyclerView recyclerView = findViewById(R.id.recyclerviewmain);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         adapter = new NewsAdapter(this, getAllItems());
+        adapter.setClickListener((NewsAdapter.ItemClickListener) this);
         recyclerView.setAdapter(adapter);
 
-        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0,
-                ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
-            @Override
-            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
-                return false;
-            }
-
-            @Override
-            public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
-                removeItem((long) viewHolder.itemView.getTag());
-            }
-        }).attachToRecyclerView(recyclerView);
+//        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0,
+//                ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+//            @Override
+//            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+//                return false;
+//            }
+//
+//            @Override
+//            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+//                removeItem((long) viewHolder.itemView.getTag());
+//            }
+//        }).attachToRecyclerView(recyclerView);
 
         textName = findViewById(R.id.tvName);
         textViewTMP = findViewById(R.id.tvDate);
@@ -197,9 +199,9 @@ public class MainActivity extends AppCompatActivity
 
         if (requestCode == 0) {
             if (resultCode == RESULT_OK) {
-                String thiefname = data.getStringExtra(RefreshActivity.THIEF);
-                refreshTextView.setText(thiefname);
-                timeRefresh = thiefname;
+                String thiefTime = data.getStringExtra(RefreshActivity.THIEF);
+                refreshTextView.setText(thiefTime);
+                timeRefresh = thiefTime;
                 Log.d(TAG, timeRefresh);
             } else {
                 refreshTextView.setText(""); // стираем текст
@@ -226,11 +228,17 @@ public class MainActivity extends AppCompatActivity
     }
 
 
-    private void removeItem(long id) {
-        dataBase.delete(NewsContract.NewsEntry.TABLE_NEWS,
-                NewsContract.NewsEntry.COLUMN_ID + "=" + id, null);
-        adapter.swapCursor(getAllItems());
+//    private void removeItem(long id) {
+//        dataBase.delete(NewsContract.NewsEntry.TABLE_NEWS,
+//                NewsContract.NewsEntry.COLUMN_ID + "=" + id, null);
+//        adapter.swapCursor(getAllItems());
+//    }
+
+    @Override
+    public void onItemClick(View view, int position) {
+        Toast.makeText(this, "You clicked " + adapter.getItem(position) + " on row number " + position, Toast.LENGTH_SHORT).show();
     }
+
 
     private Cursor getAllItems() {
         return dataBase.query(

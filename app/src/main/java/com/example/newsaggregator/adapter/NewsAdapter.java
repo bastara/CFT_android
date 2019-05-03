@@ -15,13 +15,14 @@ import com.example.newsaggregator.db.NewsContract;
 public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder> {
     private Context context;
     private Cursor cursor;
+    private ItemClickListener itemClickListener;
 
     public NewsAdapter(Context context, Cursor cursor) {
         this.context = context;
         this.cursor = cursor;
     }
 
-    class NewsViewHolder extends RecyclerView.ViewHolder {
+    class NewsViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView nameText;
         TextView dateText;
         TextView newsText;
@@ -32,6 +33,15 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder
             nameText = itemView.findViewById(R.id.tvName);
             dateText = itemView.findViewById(R.id.tvDate);
             newsText = itemView.findViewById(R.id.tvNews);
+
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View view) {
+            if (itemClickListener != null) {
+                itemClickListener.onItemClick(view, getAdapterPosition());
+            }
         }
     }
 
@@ -54,8 +64,25 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder
         String news = cursor.getString(cursor.getColumnIndex(NewsContract.NewsEntry.COLUMN_DESCRIPTION));
 
         holder.nameText.setText(name);
-        holder.dateText.setText(date);
-        holder.newsText.setText(news);
+        holder.dateText.setText(date.substring(0, 16));
+        if (news.length() > 180) {
+            holder.newsText.setText(news.substring(0, 180) + "...");
+        } else {
+            holder.newsText.setText(news + "...");
+        }
+    }
+
+    public String getItem(int id) {
+        cursor.moveToPosition(id);
+        return cursor.getString(cursor.getColumnIndex(NewsContract.NewsEntry.COLUMN_ID));
+    }
+
+    public void setClickListener(ItemClickListener itemClickListener) {
+        this.itemClickListener = itemClickListener;
+    }
+
+    public interface ItemClickListener {
+        void onItemClick(View view, int position);
     }
 
     @Override

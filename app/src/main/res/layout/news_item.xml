@@ -7,6 +7,7 @@
 
     <TextView
         android:id="@+id/tvName"
+        android:layout_margin="0dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="15sp" />
@@ -15,31 +16,18 @@
         android:id="@+id/tvDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="10sp" />
+        android:textSize="12sp" />
 
     <TextView
         android:id="@+id/tvNews"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="10sp" />
+        android:textSize="12sp" />
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="?android:attr/listDivider" />
 
 </LinearLayout>
-
-
-    <!--<?xml version="1.0" encoding="utf-8"?>--><!--<FrameLayout--><!--xmlns:android="http://schemas.android.com/apk/res/android"--><!--android:layout_width="match_parent"--><!--android:layout_height="70dp"--><!--android:layout_marginTop="10dp">-->
-
-    <!--<TextView--><!--android:id="@+id/tvName"--><!--android:layout_width="match_parent"--><!--android:layout_height="wrap_content"--><!--android:layout_gravity="top|left"--><!--android:layout_marginLeft="5dp"--><!--android:layout_marginRight="5dp"--><!--android:text="TextView"--><!--android:textSize="10dp">--><!--</TextView>-->
-
-    <!--<TextView--><!--android:id="@+id/tvDate"--><!--android:layout_width="match_parent"--><!--android:layout_height="wrap_content"--><!--android:layout_gravity="center|left"--><!--android:layout_marginLeft="5dp"--><!--android:layout_marginRight="5dp"--><!--android:text="TextView"--><!--android:textSize="5dp"></TextView>--><!--</FrameLayout>-->
-
-
-    <!--<TextView--><!--android:id="@+id/tvNews"--><!--android:layout_width="wrap_content"--><!--android:layout_height="wrap_content"--><!--android:layout_gravity="bottom|left"--><!--android:layout_marginLeft="5dp"--><!--android:text="TextView"--><!--android:textSize="15sp">--><!--</TextView>-->
-
-
-    <!--<?xml version="1.0" encoding="utf-8"?>--><!--<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"--><!--android:layout_width="match_parent"--><!--android:layout_height="wrap_content"--><!--android:layout_margin="8dp">-->
-
-    <!--<TextView--><!--android:id="@+id/tvName"--><!--android:layout_width="wrap_content"--><!--android:layout_height="wrap_content"--><!--android:text="0"--><!--android:textSize="10sp" />-->
-
-    <!--<TextView--><!--android:id="@+id/tvDate"--><!--android:layout_width="wrap_content"--><!--android:layout_height="wrap_content"--><!--android:layout_marginStart="8dp"--><!--android:text="Empty Item"--><!--android:textSize="10sp" />-->
-
-    <!--</LinearLayout>-->
