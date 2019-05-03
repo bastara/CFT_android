@@ -7,7 +7,7 @@ import android.util.Log;
 
 public class DBHelper extends SQLiteOpenHelper {
 
-    private static final String DATABASE_NAME = "RSSDB11";
+    private static final String DATABASE_NAME = "RSSDB12";
     private static final int DATABASE_VERSION = 1;
 
     public DBHelper(Context context) {
@@ -16,13 +16,13 @@ public class DBHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String LOG_TAG = "ЛогКот";
+        String LOG_TAG = "Лог!";
         Log.d(LOG_TAG, "--- onCreate database ---");
         db.execSQL("create table "
                 + NewsContract.NewsEntry.TABLE_NEWS + "("
-                + NewsContract.NewsEntry.COLUMN_ID + " primary key autoincrement,"
+                + NewsContract.NewsEntry.COLUMN_ID + " INTEGER primary key autoincrement,"
                 + NewsContract.NewsEntry.COLUMN_TITLE + " text,"
-                + NewsContract.NewsEntry.COLUMN_LINK1 + " text,"
+                + NewsContract.NewsEntry.COLUMN_LINK_NEWS + " text,"
                 + NewsContract.NewsEntry.COLUMN_DESCRIPTION + " text,"
                 + NewsContract.NewsEntry.COLUMN_CATEGORY + " text,"
                 + NewsContract.NewsEntry.COLUMN_ISSHOW + " int DEFAULT \'0\',"
@@ -31,7 +31,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 + NewsContract.NewsEntry.COLUMN_PUBDATE + " text" + ");");
 
         db.execSQL("create table " + NewsContract.NewsEntry.TABLE_SITES + "("
-                + NewsContract.NewsEntry.COLUMN_LINK2 + " text" + ");");
+                + NewsContract.NewsEntry.COLUMN_LINK_SITE + " text" + ");");
     }
 
     @Override

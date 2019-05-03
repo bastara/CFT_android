@@ -45,7 +45,7 @@ class ParseXML {
                 if (parser.getEventType() == XmlPullParser.END_TAG
                         && parser.getName().equals("item")) {
                     Log.d(TAG, "Вношу данные БД ");
-                    long rowID = database.insert("news", null, cv);
+                    long rowID = database.insert(NewsContract.NewsEntry.TABLE_NEWS, null, cv);
                     Log.d(TAG, "НОМЕР ЗАПИСИ = " + rowID);
                     MainActivity.newCursor = true;
                     isItem = false;
@@ -58,14 +58,14 @@ class ParseXML {
                         && parser.next() == XmlPullParser.TEXT
                         && isItem) {
 //                    Log.d(TAG, "название = " + parser.getText());
-                    cv.put("title", parser.getText());
+                    cv.put(NewsContract.NewsEntry.COLUMN_TITLE, parser.getText());
                 }
                 if (parser.getEventType() == XmlPullParser.START_TAG
                         && parser.getName().equals("link")
                         && parser.next() == XmlPullParser.TEXT
                         && isItem) {
 //                    Log.d(TAG, "ссылка = " + parser.getText());
-                    cv.put("link", parser.getText());
+                    cv.put(NewsContract.NewsEntry.COLUMN_LINK_NEWS, parser.getText());
                 }
                 if (parser.getEventType() == XmlPullParser.START_TAG
                         && parser.getName().equals("description")
@@ -73,21 +73,21 @@ class ParseXML {
                         && isItem) {
 //                    Log.d(TAG, "описание = " + getDescription(parser.getText()));
 //                    Log.d(TAG, "описание = " + parser.getText().replaceAll("\\<.*?\\>", "").replaceAll("\n", " "));
-                    cv.put("description", parser.getText().replaceAll("\\<.*?\\>", "").replaceAll("\n", " "));
+                    cv.put(NewsContract.NewsEntry.COLUMN_DESCRIPTION, parser.getText().replaceAll("\\<.*?\\>", "").replaceAll("\n", " "));
                 }
                 if (parser.getEventType() == XmlPullParser.START_TAG
                         && parser.getName().equals("category")
                         && parser.next() == XmlPullParser.TEXT
                         && isItem) {
 //                    Log.d(TAG, "категория = " + parser.getText());
-                    cv.put("category", parser.getText());
+                    cv.put(NewsContract.NewsEntry.COLUMN_CATEGORY, parser.getText());
                 }
                 if (parser.getEventType() == XmlPullParser.START_TAG
                         && parser.getName().equals("pubDate")
                         && parser.next() == XmlPullParser.TEXT
                         && isItem) {
 //                    Log.d(TAG, "дата = " + parser.getText());
-                    cv.put("pubDate", parser.getText());
+                    cv.put(NewsContract.NewsEntry.COLUMN_PUBDATE, parser.getText());
                 }
                 parser.next();
             }

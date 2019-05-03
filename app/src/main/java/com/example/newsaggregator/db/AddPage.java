@@ -5,8 +5,6 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
-import com.example.newsaggregator.MainActivity;
-
 public class AddPage {
     public static void addPage(String src, Context context) {
         final String TAG = "rssDB";
@@ -18,10 +16,10 @@ public class AddPage {
 
         try {
             Log.d(TAG, "Добавляю в источники RSS " + src);
-            cv.put("url_rss", src);
+            cv.put(NewsContract.NewsEntry.COLUMN_LINK_SITE, src);
 
             Log.d(TAG, "Вношу данные БД ");
-            long rowID = database.insert("tableOfSite", null, cv);
+            long rowID = database.insert(NewsContract.NewsEntry.TABLE_SITES, null, cv);
             if (rowID == -1) {
                 Log.d(TAG, "Данный ресурс уже добавлен ");
             } else {

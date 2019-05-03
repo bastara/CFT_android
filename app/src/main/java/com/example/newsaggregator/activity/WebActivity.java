@@ -13,7 +13,6 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Toast;
 
-import com.example.newsaggregator.MainActivity;
 import com.example.newsaggregator.R;
 import com.example.newsaggregator.db.AddPage;
 
@@ -116,4 +115,5 @@ public class WebActivity extends AppCompatActivity {
         AddPage.addPage(src, WebActivity.this);
         Toast.makeText(getApplicationContext(), "отработал AddPage", Toast.LENGTH_SHORT).show();
     }
+
 }

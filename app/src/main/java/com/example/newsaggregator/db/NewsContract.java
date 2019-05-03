@@ -11,13 +11,13 @@ public class NewsContract {
         public static final String TABLE_NEWS = "news";
         public static final String COLUMN_ID = "id";
         public static final String COLUMN_TITLE = "title";
-        public static final String COLUMN_LINK1 = "link";
+        public static final String COLUMN_LINK_NEWS = "link";
         public static final String COLUMN_DESCRIPTION = "description";
         public static final String COLUMN_CATEGORY = "category";
         public static final String COLUMN_ISSHOW = "isShow";
         public static final String COLUMN_PUBDATE = "pubDate";
 
         public static final String TABLE_SITES = "tableOfSite";
-        public static final String COLUMN_LINK2 = "link";
+        public static final String COLUMN_LINK_SITE = "link";
     }
 }
