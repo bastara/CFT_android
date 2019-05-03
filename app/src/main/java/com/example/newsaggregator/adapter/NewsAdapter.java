@@ -66,9 +66,11 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder
         holder.nameText.setText(name);
         holder.dateText.setText(date.substring(0, 16));
         if (news.length() > 180) {
-            holder.newsText.setText(news.substring(0, 180) + "...");
+            news = news.substring(0, 180) + "...";
+            holder.newsText.setText(news);
         } else {
-            holder.newsText.setText(news + "...");
+            news = news + "...";
+            holder.newsText.setText(news);
         }
     }
 

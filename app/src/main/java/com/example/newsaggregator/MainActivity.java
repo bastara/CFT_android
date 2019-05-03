@@ -64,7 +64,6 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
-
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -90,7 +89,6 @@ public class MainActivity extends AppCompatActivity
             // Выводим на экран данные из настроек
             refreshTextView.setText(timeRefresh);
         }
-
         DBHelper dbHelper = new DBHelper(this);
         dataBase = dbHelper.getWritableDatabase();
 
@@ -99,19 +97,6 @@ public class MainActivity extends AppCompatActivity
         adapter = new NewsAdapter(this, getAllItems());
         adapter.setClickListener((NewsAdapter.ItemClickListener) this);
         recyclerView.setAdapter(adapter);
-
-//        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0,
-//                ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
-//            @Override
-//            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
-//                return false;
-//            }
-//
-//            @Override
-//            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-//                removeItem((long) viewHolder.itemView.getTag());
-//            }
-//        }).attachToRecyclerView(recyclerView);
 
         textName = findViewById(R.id.tvName);
         textViewTMP = findViewById(R.id.tvDate);
@@ -227,18 +212,10 @@ public class MainActivity extends AppCompatActivity
         editor.apply();
     }
 
-
-//    private void removeItem(long id) {
-//        dataBase.delete(NewsContract.NewsEntry.TABLE_NEWS,
-//                NewsContract.NewsEntry.COLUMN_ID + "=" + id, null);
-//        adapter.swapCursor(getAllItems());
-//    }
-
     @Override
     public void onItemClick(View view, int position) {
         Toast.makeText(this, "You clicked " + adapter.getItem(position) + " on row number " + position, Toast.LENGTH_SHORT).show();
     }
-
 
     private Cursor getAllItems() {
         return dataBase.query(
