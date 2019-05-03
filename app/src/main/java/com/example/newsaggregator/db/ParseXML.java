@@ -12,8 +12,9 @@ import org.xmlpull.v1.XmlPullParser;
 import java.io.InputStream;
 import java.net.URL;
 
-class ParseXML {
-    static void parseXML(String src, Context context) {
+//TODO данный класс не работает, ссылка в addPage
+public class ParseXML {
+    public static void parseXML(String src, Context context) {
         final String TAG = "ЛогКот";
         DBHelper dbHelper = new DBHelper(context);
 
