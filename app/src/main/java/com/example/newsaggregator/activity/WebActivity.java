@@ -3,6 +3,7 @@ package com.example.newsaggregator.activity;
 import android.annotation.TargetApi;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
@@ -54,12 +55,19 @@ public class WebActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_back, menu);
         getMenuInflater().inflate(R.menu.menu_add, menu);
         return true;
     }
 
     private String srcRSS = "";
     private boolean pageIsLoaded = false;
+
+    public void onClickBack(MenuItem item) {
+        Intent intent = new Intent(WebActivity.this,
+                MainActivity.class);
+        startActivity(intent);
+    }
 
     public void onClick(MenuItem item) {
         if (pageIsLoaded) {

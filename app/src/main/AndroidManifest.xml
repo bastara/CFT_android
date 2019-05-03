@@ -38,6 +38,9 @@
         <activity
             android:name=".activity.DeleteSiteActivity"
             android:label="@string/delete_site" />
+        <activity
+            android:name=".activity.NewsActivity"
+            android:label="@string/topic" />
     </application>
 
 </manifest>

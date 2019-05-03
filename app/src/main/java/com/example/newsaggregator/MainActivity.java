@@ -29,6 +29,7 @@ import android.widget.Toast;
 
 import com.example.newsaggregator.activity.AddSiteActivity;
 import com.example.newsaggregator.activity.DeleteSiteActivity;
+import com.example.newsaggregator.activity.NewsActivity;
 import com.example.newsaggregator.activity.RefreshActivity;
 import com.example.newsaggregator.adapter.NewsAdapter;
 import com.example.newsaggregator.db.DBHelper;
@@ -95,7 +96,7 @@ public class MainActivity extends AppCompatActivity
         RecyclerView recyclerView = findViewById(R.id.recyclerviewmain);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         adapter = new NewsAdapter(this, getAllItems());
-        adapter.setClickListener((NewsAdapter.ItemClickListener) this);
+        adapter.setClickListener(this);
         recyclerView.setAdapter(adapter);
 
         textName = findViewById(R.id.tvName);
@@ -215,6 +216,10 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onItemClick(View view, int position) {
         Toast.makeText(this, "You clicked " + adapter.getItem(position) + " on row number " + position, Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(MainActivity.this,
+                NewsActivity.class);
+        intent.putExtra("id", String.valueOf(position));
+        startActivity(intent);
     }
 
     private Cursor getAllItems() {

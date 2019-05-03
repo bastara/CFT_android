@@ -31,4 +31,5 @@
     <string name="IconAdd">добавить RSS</string>
     <string name="copy_value">Заполнить</string>
     <string name="delete_site">Выберите сайт для удаления</string>
+    <string name="topic">Статья</string>
 </resources>
