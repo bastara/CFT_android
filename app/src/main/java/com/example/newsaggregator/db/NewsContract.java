@@ -19,6 +19,6 @@ public class NewsContract {
 
         public static final String TABLE_SITES = "tableOfSite";
         public static final String COLUMN_ID_SITE = "id";
-        public static final String COLUMN_LINK_SITE = "link";
+        public static final String COLUMN_URL = "url";
     }
 }

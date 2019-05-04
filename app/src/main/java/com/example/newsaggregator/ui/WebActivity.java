@@ -1,4 +1,4 @@
-package com.example.newsaggregator.activity;
+package com.example.newsaggregator.ui;
 
 import android.annotation.TargetApi;
 import android.content.ContentValues;
@@ -172,7 +172,8 @@ public class WebActivity extends AppCompatActivity {
 
             try {
                 Log.d(TAG, "Добавляю в источники RSS " + src);
-                cv.put(NewsContract.NewsEntry.COLUMN_LINK_SITE, src);
+                String tmpStr = src.substring(src.indexOf("//") + 2, src.indexOf(("/"), 8));
+                cv.put(NewsContract.NewsEntry.COLUMN_URL, tmpStr);
 
                 Log.d(TAG, "Вношу данные БД ");
                 long rowID = database.insert(NewsContract.NewsEntry.TABLE_SITES, null, cv);
@@ -260,6 +261,8 @@ public class WebActivity extends AppCompatActivity {
                     if (parser.getEventType() == XmlPullParser.END_TAG
                             && parser.getName().equals("item")) {
                         Log.d(TAG, "Вношу данные БД ");
+                        String tmpStr = src.substring(src.indexOf("//") + 2, src.indexOf(("/"), 8));
+                        cv.put(NewsContract.NewsEntry.COLUMN_URL, tmpStr);
                         long rowID = database.insert(NewsContract.NewsEntry.TABLE_NEWS, null, cv);
                         Log.d(TAG, "НОМЕР ЗАПИСИ = " + rowID);
                         MainActivity.newCursor = true;

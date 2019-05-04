@@ -1,4 +1,4 @@
-package com.example.newsaggregator.activity;
+package com.example.newsaggregator.ui;
 
 import android.content.Intent;
 import android.os.Bundle;

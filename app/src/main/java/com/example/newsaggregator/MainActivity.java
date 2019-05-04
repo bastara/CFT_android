@@ -27,10 +27,10 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.newsaggregator.activity.AddSiteActivity;
-import com.example.newsaggregator.activity.DeleteSiteActivity;
-import com.example.newsaggregator.activity.NewsActivity;
-import com.example.newsaggregator.activity.RefreshActivity;
+import com.example.newsaggregator.ui.AddSiteActivity;
+import com.example.newsaggregator.ui.DeleteSiteActivity;
+import com.example.newsaggregator.ui.NewsActivity;
+import com.example.newsaggregator.ui.RefreshActivity;
 import com.example.newsaggregator.adapter.NewsAdapter;
 import com.example.newsaggregator.db.DBHelper;
 import com.example.newsaggregator.db.NewsContract;

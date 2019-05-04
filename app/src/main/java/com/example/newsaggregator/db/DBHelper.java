@@ -7,7 +7,7 @@ import android.util.Log;
 
 public class DBHelper extends SQLiteOpenHelper {
 
-    private static final String DATABASE_NAME = "RSSDB14";
+    private static final String DATABASE_NAME = "RSSDB20";
     private static final int DATABASE_VERSION = 1;
 
     public DBHelper(Context context) {
@@ -23,6 +23,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 + NewsContract.NewsEntry.COLUMN_ID + " INTEGER primary key autoincrement,"
                 + NewsContract.NewsEntry.COLUMN_TITLE + " text,"
                 + NewsContract.NewsEntry.COLUMN_LINK_NEWS + " text,"
+                + NewsContract.NewsEntry.COLUMN_URL + " text,"
                 + NewsContract.NewsEntry.COLUMN_DESCRIPTION + " text,"
                 + NewsContract.NewsEntry.COLUMN_CATEGORY + " text,"
                 + NewsContract.NewsEntry.COLUMN_ISSHOW + " int DEFAULT \'0\',"
@@ -31,8 +32,8 @@ public class DBHelper extends SQLiteOpenHelper {
                 + NewsContract.NewsEntry.COLUMN_PUBDATE + " text" + ");");
 
         db.execSQL("create table " + NewsContract.NewsEntry.TABLE_SITES + "("
-                + NewsContract.NewsEntry.COLUMN_ID_SITE + " INTEGER primary key autoincrement,"
-                + NewsContract.NewsEntry.COLUMN_LINK_SITE + " text" + ");");
+//                + NewsContract.NewsEntry.COLUMN_ID_SITE + " INTEGER primary key autoincrement,"
+                + NewsContract.NewsEntry.COLUMN_URL + " text primary key" + ");");
     }
 
     @Override

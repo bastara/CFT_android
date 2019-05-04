@@ -6,14 +6,6 @@
     android:orientation="vertical"
     android:padding="10dip">
 
-
-    <TextView
-        android:id="@+id/textAddSite"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/delete_site"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
-
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerViewDel"
         android:layout_width="match_parent"

@@ -46,6 +46,7 @@ public class ParseXML {
                 if (parser.getEventType() == XmlPullParser.END_TAG
                         && parser.getName().equals("item")) {
                     Log.d(TAG, "Вношу данные БД ");
+                    cv.put(NewsContract.NewsEntry.COLUMN_URL, src);
                     long rowID = database.insert(NewsContract.NewsEntry.TABLE_NEWS, null, cv);
                     Log.d(TAG, "НОМЕР ЗАПИСИ = " + rowID);
                     MainActivity.newCursor = true;

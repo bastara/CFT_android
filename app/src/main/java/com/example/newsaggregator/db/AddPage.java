@@ -18,7 +18,7 @@ public class AddPage {
 
         try {
             Log.d(TAG, "Добавляю в источники RSS " + src);
-            cv.put(NewsContract.NewsEntry.COLUMN_LINK_SITE, src);
+            cv.put(NewsContract.NewsEntry.COLUMN_URL, src);
 
             Log.d(TAG, "Вношу данные БД ");
             long rowID = database.insert(NewsContract.NewsEntry.TABLE_SITES, null, cv);

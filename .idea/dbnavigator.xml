@@ -25,7 +25,7 @@
     <show-object-properties value="false" />
     <loaded-nodes>
       <connection connection-id="d242a603-28e8-48c8-903b-46561fbbb12e">
-        <schema name="main" object-types="table, column, view" />
+        <schema name="main" object-types="column, view, table" />
       </connection>
     </loaded-nodes>
   </component>
@@ -195,7 +195,7 @@ SELECT rowid, id FROM news;]]></console>
           <port value="" />
           <database value="" />
           <files>
-            <file path="C:\Users\Shurik\Documents\AndroidStudio\DeviceExplorer\unknown-custom_phone-192.168.19.101_5555\data\data\com.example.newsaggregator\databases\RSSDB14" schema="main" />
+            <file path="C:\Users\Shurik\Documents\AndroidStudio\DeviceExplorer\unknown-custom_phone-192.168.19.101_5555\data\data\com.example.newsaggregator\databases\RSSDB20" schema="main" />
           </files>
           <os-authentication value="false" />
           <empty-authentication value="false" />

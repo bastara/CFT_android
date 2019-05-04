@@ -45,13 +45,13 @@ public class SiteAdapter extends RecyclerView.Adapter<SiteAdapter.SiteViewHolder
             return;
         }
 
-        String link = cursor.getString(cursor.getColumnIndex(NewsContract.NewsEntry.COLUMN_LINK_SITE));
+        String link = cursor.getString(cursor.getColumnIndex(NewsContract.NewsEntry.COLUMN_URL));
         holder.linkText.setText(link);
     }
 
     public String getItem(int id) {
         cursor.moveToPosition(id);
-        return cursor.getString(cursor.getColumnIndex(NewsContract.NewsEntry.COLUMN_ID_SITE));
+        return cursor.getString(cursor.getColumnIndex(NewsContract.NewsEntry.COLUMN_URL));
     }
 
     @Override

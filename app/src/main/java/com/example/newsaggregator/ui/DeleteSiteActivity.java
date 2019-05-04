@@ -1,4 +1,4 @@
-package com.example.newsaggregator.activity;
+package com.example.newsaggregator.ui;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -46,16 +46,16 @@ public class DeleteSiteActivity extends AppCompatActivity {
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
                 String cursor = adapter.getItem(viewHolder.getAdapterPosition());
-                removeItem(Integer.parseInt(cursor));
+                removeItem(cursor);
             }
         }).attachToRecyclerView(recyclerView);
 
         linkSite = findViewById(R.id.tvSite);
     }
 
-    private void removeItem(int id) {
+    private void removeItem(String str) {
         dataBase.delete(NewsContract.NewsEntry.TABLE_SITES,
-                NewsContract.NewsEntry.COLUMN_ID_SITE + "=" + id, null);
+                NewsContract.NewsEntry.COLUMN_URL + "=?", new String[]{String.valueOf(str)});
         adapter.swapCursor(getAllItems());
     }
 
@@ -67,7 +67,7 @@ public class DeleteSiteActivity extends AppCompatActivity {
                 null,
                 null,
                 null,
-                NewsContract.NewsEntry.COLUMN_LINK_SITE
+                NewsContract.NewsEntry.COLUMN_URL
         );
     }
 }
