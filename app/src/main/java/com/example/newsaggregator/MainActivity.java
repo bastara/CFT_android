@@ -10,7 +10,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -18,8 +17,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.support.v7.widget.helper.ItemTouchHelper;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Display;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -46,6 +46,7 @@ public class MainActivity extends AppCompatActivity
     private NewsAdapter adapter;
     private TextView textName;
     private TextView textViewTMP;
+    private RecyclerView recyclerView;
 
     public static boolean newCursor = false;
 
@@ -60,8 +61,12 @@ public class MainActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+//                        .setAction("Action", null).show();
+                Display display = getWindowManager().getDefaultDisplay();
+                DisplayMetrics metricsB = new DisplayMetrics();
+                display.getMetrics(metricsB);
+                recyclerView.scrollBy(0, +metricsB.heightPixels - 176);
             }
         });
 
@@ -80,7 +85,7 @@ public class MainActivity extends AppCompatActivity
         refreshTextView = (TextView) itemTimeRefresh.getActionView();
 
         initializeCountDrawer(timeRefresh);
-        drawer.openDrawer(GravityCompat.START);
+//        drawer.openDrawer(GravityCompat.START);
 
         settings = getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE);
         if (settings.contains(APP_PREFERENCES_TIME_REFRESH)) {
@@ -93,7 +98,7 @@ public class MainActivity extends AppCompatActivity
         DBHelper dbHelper = new DBHelper(this);
         dataBase = dbHelper.getWritableDatabase();
 
-        RecyclerView recyclerView = findViewById(R.id.recyclerviewmain);
+        recyclerView = findViewById(R.id.recyclerViewMain);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         adapter = new NewsAdapter(this, getAllItems());
         adapter.setClickListener(this);
@@ -232,6 +237,14 @@ public class MainActivity extends AppCompatActivity
                 null,
                 NewsContract.NewsEntry.COLUMN_ID + " DESC"
         );
+    }
+
+    public void onClickTop(MenuItem item) {
+        recyclerView.scrollBy(0, -10000000);
+//        Display display = getWindowManager().getDefaultDisplay();
+//        DisplayMetrics metricsB = new DisplayMetrics();
+//        display.getMetrics(metricsB);
+//        recyclerView.scrollBy(0, +metricsB.heightPixels - 176);
     }
 }
 

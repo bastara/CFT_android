@@ -10,16 +10,16 @@ import android.support.v7.widget.helper.ItemTouchHelper;
 import android.widget.TextView;
 
 import com.example.newsaggregator.R;
-import com.example.newsaggregator.adapter.NewsAdapter;
+import com.example.newsaggregator.adapter.SiteAdapter;
 import com.example.newsaggregator.db.DBHelper;
 import com.example.newsaggregator.db.NewsContract;
 
 public class DeleteSiteActivity extends AppCompatActivity {
     private SQLiteDatabase mDatabase;
-    private NewsAdapter mAdapter;
-    private TextView mTextName;
-    private TextView mTextViewAmount;
-    private int mAmount = 0;
+    private SiteAdapter mAdapter;
+    private TextView linkSite;
+//    private TextView mTextViewAmount;
+//    private int mAmount = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,10 +29,9 @@ public class DeleteSiteActivity extends AppCompatActivity {
         DBHelper dbHelper = new DBHelper(this);
         mDatabase = dbHelper.getWritableDatabase();
 
-        RecyclerView recyclerView = findViewById(R.id.recyclerview);
-//        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        RecyclerView recyclerView = findViewById(R.id.recyclerViewDel);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mAdapter = new NewsAdapter(this, getAllItems());
+        mAdapter = new SiteAdapter(this, getAllItems());
         recyclerView.setAdapter(mAdapter);
 
         new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0,
@@ -48,8 +47,7 @@ public class DeleteSiteActivity extends AppCompatActivity {
             }
         }).attachToRecyclerView(recyclerView);
 
-        mTextName = findViewById(R.id.tvName);
-        mTextViewAmount = findViewById(R.id.tvDate);
+        linkSite = findViewById(R.id.tvSite);
 
     }
 
@@ -61,13 +59,13 @@ public class DeleteSiteActivity extends AppCompatActivity {
 
     private Cursor getAllItems() {
         return mDatabase.query(
-                NewsContract.NewsEntry.TABLE_NEWS,
+                NewsContract.NewsEntry.TABLE_SITES,
                 null,
                 null,
                 null,
                 null,
                 null,
-                NewsContract.NewsEntry.COLUMN_ID + " DESC"
+                NewsContract.NewsEntry.COLUMN_LINK_SITE
         );
     }
 }
