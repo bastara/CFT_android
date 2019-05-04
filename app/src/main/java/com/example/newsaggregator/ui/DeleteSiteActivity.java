@@ -10,6 +10,7 @@ import android.support.v7.widget.helper.ItemTouchHelper;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.newsaggregator.MainActivity;
 import com.example.newsaggregator.R;
 import com.example.newsaggregator.adapter.SiteAdapter;
 import com.example.newsaggregator.db.DBHelper;
@@ -54,8 +55,9 @@ public class DeleteSiteActivity extends AppCompatActivity {
     }
 
     private void removeItem(String str) {
-        dataBase.delete(NewsContract.NewsEntry.TABLE_SITES,
-                NewsContract.NewsEntry.COLUMN_URL + "=?", new String[]{String.valueOf(str)});
+        dataBase.delete(NewsContract.NewsEntry.TABLE_SITES, NewsContract.NewsEntry.COLUMN_URL + "=?", new String[]{String.valueOf(str)});
+        dataBase.delete(NewsContract.NewsEntry.TABLE_NEWS, NewsContract.NewsEntry.COLUMN_URL + "=?", new String[]{String.valueOf(str)});
+        MainActivity.newCursor = true;
         adapter.swapCursor(getAllItems());
     }
 
