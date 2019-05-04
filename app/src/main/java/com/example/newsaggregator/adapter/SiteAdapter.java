@@ -24,11 +24,10 @@ public class SiteAdapter extends RecyclerView.Adapter<SiteAdapter.SiteViewHolder
     class SiteViewHolder extends RecyclerView.ViewHolder {
         TextView linkText;
 
-
         SiteViewHolder(View itemView) {
             super(itemView);
 
-            linkText = itemView.findViewById(R.id.tvName);
+            linkText = itemView.findViewById(R.id.tvSite);
         }
     }
 
@@ -36,7 +35,7 @@ public class SiteAdapter extends RecyclerView.Adapter<SiteAdapter.SiteViewHolder
     @Override
     public SiteViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(context);
-        View view = inflater.inflate(R.layout.news_item, parent, false);
+        View view = inflater.inflate(R.layout.site_item, parent, false);
         return new SiteViewHolder(view);
     }
 
@@ -47,20 +46,13 @@ public class SiteAdapter extends RecyclerView.Adapter<SiteAdapter.SiteViewHolder
         }
 
         String link = cursor.getString(cursor.getColumnIndex(NewsContract.NewsEntry.COLUMN_LINK_SITE));
+        holder.linkText.setText(link);
     }
 
-//    public String getItem(int id) {
-//        cursor.moveToPosition(id);
-//        return cursor.getString(cursor.getColumnIndex(NewsContract.NewsEntry.COLUMN_ID));
-//    }
-
-//    public void setClickListener(ItemClickListener itemClickListener) {
-//        this.itemClickListener = itemClickListener;
-//    }
-//
-//    public interface ItemClickListener {
-//        void onItemClick(View view, int position);
-//    }
+    public String getItem(int id) {
+        cursor.moveToPosition(id);
+        return cursor.getString(cursor.getColumnIndex(NewsContract.NewsEntry.COLUMN_ID_SITE));
+    }
 
     @Override
     public int getItemCount() {

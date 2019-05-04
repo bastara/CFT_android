@@ -7,7 +7,7 @@ import android.util.Log;
 
 public class DBHelper extends SQLiteOpenHelper {
 
-    private static final String DATABASE_NAME = "RSSDB13";
+    private static final String DATABASE_NAME = "RSSDB14";
     private static final int DATABASE_VERSION = 1;
 
     public DBHelper(Context context) {
@@ -31,7 +31,8 @@ public class DBHelper extends SQLiteOpenHelper {
                 + NewsContract.NewsEntry.COLUMN_PUBDATE + " text" + ");");
 
         db.execSQL("create table " + NewsContract.NewsEntry.TABLE_SITES + "("
-                + NewsContract.NewsEntry.COLUMN_LINK_SITE + " text primary key" + ");");
+                + NewsContract.NewsEntry.COLUMN_ID_SITE + " INTEGER primary key autoincrement,"
+                + NewsContract.NewsEntry.COLUMN_LINK_SITE + " text" + ");");
     }
 
     @Override

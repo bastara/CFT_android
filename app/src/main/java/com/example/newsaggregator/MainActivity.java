@@ -241,10 +241,6 @@ public class MainActivity extends AppCompatActivity
 
     public void onClickTop(MenuItem item) {
         recyclerView.scrollBy(0, -10000000);
-//        Display display = getWindowManager().getDefaultDisplay();
-//        DisplayMetrics metricsB = new DisplayMetrics();
-//        display.getMetrics(metricsB);
-//        recyclerView.scrollBy(0, +metricsB.heightPixels - 176);
     }
 }
 

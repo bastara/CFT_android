@@ -36,12 +36,6 @@ public class AddSiteActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
-    }
-
     public void onClick2(View view) {
         editText.setText(textView1.getText().toString());
     }
