@@ -200,17 +200,6 @@ public class WebActivity extends AppCompatActivity {
             doWork(src, context);
         }
 
-//        private void doWork(final String src, final Context context) {
-//            Thread thread = new Thread(new Runnable() {
-//                @Override
-//                public void run() {
-//                    ParseXML parseXML = new ParseXML(src, context);
-//                    parseXML.parseXML();
-//                }
-//            });
-//            thread.start();
-//        }
-
         private void doWork(final String src, final Context context) {
             Thread thread = new Thread(new Runnable() {
                 @Override

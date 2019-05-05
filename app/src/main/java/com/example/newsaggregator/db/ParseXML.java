@@ -2,6 +2,7 @@ package com.example.newsaggregator.db;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 import android.util.Xml;
@@ -9,6 +10,7 @@ import android.util.Xml;
 import com.example.newsaggregator.MainActivity;
 
 import org.xmlpull.v1.XmlPullParser;
+
 import java.io.InputStream;
 import java.net.URL;
 
@@ -30,7 +32,7 @@ public class ParseXML {
         SQLiteDatabase database = dbHelper.getWritableDatabase();
 
         ContentValues cv = new ContentValues();
-
+        Cursor cursor;
         try {
             URL url = new URL(src);
             InputStream inputStream = url.openConnection().getInputStream();
@@ -70,10 +72,12 @@ public class ParseXML {
 //                        String tmpStr = src.substring(src.indexOf("//") + 2, src.indexOf(("/"), 8));
 //                        cv.put(NewsContract.NewsEntry.COLUMN_URL, tmpStr);
                     cv.put(NewsContract.NewsEntry.COLUMN_URL, src);
-                    long rowID = database.insert(NewsContract.NewsEntry.TABLE_NEWS, null, cv);
-                    Log.d(TAG, "НОМЕР ЗАПИСИ = " + rowID);
-                    MainActivity.newCursor = true;
-                    isItem = false;
+                    if (cv.get(NewsContract.NewsEntry.COLUMN_LINK_NEWS) != null) {
+                        long rowID = database.insert(NewsContract.NewsEntry.TABLE_NEWS, null, cv);
+                        Log.d(TAG, "НОМЕР ЗАПИСИ = " + rowID);
+                        MainActivity.newCursor = true;
+                        isItem = false;
+                    }
                     parser.next();
                     continue;
                 }
@@ -90,7 +94,13 @@ public class ParseXML {
                         && parser.next() == XmlPullParser.TEXT
                         && isItem) {
 //                    Log.d(TAG, "ссылка = " + parser.getText());
-                    cv.put(NewsContract.NewsEntry.COLUMN_LINK_NEWS, parser.getText());
+                    String tmpStr = parser.getText();
+                    cursor = database.query(NewsContract.NewsEntry.TABLE_NEWS, null, NewsContract.NewsEntry.COLUMN_LINK_NEWS + "=?", new String[]{tmpStr}, null, null, null);
+//                    String tmpLink = cursor.getString(cursor.getColumnIndex(NewsContract.NewsEntry.COLUMN_LINK_NEWS));
+                    if (cursor.moveToFirst()) {
+                        continue;
+                    }
+                    cv.put(NewsContract.NewsEntry.COLUMN_LINK_NEWS, tmpStr);
                 }
                 if (parser.getEventType() == XmlPullParser.START_TAG
                         && parser.getName().equals("description")

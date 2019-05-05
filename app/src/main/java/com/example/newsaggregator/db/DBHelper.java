@@ -7,7 +7,7 @@ import android.util.Log;
 
 public class DBHelper extends SQLiteOpenHelper {
 
-    private static final String DATABASE_NAME = "RSSDB20";
+    private static final String DATABASE_NAME = "RSSDB21";
     private static final int DATABASE_VERSION = 1;
 
     public DBHelper(Context context) {
@@ -22,7 +22,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 + NewsContract.NewsEntry.TABLE_NEWS + "("
                 + NewsContract.NewsEntry.COLUMN_ID + " INTEGER primary key autoincrement,"
                 + NewsContract.NewsEntry.COLUMN_TITLE + " text,"
-                + NewsContract.NewsEntry.COLUMN_LINK_NEWS + " text,"
+                + NewsContract.NewsEntry.COLUMN_LINK_NEWS + " text not null,"
                 + NewsContract.NewsEntry.COLUMN_URL + " text,"
                 + NewsContract.NewsEntry.COLUMN_DESCRIPTION + " text,"
                 + NewsContract.NewsEntry.COLUMN_CATEGORY + " text,"
