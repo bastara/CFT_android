@@ -45,9 +45,7 @@ public class WebActivity extends AppCompatActivity {
         webView = findViewById(R.id.webView);
 //        поддержка JavaScript
 //        webView.getSettings().setJavaScriptEnabled(true);
-
         webView.setWebViewClient(new MyWebViewClient());
-
         webView.loadUrl(url);
     }
 
@@ -63,33 +61,49 @@ public class WebActivity extends AppCompatActivity {
         return true;
     }
 
-    private String srcRSS = "";
-    private boolean pageIsLoaded = false;
-
     public void onClickBack(MenuItem item) {
         Intent intent = new Intent(WebActivity.this,
                 MainActivity.class);
         startActivity(intent);
     }
 
+    private String url = "";
+    private boolean pageIsLoaded = false;
+
     public void onClick(MenuItem item) {
         if (pageIsLoaded) {
-            doWork(srcRSS);
+            Thread thread = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    CheckRSS checkRSS = new CheckRSS(url);
+                    checkRSS.checkRSS();
+                }
+            });
+            thread.start();
+
+//            Thread thread = new Thread(new CheckRSS(url));
+//            thread.start();
+//
+//            try {
+//                thread.join();
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
+
             //TODO разобратья с утечками памяти
             handler = new Handler() {
                 public void handleMessage(android.os.Message msg) {
-                    Toast.makeText(getApplicationContext(), srcRSS, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), url, Toast.LENGTH_SHORT).show();
                     if (msg.what == 1) {
-                        Toast.makeText(getApplicationContext(), "RSS файл добавлен в вашу библиотеку", Toast.LENGTH_SHORT).show();
+                        addPage(url);
                     } else {
                         Toast.makeText(getApplicationContext(), "Это не RSS файл", Toast.LENGTH_SHORT).show();
+                        return;
                     }
                 }
-
-                ;
             };
         } else {
-            Toast.makeText(getApplicationContext(), "Дождитесь полной загрузки страницы", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "Дождитесь полной загрузки страницы!", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -121,7 +135,7 @@ public class WebActivity extends AppCompatActivity {
         public void onPageFinished(WebView view, String url) {
             super.onPageFinished(view, url);
             Toast.makeText(getApplicationContext(), "Страница загружена!", Toast.LENGTH_SHORT).show();
-            srcRSS = url;
+            WebActivity.this.url = url;
             pageIsLoaded = true;
         }
 
@@ -134,25 +148,15 @@ public class WebActivity extends AppCompatActivity {
         }
     }
 
-    private void doWork(final String src) {
-//        Thread thread = new Thread(new Runnable() {
-//            @Override
-//            public void run() {
-//                AddPage.addPage(src, WebActivity.this);
-//                ParseXML.parseXML(src, WebActivity.this);
-//            }
-//        });
-//        thread.start();
+    private void addPage(final String src) {
 //TODO можно подумать над возвращаемым значением и над добавлением через потоки-что б активити не терялось
         AddPage addPage = new AddPage(src, WebActivity.this);
-//        AddPage.addPage(src, WebActivity.this);
         addPage.addPage();
-        Toast.makeText(getApplicationContext(), "отработал AddPage", Toast.LENGTH_SHORT).show();
     }
 
     public class AddPage {
         Context context;
-        String src;
+        String src;//подумать над именами
 
         AddPage(String src, Context context) {
             this.context = context;
@@ -170,26 +174,21 @@ public class WebActivity extends AppCompatActivity {
                 src = "http://" + src;
             }
 
-            Thread thread = new Thread(new CheckRSS(src));
-
-            try {
-                thread.join();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-
-
             try {
                 Log.d(TAG, "Добавляю в источники RSS " + src);
-                String tmpStr = src.substring(src.indexOf("//") + 2, src.indexOf(("/"), 8));
-                cv.put(NewsContract.NewsEntry.COLUMN_URL, tmpStr);
+//                String tmpStr = src.substring(src.indexOf("//") + 2, src.indexOf(("/"), 8));
+//                cv.put(NewsContract.NewsEntry.COLUMN_URL, tmpStr);
+                cv.put(NewsContract.NewsEntry.COLUMN_URL, src);
 
                 Log.d(TAG, "Вношу данные БД ");
                 long rowID = database.insert(NewsContract.NewsEntry.TABLE_SITES, null, cv);
                 if (rowID == -1) {
                     Log.d(TAG, "Данный ресурс уже добавлен ");
+                    Toast.makeText(getApplicationContext(), "Данный ресурс уже добавлен!", Toast.LENGTH_SHORT).show();
+                    return;
                 } else {
-                    Log.d(TAG, "НОМЕР ЗАПИСИ = " + rowID);
+                    Toast.makeText(getApplicationContext(), "RSS файл добавлен в вашу библиотеку", Toast.LENGTH_SHORT).show();
+                    Log.d(TAG, "НОМЕР ЗАПИСИ САЙТА = " + rowID);
                 }
             } catch (Throwable t) {
                 Log.d(TAG, "Ошибка при добалении адреса в базу данных: " + t.toString());
@@ -205,7 +204,6 @@ public class WebActivity extends AppCompatActivity {
                 public void run() {
                     ParseXML parseXML = new ParseXML(src, context);
                     parseXML.parseXML();
-//                    ParseXML.parseXML(src, context);
                 }
             });
             thread.start();
@@ -233,20 +231,20 @@ public class WebActivity extends AppCompatActivity {
             try {
                 URL url = new URL(src);
                 InputStream inputStream = url.openConnection().getInputStream();
-
-                ByteArrayOutputStream result = new ByteArrayOutputStream();
-                byte[] buffer = new byte[224];
-                int length;
-                if ((length = inputStream.read(buffer)) != -1) {
-                    result.write(buffer, 0, length);
-                    if (result.toString("UTF-8").contains("rss")) {
-                        Log.d(TAG, result.toString("UTF-8"));
-                        handler.sendEmptyMessage(1);
-                    } else {
-                        handler.sendEmptyMessage(0);
-                        return;
-                    }
-                }
+//
+//                ByteArrayOutputStream result = new ByteArrayOutputStream();
+//                byte[] buffer = new byte[224];
+//                int length;
+//                if ((length = inputStream.read(buffer)) != -1) {
+//                    result.write(buffer, 0, length);
+//                    if (result.toString("UTF-8").contains("rss")) {
+//                        Log.d(TAG, result.toString("UTF-8"));
+//                        handler.sendEmptyMessage(1);
+//                    } else {
+//                        handler.sendEmptyMessage(0);
+//                        return;
+//                    }
+//                }
 
                 inputStream = url.openConnection().getInputStream();
 
@@ -266,8 +264,9 @@ public class WebActivity extends AppCompatActivity {
                     if (parser.getEventType() == XmlPullParser.END_TAG
                             && parser.getName().equals("item")) {
                         Log.d(TAG, "Вношу данные БД ");
-                        String tmpStr = src.substring(src.indexOf("//") + 2, src.indexOf(("/"), 8));
-                        cv.put(NewsContract.NewsEntry.COLUMN_URL, tmpStr);
+//                        String tmpStr = src.substring(src.indexOf("//") + 2, src.indexOf(("/"), 8));
+//                        cv.put(NewsContract.NewsEntry.COLUMN_URL, tmpStr);
+                        cv.put(NewsContract.NewsEntry.COLUMN_URL, src);
                         long rowID = database.insert(NewsContract.NewsEntry.TABLE_NEWS, null, cv);
                         Log.d(TAG, "НОМЕР ЗАПИСИ = " + rowID);
                         MainActivity.newCursor = true;
@@ -284,7 +283,7 @@ public class WebActivity extends AppCompatActivity {
                         cv.put(NewsContract.NewsEntry.COLUMN_TITLE, parser.getText());
                     }
                     if (parser.getEventType() == XmlPullParser.START_TAG
-                            && parser.getName().equals("link")
+                            && parser.getName().equals("url")
                             && parser.next() == XmlPullParser.TEXT
                             && isItem) {
 //                    Log.d(TAG, "ссылка = " + parser.getText());
@@ -323,15 +322,14 @@ public class WebActivity extends AppCompatActivity {
     }
 
 
-    class CheckRSS implements Runnable {
+    class CheckRSS {
         public String link;
 
         public CheckRSS(String link) {
             this.link = link;
         }
 
-        @Override
-        public void run() {
+        public void checkRSS() {
             System.out.println("Поток начал работу:::" + Thread.currentThread().getName());
             try {
                 URL url = new URL(link);
@@ -340,18 +338,20 @@ public class WebActivity extends AppCompatActivity {
                 ByteArrayOutputStream result = new ByteArrayOutputStream();
                 byte[] buffer = new byte[224];
                 int length;
+                Log.d(TAG, "Начало проверки РСС: ");
                 if ((length = inputStream.read(buffer)) != -1) {
+                    Log.d(TAG, "итерация проверки РСС: ");
                     result.write(buffer, 0, length);
                     if (result.toString("UTF-8").contains("rss")) {
                         Log.d(TAG, result.toString("UTF-8"));
                         handler.sendEmptyMessage(1);
                     } else {
                         handler.sendEmptyMessage(0);
-                        return;
+//                        return;
                     }
                 }
             } catch (IOException t) {
-                Log.d(TAG, "Ошибка при праверке документа на RSS: " + t.toString());
+                Log.d(TAG, "Ошибка при проверке документа на RSS: " + t.toString());
             }
         }
     }
