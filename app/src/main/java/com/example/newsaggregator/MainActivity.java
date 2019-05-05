@@ -155,7 +155,8 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_watchSite) {
+        if (id == R.id.nav_upDate) {
+            upDate(MainActivity.this);
         } else if (id == R.id.nav_addSite) {
             Intent intent = new Intent(MainActivity.this,
                     AddSiteActivity.class);
@@ -179,6 +180,16 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private void upDate(final Context context) {
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                UpDate.upDate(context);
+            }
+        });
+        thread.start();
     }
 
     @Override

@@ -6,7 +6,7 @@
     <string name="nav_header_subtitle">News aggregator</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
-    <string name="watchSite">Просмотр сайта</string>
+    <string name="upDate">Обновить новости</string>
     <string name="addSite">Добавить сайт</string>
     <string name="deleteSite">Удалить сайт</string>
     <string name="lightTheme">Темная тема</string>
