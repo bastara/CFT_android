@@ -28,8 +28,11 @@ import com.example.newsaggregator.db.NewsContract;
 import org.xmlpull.v1.XmlPullParser;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+
+import static android.content.ContentValues.TAG;
 
 public class WebActivity extends AppCompatActivity {
     private WebView webView;
@@ -72,6 +75,7 @@ public class WebActivity extends AppCompatActivity {
     public void onClick(MenuItem item) {
         if (pageIsLoaded) {
             doWork(srcRSS);
+            //TODO разобратья с утечками памяти
             handler = new Handler() {
                 public void handleMessage(android.os.Message msg) {
                     Toast.makeText(getApplicationContext(), srcRSS, Toast.LENGTH_SHORT).show();
@@ -84,14 +88,6 @@ public class WebActivity extends AppCompatActivity {
 
                 ;
             };
-//            Toast.makeText(getApplicationContext(), srcRSS, Toast.LENGTH_SHORT).show();
-//            if (srcRSS.substring(srcRSS.length() - 4).equals(".xml") || srcRSS.contains("rss") || srcRSS.contains("feed")) {
-//                doWork(srcRSS);
-//
-//                Toast.makeText(getApplicationContext(), "RSS файл добавлен в вашу библиотеку", Toast.LENGTH_SHORT).show();
-//            } else {
-//                Toast.makeText(getApplicationContext(), "Это не RSS файл", Toast.LENGTH_SHORT).show();
-//            }
         } else {
             Toast.makeText(getApplicationContext(), "Дождитесь полной загрузки страницы", Toast.LENGTH_SHORT).show();
         }
@@ -170,6 +166,19 @@ public class WebActivity extends AppCompatActivity {
             final String TAG = "rssDB";
             ContentValues cv = new ContentValues();
 
+            if (!src.startsWith("http://") && !src.startsWith("https://")) {
+                src = "http://" + src;
+            }
+
+            Thread thread = new Thread(new CheckRSS(src));
+
+            try {
+                thread.join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+
             try {
                 Log.d(TAG, "Добавляю в источники RSS " + src);
                 String tmpStr = src.substring(src.indexOf("//") + 2, src.indexOf(("/"), 8));
@@ -222,10 +231,6 @@ public class WebActivity extends AppCompatActivity {
             ContentValues cv = new ContentValues();
 
             try {
-                if (!src.startsWith("http://") && !src.startsWith("https://")) {
-                    src = "http://" + src;
-                }
-
                 URL url = new URL(src);
                 InputStream inputStream = url.openConnection().getInputStream();
 
@@ -317,4 +322,37 @@ public class WebActivity extends AppCompatActivity {
         }
     }
 
+
+    class CheckRSS implements Runnable {
+        public String link;
+
+        public CheckRSS(String link) {
+            this.link = link;
+        }
+
+        @Override
+        public void run() {
+            System.out.println("Поток начал работу:::" + Thread.currentThread().getName());
+            try {
+                URL url = new URL(link);
+                InputStream inputStream = url.openConnection().getInputStream();
+
+                ByteArrayOutputStream result = new ByteArrayOutputStream();
+                byte[] buffer = new byte[224];
+                int length;
+                if ((length = inputStream.read(buffer)) != -1) {
+                    result.write(buffer, 0, length);
+                    if (result.toString("UTF-8").contains("rss")) {
+                        Log.d(TAG, result.toString("UTF-8"));
+                        handler.sendEmptyMessage(1);
+                    } else {
+                        handler.sendEmptyMessage(0);
+                        return;
+                    }
+                }
+            } catch (IOException t) {
+                Log.d(TAG, "Ошибка при праверке документа на RSS: " + t.toString());
+            }
+        }
+    }
 }
