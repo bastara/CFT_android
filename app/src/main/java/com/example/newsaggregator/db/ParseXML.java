@@ -14,6 +14,15 @@ import java.net.URL;
 
 //TODO данный класс не работает, ссылка в addPage
 public class ParseXML {
+    //TODO мб это соединить с предыдущим классом?
+//    Context context;
+//    String src;
+//
+//    public ParseXML(String src, Context context) {
+//        this.context = context;
+//        this.src = src;
+//    }
+
     public static void parseXML(String src, Context context) {
         final String TAG = "ЛогКот";
         DBHelper dbHelper = new DBHelper(context);
@@ -23,12 +32,24 @@ public class ParseXML {
         ContentValues cv = new ContentValues();
 
         try {
-            if (!src.startsWith("http://") && !src.startsWith("https://")) {
-                src = "http://" + src;
-            }
-
             URL url = new URL(src);
             InputStream inputStream = url.openConnection().getInputStream();
+//
+//                ByteArrayOutputStream result = new ByteArrayOutputStream();
+//                byte[] buffer = new byte[224];
+//                int length;
+//                if ((length = inputStream.read(buffer)) != -1) {
+//                    result.write(buffer, 0, length);
+//                    if (result.toString("UTF-8").contains("rss")) {
+//                        Log.d(TAG, result.toString("UTF-8"));
+//                        handler.sendEmptyMessage(1);
+//                    } else {
+//                        handler.sendEmptyMessage(0);
+//                        return;
+//                    }
+//                }
+
+            inputStream = url.openConnection().getInputStream();
 
             XmlPullParser parser = Xml.newPullParser();
             parser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false);
@@ -46,6 +67,8 @@ public class ParseXML {
                 if (parser.getEventType() == XmlPullParser.END_TAG
                         && parser.getName().equals("item")) {
                     Log.d(TAG, "Вношу данные БД ");
+//                        String tmpStr = src.substring(src.indexOf("//") + 2, src.indexOf(("/"), 8));
+//                        cv.put(NewsContract.NewsEntry.COLUMN_URL, tmpStr);
                     cv.put(NewsContract.NewsEntry.COLUMN_URL, src);
                     long rowID = database.insert(NewsContract.NewsEntry.TABLE_NEWS, null, cv);
                     Log.d(TAG, "НОМЕР ЗАПИСИ = " + rowID);
