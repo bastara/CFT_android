@@ -168,7 +168,7 @@ public class WebActivity extends AppCompatActivity {
         void addPage() {
             DBHelper dbHelper = new DBHelper(context);
 
-            SQLiteDatabase database = dbHelper.getWritableDatabase();
+            SQLiteDatabase dataBase = dbHelper.getWritableDatabase();
             final String TAG = "rssDB";
             ContentValues cv = new ContentValues();
 
@@ -183,7 +183,7 @@ public class WebActivity extends AppCompatActivity {
                 cv.put(NewsContract.NewsEntry.COLUMN_URL, src);
 
                 Log.d(TAG, "Вношу данные БД ");
-                long rowID = database.insert(NewsContract.NewsEntry.TABLE_SITES, null, cv);
+                long rowID = dataBase.insert(NewsContract.NewsEntry.TABLE_SITES, null, cv);
                 if (rowID == -1) {
                     Log.d(TAG, "Данный ресурс уже добавлен ");
                     Toast.makeText(getApplicationContext(), "Данный ресурс уже добавлен!", Toast.LENGTH_SHORT).show();

@@ -25,7 +25,7 @@
     <show-object-properties value="false" />
     <loaded-nodes>
       <connection connection-id="d242a603-28e8-48c8-903b-46561fbbb12e">
-        <schema name="main" object-types="column, table, view" />
+        <schema name="main" object-types="table, view, column" />
       </connection>
     </loaded-nodes>
   </component>
@@ -49,6 +49,7 @@ SELECT rowid, id FROM news;]]></console>
     <connection id="d242a603-28e8-48c8-903b-46561fbbb12e">
       <console name="Connection 12" type="STANDARD" schema="main" session="Main"><![CDATA[select * from news limit 0, 200;
 
+delete from news where link="http://www.garant.ru/article/1265576/"
 
 
 
@@ -60,10 +61,7 @@ insert into "tableOfSite"(url_rss) values ("sssddd");
 
 delete from news;
 
-SELECT rowid, id FROM news;
-
-
-query(NewsContract.NewsEntry.TABLE_NEWS, null, NewsContract.NewsEntry.COLUMN_LINK_NEWS + "=?", new String[]{tmpStr}, null, null, null);]]></console>
+select rowid, id from news;]]></console>
     </connection>
   </component>
   <component name="DBNavigator.Project.DatabaseFileManager">
@@ -198,7 +196,7 @@ query(NewsContract.NewsEntry.TABLE_NEWS, null, NewsContract.NewsEntry.COLUMN_LIN
           <port value="" />
           <database value="" />
           <files>
-            <file path="C:\Users\Shurik\Documents\AndroidStudio\DeviceExplorer\unknown-custom_phone-192.168.19.101_5555\data\data\com.example.newsaggregator\databases\RSSDB20" schema="main" />
+            <file path="C:\Users\Shurik\Documents\AndroidStudio\DeviceExplorer\unknown-custom_phone-192.168.19.101_5555\data\data\com.example.newsaggregator\databases\RSSDB22" schema="main" />
           </files>
           <os-authentication value="false" />
           <empty-authentication value="false" />

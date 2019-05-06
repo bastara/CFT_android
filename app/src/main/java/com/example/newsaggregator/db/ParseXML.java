@@ -95,6 +95,14 @@ public class ParseXML {
                         && isItem) {
 //                    Log.d(TAG, "ссылка = " + parser.getText());
                     String tmpStr = parser.getText();
+
+
+                    // Проверкак обновления вновостей
+//                    if (tmpStr.equals("http://www.garant.ru/article/1265576/")) {
+//                        tmpStr = null;
+//                        cv.put(NewsContract.NewsEntry.COLUMN_LINK_NEWS, tmpStr);
+//                        continue;
+////                    }
                     cursor = database.query(NewsContract.NewsEntry.TABLE_NEWS, null, NewsContract.NewsEntry.COLUMN_LINK_NEWS + "=?", new String[]{tmpStr}, null, null, null);
 //                    String tmpLink = cursor.getString(cursor.getColumnIndex(NewsContract.NewsEntry.COLUMN_LINK_NEWS));
                     if (cursor.moveToFirst()) {

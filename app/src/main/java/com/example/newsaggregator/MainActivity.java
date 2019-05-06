@@ -156,7 +156,11 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_upDate) {
-            upDate(MainActivity.this);
+            UpDate.upDate(MainActivity.this);
+            Intent i = new Intent(this, this.getClass());
+            finish();
+            newCursor = false;
+            this.startActivity(i);
         } else if (id == R.id.nav_addSite) {
             Intent intent = new Intent(MainActivity.this,
                     AddSiteActivity.class);
