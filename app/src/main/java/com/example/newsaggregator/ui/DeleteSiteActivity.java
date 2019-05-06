@@ -2,6 +2,7 @@ package com.example.newsaggregator.ui;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -20,8 +21,6 @@ public class DeleteSiteActivity extends AppCompatActivity {
     private SQLiteDatabase dataBase;
     private SiteAdapter adapter;
     private TextView linkSite;
-//    private TextView mTextViewAmount;
-//    private int mAmount = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,13 +38,13 @@ public class DeleteSiteActivity extends AppCompatActivity {
         new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0,
                 ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
             @Override
-            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
                 Toast.makeText(getApplicationContext(), "DDDDDDDDD", Toast.LENGTH_SHORT).show();
                 return false;
             }
 
             @Override
-            public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
                 String cursor = adapter.getItem(viewHolder.getAdapterPosition());
                 removeItem(cursor);
             }

@@ -16,9 +16,9 @@ public class NewsContract {
         public static final String COLUMN_CATEGORY = "category";
         public static final String COLUMN_ISSHOW = "isShow";
         public static final String COLUMN_PUBDATE = "pubDate";
+        public static final String COLUMN_URL = "url";
 
         public static final String TABLE_SITES = "tableOfSite";
         public static final String COLUMN_ID_SITE = "id";
-        public static final String COLUMN_URL = "url";
     }
 }

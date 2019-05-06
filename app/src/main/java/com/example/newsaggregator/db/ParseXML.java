@@ -14,19 +14,10 @@ import org.xmlpull.v1.XmlPullParser;
 import java.io.InputStream;
 import java.net.URL;
 
-//TODO данный класс не работает, ссылка в addPage
 public class ParseXML {
-    //TODO мб это соединить с предыдущим классом?
-//    Context context;
-//    String src;
-//
-//    public ParseXML(String src, Context context) {
-//        this.context = context;
-//        this.src = src;
-//    }
 
     public static void parseXML(String src, Context context) {
-        final String TAG = "ЛогКот";
+        final String TAG = "rssDB";
         DBHelper dbHelper = new DBHelper(context);
 
         SQLiteDatabase database = dbHelper.getWritableDatabase();
@@ -36,22 +27,6 @@ public class ParseXML {
         try {
             URL url = new URL(src);
             InputStream inputStream = url.openConnection().getInputStream();
-//
-//                ByteArrayOutputStream result = new ByteArrayOutputStream();
-//                byte[] buffer = new byte[224];
-//                int length;
-//                if ((length = inputStream.read(buffer)) != -1) {
-//                    result.write(buffer, 0, length);
-//                    if (result.toString("UTF-8").contains("rss")) {
-//                        Log.d(TAG, result.toString("UTF-8"));
-//                        handler.sendEmptyMessage(1);
-//                    } else {
-//                        handler.sendEmptyMessage(0);
-//                        return;
-//                    }
-//                }
-
-            inputStream = url.openConnection().getInputStream();
 
             XmlPullParser parser = Xml.newPullParser();
             parser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false);
@@ -86,25 +61,22 @@ public class ParseXML {
                         && parser.getName().equals("title")
                         && parser.next() == XmlPullParser.TEXT
                         && isItem) {
-//                    Log.d(TAG, "название = " + parser.getText());
                     cv.put(NewsContract.NewsEntry.COLUMN_TITLE, parser.getText());
                 }
                 if (parser.getEventType() == XmlPullParser.START_TAG
                         && parser.getName().equals("link")
                         && parser.next() == XmlPullParser.TEXT
                         && isItem) {
-//                    Log.d(TAG, "ссылка = " + parser.getText());
                     String tmpStr = parser.getText();
 
 
-                    // Проверкак обновления вновостей
+                    // Проверкак обновления новостей
 //                    if (tmpStr.equals("http://www.garant.ru/article/1265576/")) {
 //                        tmpStr = null;
 //                        cv.put(NewsContract.NewsEntry.COLUMN_LINK_NEWS, tmpStr);
 //                        continue;
 ////                    }
                     cursor = database.query(NewsContract.NewsEntry.TABLE_NEWS, null, NewsContract.NewsEntry.COLUMN_LINK_NEWS + "=?", new String[]{tmpStr}, null, null, null);
-//                    String tmpLink = cursor.getString(cursor.getColumnIndex(NewsContract.NewsEntry.COLUMN_LINK_NEWS));
                     if (cursor.moveToFirst()) {
                         continue;
                     }
@@ -114,22 +86,18 @@ public class ParseXML {
                         && parser.getName().equals("description")
                         && parser.next() == XmlPullParser.TEXT
                         && isItem) {
-//                    Log.d(TAG, "описание = " + getDescription(parser.getText()));
-//                    Log.d(TAG, "описание = " + parser.getText().replaceAll("\\<.*?\\>", "").replaceAll("\n", " "));
                     cv.put(NewsContract.NewsEntry.COLUMN_DESCRIPTION, parser.getText().replaceAll("\\<.*?\\>", "").replaceAll("\n", " "));
                 }
                 if (parser.getEventType() == XmlPullParser.START_TAG
                         && parser.getName().equals("category")
                         && parser.next() == XmlPullParser.TEXT
                         && isItem) {
-//                    Log.d(TAG, "категория = " + parser.getText());
                     cv.put(NewsContract.NewsEntry.COLUMN_CATEGORY, parser.getText());
                 }
                 if (parser.getEventType() == XmlPullParser.START_TAG
                         && parser.getName().equals("pubDate")
                         && parser.next() == XmlPullParser.TEXT
                         && isItem) {
-//                    Log.d(TAG, "дата = " + parser.getText());
                     cv.put(NewsContract.NewsEntry.COLUMN_PUBDATE, parser.getText());
                 }
                 parser.next();

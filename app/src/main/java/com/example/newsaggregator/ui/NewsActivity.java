@@ -59,16 +59,4 @@ public class NewsActivity extends AppCompatActivity {
         linkText.setText(link);
         textText.setText(text);
     }
-
-    private Cursor getAllItems() {
-        return dataBase.query(
-                NewsContract.NewsEntry.TABLE_NEWS,
-                null,
-                null,
-                null,
-                null,
-                null,
-                NewsContract.NewsEntry.COLUMN_ID + " DESC"
-        );
-    }
 }

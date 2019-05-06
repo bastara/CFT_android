@@ -91,16 +91,4 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder
     public int getItemCount() {
         return cursor.getCount();
     }
-
-    public void swapCursor(Cursor newCursor) {
-        if (cursor != null) {
-            cursor.close();
-        }
-
-        cursor = newCursor;
-
-        if (newCursor != null) {
-            notifyDataSetChanged();
-        }
-    }
 }

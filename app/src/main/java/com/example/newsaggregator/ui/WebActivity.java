@@ -151,7 +151,6 @@ public class WebActivity extends AppCompatActivity {
     }
 
     private void addPage(final String src) {
-//TODO можно подумать над возвращаемым значением и над добавлением через потоки-что б активити не терялось
         AddPage addPage = new AddPage(src, WebActivity.this);
         addPage.addPage();
     }
@@ -327,11 +326,11 @@ public class WebActivity extends AppCompatActivity {
     class CheckRSS {
         public String link;
 
-        public CheckRSS(String link) {
+        CheckRSS(String link) {
             this.link = link;
         }
 
-        public void checkRSS() {
+        void checkRSS() {
             System.out.println("Поток начал работу:::" + Thread.currentThread().getName());
             try {
                 URL url = new URL(link);

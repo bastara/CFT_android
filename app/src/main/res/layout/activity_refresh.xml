@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="10dip" >
+    android:padding="10dip">
 
     <TextView
         android:id="@+id/textView1"
@@ -16,7 +16,7 @@
     <RadioGroup
         android:id="@+id/radioGroup1"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content">
 
         <RadioButton
             android:id="@+id/radio15min"
@@ -48,7 +48,6 @@
             android:text="@string/refreshTime_24h" />
 
     </RadioGroup>
-
 
 
 </LinearLayout>
