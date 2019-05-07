@@ -13,7 +13,7 @@ public class RefreshActivity extends AppCompatActivity {
         setContentView(R.layout.activity_refresh);
     }
 
-    public final static String THIEF = "com.example.newsAggregator.THIEF";
+    public final static String THIEF = "com.example.newsAggregator.REFRESH_TIME";
 
     public void onRadioClick(View v) {
         Intent answerIntent = new Intent();

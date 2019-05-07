@@ -19,7 +19,7 @@ public class Preference {
         String timeRefresh;
         if (settings.contains(APP_PREFERENCES_TIME_REFRESH)) {
             timeRefresh = settings.getString(APP_PREFERENCES_TIME_REFRESH, String.valueOf(0));
-        } else timeRefresh = "15min";
+        } else timeRefresh = "900000";
         return timeRefresh;
     }
 

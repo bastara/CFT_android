@@ -39,14 +39,13 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, NewsAdapter.ItemClickListener {
 
     private TextView refreshTextView;
-    private static final String TAG = "!REFRESH TIME";
+    private static final String TAG = "!REFRESH REFRESH_TIME";
 
     private SQLiteDatabase dataBase;
     private NewsAdapter adapter;
     private RecyclerView recyclerView;
 
     Preference preference;
-    private String timeRefresh;
 
     public static boolean newCursor = false;
 
@@ -86,7 +85,8 @@ public class MainActivity extends AppCompatActivity
 
         preference = new Preference(MainActivity.this);
 
-        initializeCountDrawer(preference.getTimeRefresh());
+        initializeCountDrawer(timeRefreshMenu(preference.getTimeRefresh()));
+
 //        drawer.openDrawer(GravityCompat.START);
 
         DBHelper dbHelper = new DBHelper(this);
@@ -99,10 +99,23 @@ public class MainActivity extends AppCompatActivity
         recyclerView.setAdapter(adapter);
     }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-        preference.setTimeRefresh(timeRefresh);
+    private String timeRefreshMenu(String time1111) {
+        String timeRefreshMenu;
+        switch (time1111) {
+            case "900000":
+                timeRefreshMenu = "15min";
+                break;
+            case "3600000":
+                timeRefreshMenu = "60min";
+                break;
+            case "21600000":
+                timeRefreshMenu = "6h";
+                break;
+            default:
+                timeRefreshMenu = "24h";
+                break;
+        }
+        return timeRefreshMenu;
     }
 
     @Override
@@ -192,10 +205,10 @@ public class MainActivity extends AppCompatActivity
 
         if (requestCode == 0) {
             if (resultCode == RESULT_OK) {
-                String thiefTime = data.getStringExtra(RefreshActivity.THIEF);
-                refreshTextView.setText(thiefTime);
-                timeRefresh = thiefTime;
-                Log.d(TAG, timeRefresh);
+                String timeRefreshMilli = data.getStringExtra(RefreshActivity.REFRESH_TIME);
+                refreshTextView.setText(timeRefreshMenu(timeRefreshMilli));
+                preference.setTimeRefresh(timeRefreshMilli);
+                Log.d(TAG, timeRefreshMilli);
             } else {
                 refreshTextView.setText(""); // стираем текст
             }

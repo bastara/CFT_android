@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity
 
     private TextView mRefreshTextView;
     private String timeRefresh = "15mTn";
-    private static final String TAG = "!REFRESH TIME";
+    private static final String TAG = "!REFRESH REFRESH_TIME";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

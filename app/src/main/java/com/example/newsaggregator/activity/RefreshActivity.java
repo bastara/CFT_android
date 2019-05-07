@@ -14,26 +14,23 @@ public class RefreshActivity extends AppCompatActivity {
         setContentView(R.layout.activity_refresh);
     }
 
-    public final static String THIEF = "com.example.newsAggregator.THIEF";
+    public final static String REFRESH_TIME = "com.example.newsAggregator.REFRESH_TIME";
 
     public void onRadioClick(View v) {
         Intent answerIntent = new Intent();
-        //время оставил в таком формате по причине вывода этих данных в меню
-        //иначе там бы пришлось из милисекунд переводить в наглядный вид
         switch (v.getId()) {
             case R.id.radio15min:
-                answerIntent.putExtra(THIEF, "15min");
+                answerIntent.putExtra(REFRESH_TIME, "900000");
                 break;
             case R.id.radio60min:
-                answerIntent.putExtra(THIEF, "60min");
+                answerIntent.putExtra(REFRESH_TIME, "3600000");
                 break;
             case R.id.radio6hours:
-                answerIntent.putExtra(THIEF, "6h");
+                answerIntent.putExtra(REFRESH_TIME, "21600000");
                 break;
             case R.id.radio24hours:
-                answerIntent.putExtra(THIEF, "24h");
+                answerIntent.putExtra(REFRESH_TIME, "86400000");
                 break;
-
             default:
                 break;
         }
