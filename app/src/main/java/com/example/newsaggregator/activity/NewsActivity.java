@@ -79,6 +79,7 @@ public class NewsActivity extends AppCompatActivity {
 
         DBAdapter dbAdapter = new DBAdapter(NewsActivity.this);
 
+
         Cursor cursor = dbAdapter.getDataBase().query(
                 NewsContract.NewsEntry.TABLE_NEWS,
                 null,

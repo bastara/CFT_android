@@ -6,6 +6,7 @@ import android.database.sqlite.SQLiteDatabase;
 import com.example.newsaggregator.data.db.DBHelper;
 
 public class DBAdapter {
+
     private SQLiteDatabase dataBase;
     private Context context;
 
