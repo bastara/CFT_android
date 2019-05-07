@@ -39,7 +39,6 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, NewsAdapter.ItemClickListener {
 
     private TextView refreshTextView;
-    private String timeRefresh = "15min";
     private static final String TAG = "!REFRESH TIME";
 
     private SQLiteDatabase dataBase;
@@ -47,6 +46,9 @@ public class MainActivity extends AppCompatActivity
     private TextView textName;
     private TextView textViewTMP;
     private RecyclerView recyclerView;
+
+    Preference preference;
+    private String timeRefresh;
 
     public static boolean newCursor = false;
 
@@ -84,17 +86,11 @@ public class MainActivity extends AppCompatActivity
         MenuItem itemTimeRefresh = navigationView.getMenu().findItem(R.id.nav_refresh);
         refreshTextView = (TextView) itemTimeRefresh.getActionView();
 
-        initializeCountDrawer(timeRefresh);
+        preference = new Preference(MainActivity.this);
+
+        initializeCountDrawer(preference.getTimeRefresh());
 //        drawer.openDrawer(GravityCompat.START);
 
-        settings = getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE);
-        if (settings.contains(APP_PREFERENCES_TIME_REFRESH)) {
-            // Получаем число из настроек
-            timeRefresh = settings.getString(APP_PREFERENCES_TIME_REFRESH, String.valueOf(0));
-
-            // Выводим на экран данные из настроек
-            refreshTextView.setText(timeRefresh);
-        }
         DBHelper dbHelper = new DBHelper(this);
         dataBase = dbHelper.getWritableDatabase();
 
@@ -106,6 +102,12 @@ public class MainActivity extends AppCompatActivity
 
         textName = findViewById(R.id.tvName);
         textViewTMP = findViewById(R.id.tvDate);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        preference.setTimeRefresh(timeRefresh);
     }
 
     @Override
@@ -213,24 +215,6 @@ public class MainActivity extends AppCompatActivity
                 refreshTextView.setText(""); // стираем текст
             }
         }
-    }
-
-    // это имя файла настроек
-    public static final String APP_PREFERENCES = "mysettings";
-    //время обновления
-    public static final String APP_PREFERENCES_TIME_REFRESH = "refresher";
-    //Создаём переменную, представляющую экземпляр класса SharedPreferences,
-    // который отвечает за работу с настройками:
-    private SharedPreferences settings;
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        Log.d(TAG, "записываем " + timeRefresh);
-        // Запоминаем данные
-        SharedPreferences.Editor editor = settings.edit();
-        editor.putString(APP_PREFERENCES_TIME_REFRESH, timeRefresh);
-        editor.apply();
     }
 
     @Override
