@@ -38,7 +38,7 @@ public class DeleteSiteActivity extends AppCompatActivity {
                 ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
             @Override
             public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
-                Toast.makeText(getApplicationContext(), "DDDDDDDDD", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Test", Toast.LENGTH_SHORT).show();
                 return false;
             }
 
