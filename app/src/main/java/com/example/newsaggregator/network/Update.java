@@ -1,14 +1,15 @@
-package com.example.newsaggregator;
+package com.example.newsaggregator.network;
 
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.example.newsaggregator.db.DBHelper;
-import com.example.newsaggregator.db.NewsContract;
-import com.example.newsaggregator.db.ParseXML;
+import com.example.newsaggregator.MainActivity;
+import com.example.newsaggregator.data.db.DBHelper;
+import com.example.newsaggregator.data.db.NewsContract;
+import com.example.newsaggregator.data.db.ParseXML;
 
-class UpDate {
+public class Update {
 
     public static void upDate(final Context context) {
         Cursor cursor;

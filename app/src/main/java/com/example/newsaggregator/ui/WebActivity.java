@@ -23,9 +23,9 @@ import android.widget.Toast;
 
 import com.example.newsaggregator.MainActivity;
 import com.example.newsaggregator.R;
-import com.example.newsaggregator.db.DBHelper;
-import com.example.newsaggregator.db.NewsContract;
-import com.example.newsaggregator.db.ParseXML;
+import com.example.newsaggregator.data.db.DBHelper;
+import com.example.newsaggregator.data.db.NewsContract;
+import com.example.newsaggregator.data.db.ParseXML;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;

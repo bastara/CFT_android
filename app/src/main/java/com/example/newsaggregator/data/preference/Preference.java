@@ -1,17 +1,17 @@
-package com.example.newsaggregator;
+package com.example.newsaggregator.data.preference;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 
 import static android.content.Context.MODE_PRIVATE;
 
-class Preference {
+public class Preference {
 
     private static final String APP_PREFERENCES = "mysettings";
     private static final String APP_PREFERENCES_TIME_REFRESH = "refresher";
     private SharedPreferences settings;
 
-    Preference(Context context) {
+    public Preference(Context context) {
         settings = context.getSharedPreferences(APP_PREFERENCES, MODE_PRIVATE);
     }
 

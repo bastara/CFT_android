@@ -2,7 +2,6 @@ package com.example.newsaggregator;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Typeface;
@@ -27,13 +26,15 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.newsaggregator.data.preference.Preference;
+import com.example.newsaggregator.network.Update;
 import com.example.newsaggregator.ui.AddSiteActivity;
 import com.example.newsaggregator.ui.DeleteSiteActivity;
 import com.example.newsaggregator.ui.NewsActivity;
 import com.example.newsaggregator.ui.RefreshActivity;
 import com.example.newsaggregator.adapter.NewsAdapter;
-import com.example.newsaggregator.db.DBHelper;
-import com.example.newsaggregator.db.NewsContract;
+import com.example.newsaggregator.data.db.DBHelper;
+import com.example.newsaggregator.data.db.NewsContract;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, NewsAdapter.ItemClickListener {
@@ -158,7 +159,7 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_upDate) {
-            UpDate.upDate(MainActivity.this);
+            Update.upDate(MainActivity.this);
             Intent i = new Intent(this, this.getClass());
             finish();
             newCursor = false;
@@ -192,7 +193,7 @@ public class MainActivity extends AppCompatActivity
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
-                UpDate.upDate(context);
+                Update.upDate(context);
             }
         });
         thread.start();

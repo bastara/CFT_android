@@ -14,8 +14,8 @@ import android.widget.Toast;
 import com.example.newsaggregator.MainActivity;
 import com.example.newsaggregator.R;
 import com.example.newsaggregator.adapter.SiteAdapter;
-import com.example.newsaggregator.db.DBHelper;
-import com.example.newsaggregator.db.NewsContract;
+import com.example.newsaggregator.data.db.DBHelper;
+import com.example.newsaggregator.data.db.NewsContract;
 
 public class DeleteSiteActivity extends AppCompatActivity {
     private SQLiteDatabase dataBase;

@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.newsaggregator.R;
-import com.example.newsaggregator.db.NewsContract;
+import com.example.newsaggregator.data.db.NewsContract;
 
 public class SiteAdapter extends RecyclerView.Adapter<SiteAdapter.SiteViewHolder> {
     private Context context;

@@ -9,8 +9,8 @@ import android.text.method.ScrollingMovementMethod;
 import android.widget.TextView;
 
 import com.example.newsaggregator.R;
-import com.example.newsaggregator.db.DBHelper;
-import com.example.newsaggregator.db.NewsContract;
+import com.example.newsaggregator.data.db.DBHelper;
+import com.example.newsaggregator.data.db.NewsContract;
 
 public class NewsActivity extends AppCompatActivity {
     TextView nameText;
