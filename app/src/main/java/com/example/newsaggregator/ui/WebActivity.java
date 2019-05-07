@@ -5,15 +5,15 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.CountDownTimer;
 import android.os.Handler;
+import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.util.Xml;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.webkit.WebResourceRequest;
@@ -27,11 +27,10 @@ import com.example.newsaggregator.db.DBHelper;
 import com.example.newsaggregator.db.NewsContract;
 import com.example.newsaggregator.db.ParseXML;
 
-import org.xmlpull.v1.XmlPullParser;
-
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.ref.WeakReference;
 import java.net.URL;
 
 import static android.content.ContentValues.TAG;
@@ -43,12 +42,25 @@ public class WebActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_web);
-        String url = getIntent().getStringExtra("url");
+        final String url = getIntent().getStringExtra("url");
         webView = findViewById(R.id.webView);
 //        поддержка JavaScript
 //        webView.getSettings().setJavaScriptEnabled(true);
         webView.setWebViewClient(new MyWebViewClient());
         webView.loadUrl(url);
+
+        handler = new MyHandler(this);
+    }
+
+    public void handleMessage(android.os.Message msg) {
+        Toast.makeText(getApplicationContext(), url, Toast.LENGTH_SHORT).show();
+        if (msg.what == 2) {
+            Toast.makeText(getApplicationContext(), "RSS файл добавлен в вашу библиотеку", Toast.LENGTH_SHORT).show();
+        } else if (msg.what == 1) {
+            Toast.makeText(getApplicationContext(), "Данный ресурс уже добавлен!", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(getApplicationContext(), "Это не RSS файл", Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
@@ -82,28 +94,6 @@ public class WebActivity extends AppCompatActivity {
                 }
             });
             thread.start();
-
-//            Thread thread = new Thread(new CheckRSS(url));
-//            thread.start();
-//
-//            try {
-//                thread.join();
-//            } catch (InterruptedException e) {
-//                e.printStackTrace();
-//            }
-
-            //TODO разобратья с утечками памяти
-            handler = new Handler() {
-                public void handleMessage(android.os.Message msg) {
-                    Toast.makeText(getApplicationContext(), url, Toast.LENGTH_SHORT).show();
-                    if (msg.what == 1) {
-                        addPage(url);
-                    } else {
-                        Toast.makeText(getApplicationContext(), "Это не RSS файл", Toast.LENGTH_SHORT).show();
-                        return;
-                    }
-                }
-            };
         } else {
             Toast.makeText(getApplicationContext(), "Дождитесь полной загрузки страницы!", Toast.LENGTH_SHORT).show();
         }
@@ -150,11 +140,6 @@ public class WebActivity extends AppCompatActivity {
         }
     }
 
-    private void addPage(final String src) {
-        AddPage addPage = new AddPage(src, WebActivity.this);
-        addPage.addPage();
-    }
-
     public class AddPage {
         Context context;
         String src;//подумать над именами
@@ -177,22 +162,21 @@ public class WebActivity extends AppCompatActivity {
 
             try {
                 Log.d(TAG, "Добавляю в источники RSS " + src);
-//                String tmpStr = src.substring(src.indexOf("//") + 2, src.indexOf(("/"), 8));
-//                cv.put(NewsContract.NewsEntry.COLUMN_URL, tmpStr);
                 cv.put(NewsContract.NewsEntry.COLUMN_URL, src);
 
-                Log.d(TAG, "Вношу данные БД ");
+                Log.d(TAG, "Вношу данные БД сайта");
                 long rowID = dataBase.insert(NewsContract.NewsEntry.TABLE_SITES, null, cv);
                 if (rowID == -1) {
                     Log.d(TAG, "Данный ресурс уже добавлен ");
-                    Toast.makeText(getApplicationContext(), "Данный ресурс уже добавлен!", Toast.LENGTH_SHORT).show();
+                    handler.sendEmptyMessage(1);
                     return;
                 } else {
-                    Toast.makeText(getApplicationContext(), "RSS файл добавлен в вашу библиотеку", Toast.LENGTH_SHORT).show();
+                    handler.sendEmptyMessage(2);
                     Log.d(TAG, "НОМЕР ЗАПИСИ САЙТА = " + rowID);
                 }
-            } catch (Throwable t) {
+            } catch (SQLException t) {
                 Log.d(TAG, "Ошибка при добалении адреса в базу данных: " + t.toString());
+                return;
             }
             dbHelper.close();
 
@@ -210,118 +194,6 @@ public class WebActivity extends AppCompatActivity {
         }
 
     }
-
-//    public class ParseXML {
-//        //TODO мб это соединить с предыдущим классом?
-//        Context context;
-//        String src;
-//
-//        ParseXML(String src, Context context) {
-//            this.context = context;
-//            this.src = src;
-//        }
-//
-//        void parseXML() {
-//            final String TAG = "ЛогКот";
-//            DBHelper dbHelper = new DBHelper(context);
-//
-//            SQLiteDatabase database = dbHelper.getWritableDatabase();
-//
-//            ContentValues cv = new ContentValues();
-//
-//            try {
-//                URL url = new URL(src);
-//                InputStream inputStream = url.openConnection().getInputStream();
-////
-////                ByteArrayOutputStream result = new ByteArrayOutputStream();
-////                byte[] buffer = new byte[224];
-////                int length;
-////                if ((length = inputStream.read(buffer)) != -1) {
-////                    result.write(buffer, 0, length);
-////                    if (result.toString("UTF-8").contains("rss")) {
-////                        Log.d(TAG, result.toString("UTF-8"));
-////                        handler.sendEmptyMessage(1);
-////                    } else {
-////                        handler.sendEmptyMessage(0);
-////                        return;
-////                    }
-////                }
-//
-//                inputStream = url.openConnection().getInputStream();
-//
-//                XmlPullParser parser = Xml.newPullParser();
-//                parser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false);
-//                parser.setInput(inputStream, null);
-//
-//                boolean isItem = false;
-//                while (parser.getEventType() != XmlPullParser.END_DOCUMENT) {
-//                    if (parser.getEventType() == XmlPullParser.START_TAG
-//                            && parser.getName().equals("item")) {
-//                        isItem = true;
-//                        parser.next();
-//                        continue;
-//                    }
-//
-//                    if (parser.getEventType() == XmlPullParser.END_TAG
-//                            && parser.getName().equals("item")) {
-//                        Log.d(TAG, "Вношу данные БД ");
-////                        String tmpStr = src.substring(src.indexOf("//") + 2, src.indexOf(("/"), 8));
-////                        cv.put(NewsContract.NewsEntry.COLUMN_URL, tmpStr);
-//                        cv.put(NewsContract.NewsEntry.COLUMN_URL, src);
-//                        long rowID = database.insert(NewsContract.NewsEntry.TABLE_NEWS, null, cv);
-//                        Log.d(TAG, "НОМЕР ЗАПИСИ = " + rowID);
-//                        MainActivity.newCursor = true;
-//                        isItem = false;
-//                        parser.next();
-//                        continue;
-//                    }
-//
-//                    if (parser.getEventType() == XmlPullParser.START_TAG
-//                            && parser.getName().equals("title")
-//                            && parser.next() == XmlPullParser.TEXT
-//                            && isItem) {
-////                    Log.d(TAG, "название = " + parser.getText());
-//                        cv.put(NewsContract.NewsEntry.COLUMN_TITLE, parser.getText());
-//                    }
-//                    if (parser.getEventType() == XmlPullParser.START_TAG
-//                            && parser.getName().equals("url")
-//                            && parser.next() == XmlPullParser.TEXT
-//                            && isItem) {
-////                    Log.d(TAG, "ссылка = " + parser.getText());
-//                        cv.put(NewsContract.NewsEntry.COLUMN_LINK_NEWS, parser.getText());
-//                    }
-//                    if (parser.getEventType() == XmlPullParser.START_TAG
-//                            && parser.getName().equals("description")
-//                            && parser.next() == XmlPullParser.TEXT
-//                            && isItem) {
-////                    Log.d(TAG, "описание = " + getDescription(parser.getText()));
-////                    Log.d(TAG, "описание = " + parser.getText().replaceAll("\\<.*?\\>", "").replaceAll("\n", " "));
-//                        cv.put(NewsContract.NewsEntry.COLUMN_DESCRIPTION, parser.getText().replaceAll("\\<.*?\\>", "").replaceAll("\n", " "));
-//                    }
-//                    if (parser.getEventType() == XmlPullParser.START_TAG
-//                            && parser.getName().equals("category")
-//                            && parser.next() == XmlPullParser.TEXT
-//                            && isItem) {
-////                    Log.d(TAG, "категория = " + parser.getText());
-//                        cv.put(NewsContract.NewsEntry.COLUMN_CATEGORY, parser.getText());
-//                    }
-//                    if (parser.getEventType() == XmlPullParser.START_TAG
-//                            && parser.getName().equals("pubDate")
-//                            && parser.next() == XmlPullParser.TEXT
-//                            && isItem) {
-////                    Log.d(TAG, "дата = " + parser.getText());
-//                        cv.put(NewsContract.NewsEntry.COLUMN_PUBDATE, parser.getText());
-//                    }
-//                    parser.next();
-//                }
-//
-//            } catch (Throwable t) {
-//                Log.d(TAG, "Ошибка при загрузке XML-документа: " + t.toString());
-//            }
-//            dbHelper.close();
-//        }
-//    }
-
 
     class CheckRSS {
         public String link;
@@ -345,15 +217,32 @@ public class WebActivity extends AppCompatActivity {
                     result.write(buffer, 0, length);
                     if (result.toString("UTF-8").contains("rss")) {
                         Log.d(TAG, result.toString("UTF-8"));
-                        handler.sendEmptyMessage(1);
+                        AddPage addPage = new AddPage(link, WebActivity.this);
+                        addPage.addPage();
                     } else {
                         handler.sendEmptyMessage(0);
-//                        return;
                     }
                 }
             } catch (IOException t) {
                 Log.d(TAG, "Ошибка при проверке документа на RSS: " + t.toString());
             }
+        }
+    }
+
+    static class MyHandler extends Handler {
+
+        WeakReference wrActivity;
+
+        MyHandler(WebActivity activity) {
+            wrActivity = new WeakReference<>(activity);
+        }
+
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            WebActivity activity = (WebActivity) wrActivity.get();
+            if (activity != null)
+                activity.handleMessage(msg);
         }
     }
 }
