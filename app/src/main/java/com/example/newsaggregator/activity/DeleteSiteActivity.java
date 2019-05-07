@@ -1,4 +1,4 @@
-package com.example.newsaggregator.ui;
+package com.example.newsaggregator.activity;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -20,7 +20,6 @@ import com.example.newsaggregator.data.db.NewsContract;
 public class DeleteSiteActivity extends AppCompatActivity {
     private SQLiteDatabase dataBase;
     private SiteAdapter adapter;
-    private TextView linkSite;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +49,7 @@ public class DeleteSiteActivity extends AppCompatActivity {
             }
         }).attachToRecyclerView(recyclerView);
 
-        linkSite = findViewById(R.id.tvSite);
+//        TextView linkSite = findViewById(R.id.tvSite);
     }
 
     private void removeItem(String str) {

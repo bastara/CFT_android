@@ -25,13 +25,13 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.RefreshActivity"
+            android:name=".activity.RefreshActivity"
             android:label="@string/timeRefresh" />
         <activity
-            android:name=".ui.AddSiteActivity"
+            android:name=".activity.AddSiteActivity"
             android:label="@string/add_site" />
         <activity
-            android:name=".ui.WebActivity"
+            android:name=".activity.WebActivity"
             android:label="@string/web" />
     </application>
 

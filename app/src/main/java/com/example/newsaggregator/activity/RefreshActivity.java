@@ -1,4 +1,4 @@
-package com.example.newsaggregator.ui;
+package com.example.newsaggregator.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -18,7 +18,8 @@ public class RefreshActivity extends AppCompatActivity {
 
     public void onRadioClick(View v) {
         Intent answerIntent = new Intent();
-
+        //время оставил в таком формате по причине вывода этих данных в меню
+        //иначе там бы пришлось из милисекунд переводить в наглядный вид
         switch (v.getId()) {
             case R.id.radio15min:
                 answerIntent.putExtra(THIEF, "15min");

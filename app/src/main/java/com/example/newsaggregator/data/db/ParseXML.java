@@ -23,7 +23,7 @@ public class ParseXML {
         SQLiteDatabase database = dbHelper.getWritableDatabase();
 
         ContentValues cv = new ContentValues();
-        Cursor cursor;
+        Cursor cursor = null;
         try {
             URL url = new URL(src);
             InputStream inputStream = url.openConnection().getInputStream();
@@ -105,6 +105,10 @@ public class ParseXML {
 
         } catch (Throwable t) {
             Log.d(TAG, "Ошибка при загрузке XML-документа: " + t.toString());
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
         }
         dbHelper.close();
     }

@@ -27,20 +27,20 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.RefreshActivity"
+            android:name=".activity.RefreshActivity"
             android:label="@string/timeRefresh" />
         <activity
-            android:name=".ui.AddSiteActivity"
+            android:name=".activity.AddSiteActivity"
             android:label="@string/add_site" />
         <activity
-            android:name=".ui.WebActivity"
+            android:name=".activity.WebActivity"
             android:configChanges="orientation|screenSize"
             android:label="@string/web" />
         <activity
-            android:name=".ui.DeleteSiteActivity"
+            android:name=".activity.DeleteSiteActivity"
             android:label="@string/delete_site" />
         <activity
-            android:name=".ui.NewsActivity"
+            android:name=".activity.NewsActivity"
             android:label="@string/topic" />
     </application>
 

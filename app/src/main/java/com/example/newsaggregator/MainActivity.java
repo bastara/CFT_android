@@ -1,6 +1,5 @@
 package com.example.newsaggregator;
 
-import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -28,10 +27,10 @@ import android.widget.Toast;
 
 import com.example.newsaggregator.data.preference.Preference;
 import com.example.newsaggregator.network.Update;
-import com.example.newsaggregator.ui.AddSiteActivity;
-import com.example.newsaggregator.ui.DeleteSiteActivity;
-import com.example.newsaggregator.ui.NewsActivity;
-import com.example.newsaggregator.ui.RefreshActivity;
+import com.example.newsaggregator.activity.AddSiteActivity;
+import com.example.newsaggregator.activity.DeleteSiteActivity;
+import com.example.newsaggregator.activity.NewsActivity;
+import com.example.newsaggregator.activity.RefreshActivity;
 import com.example.newsaggregator.adapter.NewsAdapter;
 import com.example.newsaggregator.data.db.DBHelper;
 import com.example.newsaggregator.data.db.NewsContract;
@@ -44,8 +43,6 @@ public class MainActivity extends AppCompatActivity
 
     private SQLiteDatabase dataBase;
     private NewsAdapter adapter;
-    private TextView textName;
-    private TextView textViewTMP;
     private RecyclerView recyclerView;
 
     Preference preference;
@@ -100,9 +97,6 @@ public class MainActivity extends AppCompatActivity
         adapter = new NewsAdapter(this, getAllItems());
         adapter.setClickListener(this);
         recyclerView.setAdapter(adapter);
-
-        textName = findViewById(R.id.tvName);
-        textViewTMP = findViewById(R.id.tvDate);
     }
 
     @Override
@@ -189,16 +183,6 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
-    private void upDate(final Context context) {
-        Thread thread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                Update.upDate(context);
-            }
-        });
-        thread.start();
-    }
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -243,5 +227,3 @@ public class MainActivity extends AppCompatActivity
         recyclerView.scrollBy(0, -10000000);
     }
 }
-
-

@@ -1,4 +1,4 @@
-package com.example.newsaggregator.ui;
+package com.example.newsaggregator.activity;
 
 import android.content.Intent;
 import android.database.Cursor;
@@ -18,9 +18,6 @@ public class NewsActivity extends AppCompatActivity {
     TextView linkText;
     TextView textText;
 
-    private Cursor cursor;
-    private SQLiteDatabase dataBase;
-
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_news);
@@ -36,8 +33,8 @@ public class NewsActivity extends AppCompatActivity {
         String position = intent.getStringExtra("id");
 
         DBHelper dbHelper = new DBHelper(this);
-        dataBase = dbHelper.getWritableDatabase();
-        cursor = dataBase.query(
+        SQLiteDatabase dataBase = dbHelper.getWritableDatabase();
+        Cursor cursor = dataBase.query(
                 NewsContract.NewsEntry.TABLE_NEWS,
                 null,
                 null,

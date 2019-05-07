@@ -1,4 +1,4 @@
-package com.example.newsaggregator.ui;
+package com.example.newsaggregator.activity;
 
 import android.annotation.TargetApi;
 import android.content.ContentValues;
