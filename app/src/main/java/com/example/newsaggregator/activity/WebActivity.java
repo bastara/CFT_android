@@ -21,9 +21,9 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Toast;
 
+import com.example.newsaggregator.data.db.DBAdapter;
 import com.example.newsaggregator.MainActivity;
 import com.example.newsaggregator.R;
-import com.example.newsaggregator.data.db.DBHelper;
 import com.example.newsaggregator.data.db.NewsContract;
 import com.example.newsaggregator.data.db.ParseXML;
 
@@ -142,7 +142,7 @@ public class WebActivity extends AppCompatActivity {
 
     public class AddPage {
         Context context;
-        String src;//подумать над именами
+        String src;
 
         AddPage(String src, Context context) {
             this.context = context;
@@ -150,9 +150,9 @@ public class WebActivity extends AppCompatActivity {
         }
 
         void addPage() {
-            DBHelper dbHelper = new DBHelper(context);
+            DBAdapter dbAdapter = (DBAdapter) context.getApplicationContext();
+            SQLiteDatabase dataBase = dbAdapter.getDatabase();
 
-            SQLiteDatabase dataBase = dbHelper.getWritableDatabase();
             final String TAG = "rssDB";
             ContentValues cv = new ContentValues();
 
@@ -178,8 +178,6 @@ public class WebActivity extends AppCompatActivity {
                 Log.d(TAG, "Ошибка при добалении адреса в базу данных: " + t.toString());
                 return;
             }
-            dbHelper.close();
-
             doWork(src, context);
         }
 

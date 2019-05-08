@@ -15,15 +15,15 @@ import java.io.InputStream;
 import java.net.URL;
 
 public class ParseXML {
-
     public static void parseXML(String src, Context context) {
         final String TAG = "rssDB";
-        DBHelper dbHelper = new DBHelper(context);
 
-        SQLiteDatabase database = dbHelper.getWritableDatabase();
+        DBAdapter dbAdapter = (DBAdapter) context.getApplicationContext();
+
+        SQLiteDatabase database = dbAdapter.getDatabase();
 
         ContentValues cv = new ContentValues();
-        Cursor cursor = null;
+        Cursor cursor;
         try {
             URL url = new URL(src);
             InputStream inputStream = url.openConnection().getInputStream();
@@ -76,7 +76,8 @@ public class ParseXML {
 //                        cv.put(NewsContract.NewsEntry.COLUMN_LINK_NEWS, tmpStr);
 //                        continue;
 ////                    }
-                    cursor = database.query(NewsContract.NewsEntry.TABLE_NEWS, null, NewsContract.NewsEntry.COLUMN_LINK_NEWS + "=?", new String[]{tmpStr}, null, null, null);
+//                    cursor = database.query(NewsContract.NewsEntry.TABLE_NEWS, null, NewsContract.NewsEntry.COLUMN_LINK_NEWS + "=?", new String[]{tmpStr}, null, null, null);
+                    cursor = dbAdapter.getCursorCheckSite(tmpStr);
                     if (cursor.moveToFirst()) {
                         continue;
                     }
@@ -105,11 +106,6 @@ public class ParseXML {
 
         } catch (Throwable t) {
             Log.d(TAG, "Ошибка при загрузке XML-документа: " + t.toString());
-        } finally {
-            if (cursor != null) {
-                cursor.close();
-            }
         }
-        dbHelper.close();
     }
 }

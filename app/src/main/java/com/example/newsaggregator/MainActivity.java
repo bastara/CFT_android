@@ -38,11 +38,14 @@ import com.example.newsaggregator.data.db.NewsContract;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, NewsAdapter.ItemClickListener {
 
+
+    //TODO проверить закрытие ресурсов.
     private TextView refreshTextView;
     private static final String TAG = "!REFRESH REFRESH_TIME";
 
     private SQLiteDatabase dataBase;
     private NewsAdapter adapter;
+
     private RecyclerView recyclerView;
 
     Preference preference;

@@ -8,16 +8,16 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
-import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.newsaggregator.data.db.DBAdapter;
 import com.example.newsaggregator.MainActivity;
 import com.example.newsaggregator.R;
 import com.example.newsaggregator.adapter.SiteAdapter;
-import com.example.newsaggregator.data.db.DBHelper;
 import com.example.newsaggregator.data.db.NewsContract;
 
 public class DeleteSiteActivity extends AppCompatActivity {
+
     private SQLiteDatabase dataBase;
     private SiteAdapter adapter;
 
@@ -25,9 +25,8 @@ public class DeleteSiteActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_delete_site);
-
-        DBHelper dbHelper = new DBHelper(this);
-        dataBase = dbHelper.getWritableDatabase();
+        DBAdapter dbAdapter = (DBAdapter) this.getApplication();
+        dataBase = dbAdapter.getDatabase();
 
         RecyclerView recyclerView = findViewById(R.id.recyclerViewDel);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -48,8 +47,6 @@ public class DeleteSiteActivity extends AppCompatActivity {
                 removeItem(cursor);
             }
         }).attachToRecyclerView(recyclerView);
-
-//        TextView linkSite = findViewById(R.id.tvSite);
     }
 
     private void removeItem(String str) {
@@ -60,14 +57,7 @@ public class DeleteSiteActivity extends AppCompatActivity {
     }
 
     private Cursor getAllItems() {
-        return dataBase.query(
-                NewsContract.NewsEntry.TABLE_SITES,
-                null,
-                null,
-                null,
-                null,
-                null,
-                NewsContract.NewsEntry.COLUMN_URL
-        );
+        DBAdapter dbAdapter = (DBAdapter) this.getApplication();
+        return dbAdapter.getCursorAllItem();
     }
 }
