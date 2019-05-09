@@ -12,7 +12,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v7.app.AppCompatActivity;
+
+import androidx.appcompat.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -21,7 +22,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Toast;
 
-import com.example.newsaggregator.data.db.DBAdapter;
+import com.example.newsaggregator.data.db.MySingleton;
 import com.example.newsaggregator.MainActivity;
 import com.example.newsaggregator.R;
 import com.example.newsaggregator.data.db.NewsContract;
@@ -150,8 +151,8 @@ public class WebActivity extends AppCompatActivity {
         }
 
         void addPage() {
-            DBAdapter dbAdapter = (DBAdapter) context.getApplicationContext();
-            SQLiteDatabase dataBase = dbAdapter.getDatabase();
+            MySingleton mySingleton = (MySingleton) context.getApplicationContext();
+            SQLiteDatabase dataBase = mySingleton.getDatabase();
 
             final String TAG = "rssDB";
             ContentValues cv = new ContentValues();
@@ -190,7 +191,6 @@ public class WebActivity extends AppCompatActivity {
             });
             thread.start();
         }
-
     }
 
     class CheckRSS {

@@ -5,16 +5,24 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.NavigationView;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
+
+import androidx.annotation.NonNull;
+
+import com.example.newsaggregator.worker.MyWorker;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.navigation.NavigationView;
+
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.appcompat.widget.Toolbar;
+import androidx.work.ExistingPeriodicWorkPolicy;
+import androidx.work.PeriodicWorkRequest;
+import androidx.work.WorkManager;
+
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
@@ -34,6 +42,8 @@ import com.example.newsaggregator.activity.RefreshActivity;
 import com.example.newsaggregator.adapter.NewsAdapter;
 import com.example.newsaggregator.data.db.DBHelper;
 import com.example.newsaggregator.data.db.NewsContract;
+
+import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, NewsAdapter.ItemClickListener {
@@ -100,7 +110,29 @@ public class MainActivity extends AppCompatActivity
         adapter = new NewsAdapter(this, getAllItems());
         adapter.setClickListener(this);
         recyclerView.setAdapter(adapter);
+
+        doWorkManager();
     }
+
+    private void doWorkManager() {
+        //TODO выставить сохраненное время.
+        PeriodicWorkRequest request = new PeriodicWorkRequest.Builder
+                (MyWorker.class, 1, TimeUnit.MINUTES, 5, TimeUnit.MINUTES)
+                .addTag("TRSS")
+                .build();
+        WorkManager.getInstance().enqueueUniquePeriodicWork
+                ("Refresh News", ExistingPeriodicWorkPolicy.REPLACE, request);
+//        LiveData<WorkInfo> info = WorkManager.getInstance().getWorkInfoByIdLiveData(request.getId());
+//        info.observe(this, new Observer<WorkInfo>() {
+//            @Override
+//            public void onChanged(@Nullable WorkInfo workInfo) {
+//                Log.d(MyWorker.TAG, "onChanged " + Thread.currentThread().getName() + " " + workInfo.getState());
+//            }
+//        });
+
+    }
+
+
 
     private String timeRefreshMenu(String time1111) {
         String timeRefreshMenu;
@@ -169,11 +201,19 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_upDate) {
-            Update.upDate(MainActivity.this);
+//            Update.upDate(MainActivity.this);
+//            Intent i = new Intent(this, this.getClass());
+//            finish();
+//            newCursor = false;
+//            this.startActivity(i);
+
+            Update update = new Update();
+            update.upDate(MainActivity.this);
             Intent i = new Intent(this, this.getClass());
             finish();
             newCursor = false;
             this.startActivity(i);
+
         } else if (id == R.id.nav_addSite) {
             Intent intent = new Intent(MainActivity.this,
                     AddSiteActivity.class);

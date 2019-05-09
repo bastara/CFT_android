@@ -10,8 +10,7 @@ import com.example.newsaggregator.data.db.NewsContract;
 import com.example.newsaggregator.data.db.ParseXML;
 
 public class Update {
-
-    public static void upDate(final Context context) {
+    public void upDate(final Context context) {
         Cursor cursor;
         DBHelper dbHelper = new DBHelper(context);
 

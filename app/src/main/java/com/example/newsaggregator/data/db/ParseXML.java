@@ -18,9 +18,9 @@ public class ParseXML {
     public static void parseXML(String src, Context context) {
         final String TAG = "rssDB";
 
-        DBAdapter dbAdapter = (DBAdapter) context.getApplicationContext();
+        MySingleton mySingleton = (MySingleton) context.getApplicationContext();
 
-        SQLiteDatabase database = dbAdapter.getDatabase();
+        SQLiteDatabase database = mySingleton.getDatabase();
 
         ContentValues cv = new ContentValues();
         Cursor cursor;
@@ -77,7 +77,7 @@ public class ParseXML {
 //                        continue;
 ////                    }
 //                    cursor = database.query(NewsContract.NewsEntry.TABLE_NEWS, null, NewsContract.NewsEntry.COLUMN_LINK_NEWS + "=?", new String[]{tmpStr}, null, null, null);
-                    cursor = dbAdapter.getCursorCheckSite(tmpStr);
+                    cursor = mySingleton.getCursorCheckSite(tmpStr);
                     if (cursor.moveToFirst()) {
                         continue;
                     }
@@ -103,7 +103,6 @@ public class ParseXML {
                 }
                 parser.next();
             }
-
         } catch (Throwable t) {
             Log.d(TAG, "Ошибка при загрузке XML-документа: " + t.toString());
         }

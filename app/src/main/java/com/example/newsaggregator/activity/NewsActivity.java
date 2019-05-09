@@ -3,11 +3,12 @@ package com.example.newsaggregator.activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+
+import androidx.appcompat.app.AppCompatActivity;
 import android.text.method.ScrollingMovementMethod;
 import android.widget.TextView;
 
-import com.example.newsaggregator.data.db.DBAdapter;
+import com.example.newsaggregator.data.db.MySingleton;
 import com.example.newsaggregator.R;
 import com.example.newsaggregator.data.db.NewsContract;
 
@@ -31,9 +32,9 @@ public class NewsActivity extends AppCompatActivity {
         Intent intent = getIntent();
         String position = intent.getStringExtra("id");
 
-        DBAdapter dbAdapter = (DBAdapter) this.getApplication();
+        MySingleton mySingleton = (MySingleton) this.getApplication();
 
-        Cursor cursor = dbAdapter.getCursorNews();
+        Cursor cursor = mySingleton.getCursorNews();
 
         cursor.moveToPosition(Integer.parseInt(position));
 

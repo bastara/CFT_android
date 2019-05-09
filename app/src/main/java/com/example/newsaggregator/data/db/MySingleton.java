@@ -4,7 +4,7 @@ import android.app.Application;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-public final class DBAdapter extends Application {
+public final class MySingleton extends Application {
 
     private SQLiteDatabase dataBase;
     private DBHelper dbHelper = new DBHelper(this);
@@ -49,6 +49,4 @@ public final class DBAdapter extends Application {
                 null,
                 null);
     }
-
-
 }

@@ -2,15 +2,17 @@ package com.example.newsaggregator.activity;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.helper.ItemTouchHelper;
+
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import android.widget.Toast;
 
-import com.example.newsaggregator.data.db.DBAdapter;
+import com.example.newsaggregator.data.db.MySingleton;
 import com.example.newsaggregator.MainActivity;
 import com.example.newsaggregator.R;
 import com.example.newsaggregator.adapter.SiteAdapter;
@@ -25,8 +27,8 @@ public class DeleteSiteActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_delete_site);
-        DBAdapter dbAdapter = (DBAdapter) this.getApplication();
-        dataBase = dbAdapter.getDatabase();
+        MySingleton mySingleton = (MySingleton) this.getApplication();
+        dataBase = mySingleton.getDatabase();
 
         RecyclerView recyclerView = findViewById(R.id.recyclerViewDel);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -57,7 +59,7 @@ public class DeleteSiteActivity extends AppCompatActivity {
     }
 
     private Cursor getAllItems() {
-        DBAdapter dbAdapter = (DBAdapter) this.getApplication();
-        return dbAdapter.getCursorAllItem();
+        MySingleton mySingleton = (MySingleton) this.getApplication();
+        return mySingleton.getCursorAllItem();
     }
 }
