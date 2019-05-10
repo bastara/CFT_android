@@ -30,6 +30,7 @@ import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -51,6 +52,8 @@ public class MainActivity extends AppCompatActivity
 
     //TODO проверить закрытие ресурсов.
     private TextView refreshTextView;
+    private TextView notificationTextView;
+
     private static final String TAG = "!REFRESH REFRESH_TIME";
 
     private SQLiteDatabase dataBase;
@@ -94,13 +97,14 @@ public class MainActivity extends AppCompatActivity
         navigationView.setItemIconTintList(null);
 
         MenuItem itemTimeRefresh = navigationView.getMenu().findItem(R.id.nav_refresh);
+        MenuItem itemToggleNotification = navigationView.getMenu().findItem(R.id.nav_notification);
         refreshTextView = (TextView) itemTimeRefresh.getActionView();
+        notificationTextView = (TextView) itemToggleNotification.getActionView();
 
         preference = new Preference(MainActivity.this);
-
         initializeCountDrawer(timeRefreshMenu(preference.getTimeRefresh()));
-
 //        drawer.openDrawer(GravityCompat.START);
+
 
         DBHelper dbHelper = new DBHelper(this);
         dataBase = dbHelper.getWritableDatabase();
@@ -169,6 +173,15 @@ public class MainActivity extends AppCompatActivity
         refreshTextView.setTypeface(null, Typeface.BOLD);
         refreshTextView.setTextColor(getResources().getColor(R.color.colorAccent));
         refreshTextView.setText(timeView);
+        notificationTextView.setGravity(Gravity.CENTER_VERTICAL);
+        notificationTextView.setTypeface(null, Typeface.BOLD);
+        notificationTextView.setTextColor(getResources().getColor(R.color.colorAccent));
+        notificationTextView.
+                notificationTextView.setId(R.id.switchF);
+        Switch swi = (Switch) findViewById(R.id.switchF);
+        swi.setChecked(true);
+        ndroid:
+        checked = "false"
     }
 
     @Override

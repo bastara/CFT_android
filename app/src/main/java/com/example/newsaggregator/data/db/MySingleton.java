@@ -49,4 +49,9 @@ public final class MySingleton extends Application {
                 null,
                 null);
     }
+
+    public Cursor getCursorRefreshNews() {
+        return dataBase.rawQuery("select * from " + NewsContract.NewsEntry.TABLE_SITES,
+                null);
+    }
 }

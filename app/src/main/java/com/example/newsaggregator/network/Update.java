@@ -1,24 +1,69 @@
 package com.example.newsaggregator.network;
 
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
+
+import androidx.core.app.NotificationCompat;
 
 import com.example.newsaggregator.MainActivity;
-import com.example.newsaggregator.data.db.DBHelper;
+import com.example.newsaggregator.R;
+import com.example.newsaggregator.data.db.MySingleton;
 import com.example.newsaggregator.data.db.NewsContract;
 import com.example.newsaggregator.data.db.ParseXML;
+
+import java.util.concurrent.TimeUnit;
+
+import static android.content.Context.NOTIFICATION_SERVICE;
 
 public class Update {
     public void upDate(final Context context) {
         Cursor cursor;
-        DBHelper dbHelper = new DBHelper(context);
+        MySingleton mySingleton = (MySingleton) context.getApplicationContext();
+        cursor = mySingleton.getCursorRefreshNews();
 
-        SQLiteDatabase dataBase = dbHelper.getReadableDatabase();
+        int max = cursor.getCount();
 
-        cursor = dataBase.rawQuery("select * from " + NewsContract.NewsEntry.TABLE_SITES, null);
+        Intent resultIntent = new Intent(context, MainActivity.class);
+        PendingIntent resultPendingIntent = PendingIntent.getActivity(context, 0, resultIntent,
+                PendingIntent.FLAG_UPDATE_CURRENT);
 
-        for (int i = 0; i < cursor.getCount(); i++) {
+        NotificationManager notificationManager =
+                (NotificationManager) context.getSystemService(NOTIFICATION_SERVICE);
+
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
+                .setSmallIcon(R.drawable.ic_android)
+                .setContentTitle("Обновление новостей")
+                .setContentText("Подготовка")
+                .setProgress(max, 0, true)
+                .setAutoCancel(true)
+                .setContentIntent(resultPendingIntent);
+
+        notificationManager.notify(1, builder.build());
+
+        //оставил для наглядности, как напоминание о Значимости выполняемого действия,
+        // в финале естественное этого не будет и уж тем более не в UI
+        try {
+            TimeUnit.SECONDS.sleep(3);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        int progress = 0;
+        for (int i = 0; i < max; i++) {
+            //оставил для наглядности
+            try {
+                TimeUnit.MILLISECONDS.sleep(1500);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            progress += 1;
+            builder.setProgress(max, progress, false)
+                    .setContentText(progress + " из " + max);
+            notificationManager.notify(1, builder.build());
+
             cursor.moveToFirst();
             final String url = cursor.getString(cursor.getColumnIndex(NewsContract.NewsEntry.COLUMN_URL));
             Thread thread = new Thread(new Runnable() {
@@ -28,11 +73,12 @@ public class Update {
                 }
             });
             thread.start();
-
         }
+        builder.setProgress(0, 10, false)
+                .setContentText("Готово");
+        notificationManager.notify(1, builder.build());
+
         MainActivity.newCursor = true;
         cursor.close();
-        dataBase.close();
-        dbHelper.close();
     }
 }

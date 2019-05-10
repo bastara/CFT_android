@@ -111,7 +111,4 @@
                 android:text="@string/copy_value" />
         </TableRow>
     </TableLayout>
-
 </LinearLayout>
-
-    <!--android:text="http://art-trainer.ru/"--><!--http://www.mobiledevice.ru/rss.xml--><!--https://www.ixbt.com/export/articles.rss--><!--https://pravo.ru/rss/--><!--http://rss.garant.ru/news/--><!--http://rss.garant.ru/article/--><!--https://news.yandex.ru/auto.rss--><!--https://bash.im/rss/--><!--http://2tura.ru/category/news/feed/-->

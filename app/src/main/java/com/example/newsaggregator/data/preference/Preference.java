@@ -9,6 +9,7 @@ public class Preference {
 
     private static final String APP_PREFERENCES = "mysettings";
     private static final String APP_PREFERENCES_TIME_REFRESH = "refresher";
+    private static final String APP_PREFERENCES_NOTIFICATION = "notification";
     private SharedPreferences settings;
 
     public Preference(Context context) {
