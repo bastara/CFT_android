@@ -118,9 +118,8 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void doWorkManager() {
-        //TODO выставить сохраненное время.
         PeriodicWorkRequest request = new PeriodicWorkRequest.Builder
-                (MyWorker.class, Integer.parseInt(preference.getTimeRefresh()) / 1000, TimeUnit.MINUTES, 5, TimeUnit.MINUTES)
+                (MyWorker.class, Integer.parseInt(preference.getTimeRefresh()) / 60000, TimeUnit.MINUTES, 5, TimeUnit.MINUTES)
                 .addTag("TRSS")
                 .build();
         WorkManager.getInstance().enqueueUniquePeriodicWork
