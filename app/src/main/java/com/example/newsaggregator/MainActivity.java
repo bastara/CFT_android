@@ -8,6 +8,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 
+import com.example.newsaggregator.data.db.MySingleton;
 import com.example.newsaggregator.worker.MyWorker;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
@@ -30,7 +31,6 @@ import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -41,7 +41,6 @@ import com.example.newsaggregator.activity.DeleteSiteActivity;
 import com.example.newsaggregator.activity.NewsActivity;
 import com.example.newsaggregator.activity.RefreshActivity;
 import com.example.newsaggregator.adapter.NewsAdapter;
-import com.example.newsaggregator.data.db.DBHelper;
 import com.example.newsaggregator.data.db.NewsContract;
 
 import java.util.concurrent.TimeUnit;
@@ -102,12 +101,12 @@ public class MainActivity extends AppCompatActivity
         notificationTextView = (TextView) itemToggleNotification.getActionView();
 
         preference = new Preference(MainActivity.this);
-        initializeCountDrawer(timeRefreshMenu(preference.getTimeRefresh()));
+
+        initializeCountDrawer(timeRefreshMenu(preference.getTimeRefresh()), preference.getNotification());
 //        drawer.openDrawer(GravityCompat.START);
 
-
-        DBHelper dbHelper = new DBHelper(this);
-        dataBase = dbHelper.getWritableDatabase();
+        MySingleton mySingleton = (MySingleton) this.getApplication();
+        dataBase = mySingleton.getDatabase();
 
         recyclerView = findViewById(R.id.recyclerViewMain);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -121,7 +120,7 @@ public class MainActivity extends AppCompatActivity
     private void doWorkManager() {
         //TODO выставить сохраненное время.
         PeriodicWorkRequest request = new PeriodicWorkRequest.Builder
-                (MyWorker.class, 1, TimeUnit.MINUTES, 5, TimeUnit.MINUTES)
+                (MyWorker.class, Integer.parseInt(preference.getTimeRefresh()) / 1000, TimeUnit.MINUTES, 5, TimeUnit.MINUTES)
                 .addTag("TRSS")
                 .build();
         WorkManager.getInstance().enqueueUniquePeriodicWork
@@ -135,7 +134,6 @@ public class MainActivity extends AppCompatActivity
 //        });
 
     }
-
 
 
     private String timeRefreshMenu(String time1111) {
@@ -168,7 +166,7 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    private void initializeCountDrawer(String timeView) {
+    private void initializeCountDrawer(String timeView, String notificationView) {
         refreshTextView.setGravity(Gravity.CENTER_VERTICAL);
         refreshTextView.setTypeface(null, Typeface.BOLD);
         refreshTextView.setTextColor(getResources().getColor(R.color.colorAccent));
@@ -176,12 +174,7 @@ public class MainActivity extends AppCompatActivity
         notificationTextView.setGravity(Gravity.CENTER_VERTICAL);
         notificationTextView.setTypeface(null, Typeface.BOLD);
         notificationTextView.setTextColor(getResources().getColor(R.color.colorAccent));
-        notificationTextView.
-                notificationTextView.setId(R.id.switchF);
-        Switch swi = (Switch) findViewById(R.id.switchF);
-        swi.setChecked(true);
-        ndroid:
-        checked = "false"
+        notificationTextView.setText(notificationView);
     }
 
     @Override
@@ -212,14 +205,9 @@ public class MainActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
+        boolean fromNotification = false;
 
         if (id == R.id.nav_upDate) {
-//            Update.upDate(MainActivity.this);
-//            Intent i = new Intent(this, this.getClass());
-//            finish();
-//            newCursor = false;
-//            this.startActivity(i);
-
             Update update = new Update();
             update.upDate(MainActivity.this);
             Intent i = new Intent(this, this.getClass());
@@ -237,6 +225,15 @@ public class MainActivity extends AppCompatActivity
             startActivity(intent);
         } else if (id == R.id.nav_darkTheme) {
 
+        } else if (id == R.id.nav_notification) {
+            if (preference.getNotification().equals("вкл")) {
+                preference.setNotification("выкл");
+                notificationTextView.setText("выкл");
+            } else {
+                preference.setNotification("вкл");
+                notificationTextView.setText("вкл");
+            }
+            fromNotification = true;
         } else if (id == R.id.nav_refresh) {
             Intent questionIntent = new Intent(MainActivity.this,
                     RefreshActivity.class);
@@ -247,8 +244,10 @@ public class MainActivity extends AppCompatActivity
 
         }
 
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
+        if (!fromNotification) {
+            DrawerLayout drawer = findViewById(R.id.drawer_layout);
+            drawer.closeDrawer(GravityCompat.START);
+        }
         return true;
     }
 

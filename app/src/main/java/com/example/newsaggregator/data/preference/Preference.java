@@ -29,5 +29,19 @@ public class Preference {
         editor.putString(APP_PREFERENCES_TIME_REFRESH, timeRefresh);
         editor.apply();
     }
+
+    public String getNotification() {
+        String notification;
+        if (settings.contains(APP_PREFERENCES_NOTIFICATION)) {
+            notification = settings.getString(APP_PREFERENCES_NOTIFICATION, String.valueOf(1));
+        } else notification = "вкл";
+        return notification;
+    }
+
+    public void setNotification(String notification) {
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putString(APP_PREFERENCES_NOTIFICATION, notification);
+        editor.apply();
+    }
 }
 
