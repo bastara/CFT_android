@@ -40,10 +40,10 @@ public class Update {
 
         int max = cursor.getCount();
 
-
         Preference preference = new Preference(context);
         if (preference.getNotification().equals("вкл")) {
             Intent resultIntent = new Intent(context, MainActivity.class);
+            resultIntent.setAction("ru.startandroid.notifications.action_delete");
             PendingIntent resultPendingIntent = PendingIntent.getActivity(context, 0, resultIntent,
                     PendingIntent.FLAG_UPDATE_CURRENT);
 
@@ -56,6 +56,7 @@ public class Update {
                     .setContentText("Подготовка")
                     .setProgress(max, 0, true)
                     .setAutoCancel(true)
+                    .addAction(android.R.drawable.ic_delete, "Прервать", resultPendingIntent)
                     .setContentIntent(resultPendingIntent);
 
 
@@ -71,7 +72,7 @@ public class Update {
 
             int progress = 0;
             for (int i = 0; i < max; i++) {
-                //оставил для наглядности
+                //оставил для наглядности, в дальнейшем удалю, иначе все быстро отрабатывает и не видно прогрессбара.
                 try {
                     TimeUnit.MILLISECONDS.sleep(1500);
                 } catch (InterruptedException e) {
