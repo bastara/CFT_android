@@ -66,6 +66,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+//        setTheme(R.style.AppThemeLight);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -208,7 +209,7 @@ public class MainActivity extends AppCompatActivity
 
         if (id == R.id.nav_upDate) {
             Update update = new Update();
-            update.upDate(MainActivity.this);
+            update.upDate(MainActivity.this, true);
             Intent i = new Intent(this, this.getClass());
             finish();
             newCursor = false;

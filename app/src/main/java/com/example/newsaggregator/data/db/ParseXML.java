@@ -79,6 +79,7 @@ public class ParseXML {
 //                    cursor = database.query(NewsContract.NewsEntry.TABLE_NEWS, null, NewsContract.NewsEntry.COLUMN_LINK_NEWS + "=?", new String[]{tmpStr}, null, null, null);
                     cursor = mySingleton.getCursorCheckSite(tmpStr);
                     if (cursor.moveToFirst()) {
+                        Log.d(TAG, "Данная новость уже добавлена");
                         continue;
                     }
                     cv.put(NewsContract.NewsEntry.COLUMN_LINK_NEWS, tmpStr);

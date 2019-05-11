@@ -30,6 +30,7 @@ public class Preference {
         editor.apply();
     }
 
+    //TODO возможно лучше на boolean переделать
     public String getNotification() {
         String notification;
         if (settings.contains(APP_PREFERENCES_NOTIFICATION)) {

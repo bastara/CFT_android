@@ -8,6 +8,12 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="GradientLight">
+        <item name="android:centerColor">@color/colorPrimary1</item>
+        <item name="android:endColor">@color/colorPrimaryDark1</item>
+        <item name="android:startColor">@color/colorAccent1</item>
+    </style>
+
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>

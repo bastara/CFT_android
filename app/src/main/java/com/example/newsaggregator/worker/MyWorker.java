@@ -25,7 +25,7 @@ public class MyWorker extends Worker {
 
         try {
             Update update = new Update();
-            update.upDate(getApplicationContext());
+            update.upDate(getApplicationContext(), false);
             TimeUnit.SECONDS.sleep(4);
         } catch (InterruptedException e) {
             e.printStackTrace();

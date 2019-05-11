@@ -5,6 +5,8 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.net.ConnectivityManager;
+import android.widget.Toast;
 
 import androidx.core.app.NotificationCompat;
 
@@ -21,12 +23,23 @@ import static android.content.Context.NOTIFICATION_SERVICE;
 
 public class Update {
 
-    public void upDate(final Context context) {
+    public void upDate(final Context context, boolean fromMain) {
+        String cs = Context.CONNECTIVITY_SERVICE;
+
+        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(cs);
+        if (cm.getActiveNetworkInfo() == null) {
+            if (fromMain) {
+                Toast.makeText(context, "Проверьте подключение к интернету", Toast.LENGTH_SHORT).show();
+            }
+            return;
+        }
+
         Cursor cursor;
         MySingleton mySingleton = (MySingleton) context.getApplicationContext();
         cursor = mySingleton.getCursorRefreshNews();
 
         int max = cursor.getCount();
+
 
         Preference preference = new Preference(context);
         if (preference.getNotification().equals("вкл")) {
