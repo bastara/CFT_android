@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.newsaggregator.R;
-import com.example.newsaggregator.data.db.NewsContract;
+import com.example.newsaggregator.data.db.Contract;
 
 public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder> {
     private Context context;
@@ -60,9 +60,9 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder
             return;
         }
 
-        String name = cursor.getString(cursor.getColumnIndex(NewsContract.NewsEntry.COLUMN_TITLE));
-        String date = cursor.getString(cursor.getColumnIndex(NewsContract.NewsEntry.COLUMN_PUBDATE));
-        String news = cursor.getString(cursor.getColumnIndex(NewsContract.NewsEntry.COLUMN_DESCRIPTION));
+        String name = cursor.getString(cursor.getColumnIndex(Contract.Entry.COLUMN_TITLE));
+        String date = cursor.getString(cursor.getColumnIndex(Contract.Entry.COLUMN_PUBDATE));
+        String news = cursor.getString(cursor.getColumnIndex(Contract.Entry.COLUMN_DESCRIPTION));
 
         holder.nameText.setText(name);
         holder.dateText.setText(date.substring(0, 16));
@@ -77,7 +77,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder
 
     public String getItem(int id) {
         cursor.moveToPosition(id);
-        return cursor.getString(cursor.getColumnIndex(NewsContract.NewsEntry.COLUMN_ID));
+        return cursor.getString(cursor.getColumnIndex(Contract.Entry.COLUMN_ID));
     }
 
     public void setClickListener(ItemClickListener itemClickListener) {

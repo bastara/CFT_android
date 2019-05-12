@@ -6,14 +6,15 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.ConnectivityManager;
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.core.app.NotificationCompat;
 
 import com.example.newsaggregator.MainActivity;
 import com.example.newsaggregator.R;
+import com.example.newsaggregator.data.db.Contract;
 import com.example.newsaggregator.data.db.MySingleton;
-import com.example.newsaggregator.data.db.NewsContract;
 import com.example.newsaggregator.data.db.ParseXML;
 import com.example.newsaggregator.data.preference.Preference;
 
@@ -39,6 +40,7 @@ public class Update {
         cursor = mySingleton.getCursorRefreshNews();
 
         int max = cursor.getCount();
+        cursor.moveToFirst();
 
         Preference preference = new Preference(context);
         if (preference.getNotification().equals("вкл")) {
@@ -72,9 +74,10 @@ public class Update {
 
             int progress = 0;
             for (int i = 0; i < max; i++) {
+                Log.d(Contract.Entry.TAG, "Обновление новостей-" + i);
                 //оставил для наглядности, в дальнейшем удалю, иначе все быстро отрабатывает и не видно прогрессбара.
                 try {
-                    TimeUnit.MILLISECONDS.sleep(1500);
+                    TimeUnit.MILLISECONDS.sleep(500);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -83,33 +86,20 @@ public class Update {
                         .setContentText(progress + " из " + max);
                 notificationManager.notify(1, builder.build());
 
-                cursor.moveToFirst();
-                final String url = cursor.getString(cursor.getColumnIndex(NewsContract.NewsEntry.COLUMN_URL));
-                Thread thread = new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        ParseXML.parseXML(url, context);
-                    }
-                });
-                thread.start();
+                String url = cursor.getString(cursor.getColumnIndex(Contract.Entry.COLUMN_URL));
+                ParseXML.parseXML(url, context);
+                cursor.moveToNext();
             }
             builder.setProgress(0, 10, false)
                     .setContentText("Готово");
             notificationManager.notify(1, builder.build());
         } else {
             for (int i = 0; i < max; i++) {
-                cursor.moveToFirst();
-                final String url = cursor.getString(cursor.getColumnIndex(NewsContract.NewsEntry.COLUMN_URL));
-                Thread thread = new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        ParseXML.parseXML(url, context);
-                    }
-                });
-                thread.start();
+                String url = cursor.getString(cursor.getColumnIndex(Contract.Entry.COLUMN_URL));
+                ParseXML.parseXML(url, context);
+                cursor.moveToNext();
             }
         }
-        MainActivity.newCursor = true;
         cursor.close();
     }
 }

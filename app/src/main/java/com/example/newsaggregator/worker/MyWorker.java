@@ -22,14 +22,9 @@ public class MyWorker extends Worker {
     @Override
     public Result doWork() {
         Log.d(TAG, "doWork: start " + Thread.currentThread().getName());
-
-        try {
-            Update update = new Update();
-            update.upDate(getApplicationContext(), false);
-            TimeUnit.SECONDS.sleep(4);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+//TODO проверить потоки
+        Update update = new Update();
+        update.upDate(getApplicationContext(), false);
 
         Log.d(TAG, "doWork: end " + Thread.currentThread().getName());
         return Result.success();

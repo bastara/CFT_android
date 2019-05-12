@@ -12,11 +12,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import android.widget.Toast;
 
+import com.example.newsaggregator.data.db.Contract;
 import com.example.newsaggregator.data.db.MySingleton;
-import com.example.newsaggregator.MainActivity;
 import com.example.newsaggregator.R;
 import com.example.newsaggregator.adapter.SiteAdapter;
-import com.example.newsaggregator.data.db.NewsContract;
 
 public class DeleteSiteActivity extends AppCompatActivity {
 
@@ -52,9 +51,8 @@ public class DeleteSiteActivity extends AppCompatActivity {
     }
 
     private void removeItem(String str) {
-        dataBase.delete(NewsContract.NewsEntry.TABLE_SITES, NewsContract.NewsEntry.COLUMN_URL + "=?", new String[]{String.valueOf(str)});
-        dataBase.delete(NewsContract.NewsEntry.TABLE_NEWS, NewsContract.NewsEntry.COLUMN_URL + "=?", new String[]{String.valueOf(str)});
-        MainActivity.newCursor = true;
+        dataBase.delete(Contract.Entry.TABLE_SITES, Contract.Entry.COLUMN_URL + "=?", new String[]{String.valueOf(str)});
+        dataBase.delete(Contract.Entry.TABLE_NEWS, Contract.Entry.COLUMN_URL + "=?", new String[]{String.valueOf(str)});
         adapter.swapCursor(getAllItems());
     }
 

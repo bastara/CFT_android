@@ -14,6 +14,7 @@ import android.os.Handler;
 import android.os.Message;
 
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -22,10 +23,10 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Toast;
 
+import com.example.newsaggregator.data.db.Contract;
 import com.example.newsaggregator.data.db.MySingleton;
 import com.example.newsaggregator.MainActivity;
 import com.example.newsaggregator.R;
-import com.example.newsaggregator.data.db.NewsContract;
 import com.example.newsaggregator.data.db.ParseXML;
 
 import java.io.ByteArrayOutputStream;
@@ -163,10 +164,10 @@ public class WebActivity extends AppCompatActivity {
 
             try {
                 Log.d(TAG, "Добавляю в источники RSS " + src);
-                cv.put(NewsContract.NewsEntry.COLUMN_URL, src);
+                cv.put(Contract.Entry.COLUMN_URL, src);
 
                 Log.d(TAG, "Вношу данные БД сайта");
-                long rowID = dataBase.insert(NewsContract.NewsEntry.TABLE_SITES, null, cv);
+                long rowID = dataBase.insert(Contract.Entry.TABLE_SITES, null, cv);
                 if (rowID == -1) {
                     Log.d(TAG, "Данный ресурс уже добавлен ");
                     handler.sendEmptyMessage(1);
@@ -183,13 +184,7 @@ public class WebActivity extends AppCompatActivity {
         }
 
         private void doWork(final String src, final Context context) {
-            Thread thread = new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    ParseXML.parseXML(src, context);
-                }
-            });
-            thread.start();
+            ParseXML.parseXML(src, context);
         }
     }
 
@@ -227,20 +222,20 @@ public class WebActivity extends AppCompatActivity {
         }
     }
 
-    static class MyHandler extends Handler {
-
-        WeakReference wrActivity;
-
-        MyHandler(WebActivity activity) {
-            wrActivity = new WeakReference<>(activity);
-        }
-
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            WebActivity activity = (WebActivity) wrActivity.get();
-            if (activity != null)
-                activity.handleMessage(msg);
-        }
-    }
+//    static class MyHandler extends Handler {
+//
+//        WeakReference wrActivity;
+//
+//        MyHandler(WebActivity activity) {
+//            wrActivity = new WeakReference<>(activity);
+//        }
+//
+//        @Override
+//        public void handleMessage(Message msg) {
+//            super.handleMessage(msg);
+//            WebActivity activity = (WebActivity) wrActivity.get();
+//            if (activity != null)
+//                activity.handleMessage(msg);
+//        }
+//    }
 }

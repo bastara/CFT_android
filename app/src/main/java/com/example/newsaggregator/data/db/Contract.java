@@ -1,13 +1,16 @@
 package com.example.newsaggregator.data.db;
 
-import android.provider.BaseColumns;
+public class Contract {
 
-public class NewsContract {
-
-    private NewsContract() {
+    private Contract() {
     }
 
-    public static final class NewsEntry implements BaseColumns {
+    public static final class Entry {
+        public static final String TAG = "rss";
+
+        static final String DATABASE_NAME = "RSSDB22";
+        static final int DATABASE_VERSION = 1;
+
         public static final String TABLE_NEWS = "news";
         public static final String COLUMN_ID = "id";
         public static final String COLUMN_TITLE = "title";

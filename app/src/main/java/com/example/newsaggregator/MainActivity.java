@@ -8,6 +8,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 
+import com.example.newsaggregator.data.db.Contract;
 import com.example.newsaggregator.data.db.MySingleton;
 import com.example.newsaggregator.worker.MyWorker;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -26,6 +27,7 @@ import androidx.work.WorkManager;
 
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.Menu;
@@ -41,7 +43,6 @@ import com.example.newsaggregator.activity.DeleteSiteActivity;
 import com.example.newsaggregator.activity.NewsActivity;
 import com.example.newsaggregator.activity.RefreshActivity;
 import com.example.newsaggregator.adapter.NewsAdapter;
-import com.example.newsaggregator.data.db.NewsContract;
 
 import java.util.concurrent.TimeUnit;
 
@@ -53,7 +54,7 @@ public class MainActivity extends AppCompatActivity
     private TextView refreshTextView;
     private TextView notificationTextView;
 
-    private static final String TAG = "!REFRESH REFRESH_TIME";
+    private static final String TAG = Contract.Entry.TAG;
 
     private SQLiteDatabase dataBase;
     private NewsAdapter adapter;
@@ -62,26 +63,37 @@ public class MainActivity extends AppCompatActivity
 
     Preference preference;
 
-    public static boolean newCursor = false;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 //        setTheme(R.style.AppThemeLight);
+
+//        LinearLayout linearLayout = findViewById(R.id.SSS);
+
+//        NavigationView navigationVw = (NavigationView) findViewById(R.id.nav_view);
+//        View hView =  navigationVw.getHeaderView(0);
+//
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        final Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
+
+                TypedValue tv = new TypedValue();
+                int actionBarHeight = 0;
+                if (getTheme().resolveAttribute(android.R.attr.actionBarSize, tv, true)) {
+                    actionBarHeight = TypedValue.complexToDimensionPixelSize(tv.data, getResources().getDisplayMetrics());
+                }
+
                 Display display = getWindowManager().getDefaultDisplay();
                 DisplayMetrics metricsB = new DisplayMetrics();
                 display.getMetrics(metricsB);
-                recyclerView.scrollBy(0, +metricsB.heightPixels - 176);
+
+                recyclerView.scrollBy(0, +metricsB.heightPixels - toolbar.getHeight() - actionBarHeight);
             }
         });
 
@@ -93,7 +105,6 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-//        https://ru.stackoverflow.com/questions/521780/Цвет-иконок-в-выезжающем-меню
         navigationView.setItemIconTintList(null);
 
         MenuItem itemTimeRefresh = navigationView.getMenu().findItem(R.id.nav_refresh);
@@ -106,6 +117,12 @@ public class MainActivity extends AppCompatActivity
         initializeCountDrawer(timeRefreshMenu(preference.getTimeRefresh()), preference.getNotification());
 //        drawer.openDrawer(GravityCompat.START);
 
+        doWorkManager();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         MySingleton mySingleton = (MySingleton) this.getApplication();
         dataBase = mySingleton.getDatabase();
 
@@ -115,7 +132,7 @@ public class MainActivity extends AppCompatActivity
         adapter.setClickListener(this);
         recyclerView.setAdapter(adapter);
 
-        doWorkManager();
+        Log.d(TAG, "ONRESUME");
     }
 
     private void doWorkManager() {
@@ -155,16 +172,6 @@ public class MainActivity extends AppCompatActivity
         return timeRefreshMenu;
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        if (newCursor) {
-            Intent i = new Intent(this, this.getClass());
-            finish();
-            newCursor = false;
-            this.startActivity(i);
-        }
-    }
 
     private void initializeCountDrawer(String timeView, String notificationView) {
         refreshTextView.setGravity(Gravity.CENTER_VERTICAL);
@@ -210,11 +217,10 @@ public class MainActivity extends AppCompatActivity
         if (id == R.id.nav_upDate) {
             Update update = new Update();
             update.upDate(MainActivity.this, true);
-            Intent i = new Intent(this, this.getClass());
-            finish();
-            newCursor = false;
-            this.startActivity(i);
 
+            //TODO не обновляется, потоки.
+            onPause();
+            onResume();
         } else if (id == R.id.nav_addSite) {
             Intent intent = new Intent(MainActivity.this,
                     AddSiteActivity.class);
@@ -281,13 +287,13 @@ public class MainActivity extends AppCompatActivity
 
     private Cursor getAllItems() {
         return dataBase.query(
-                NewsContract.NewsEntry.TABLE_NEWS,
+                Contract.Entry.TABLE_NEWS,
                 null,
                 null,
                 null,
                 null,
                 null,
-                NewsContract.NewsEntry.COLUMN_ID + " DESC"
+                Contract.Entry.COLUMN_ID + " DESC"
         );
     }
 

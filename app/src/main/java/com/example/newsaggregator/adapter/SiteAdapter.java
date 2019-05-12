@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.newsaggregator.R;
-import com.example.newsaggregator.data.db.NewsContract;
+import com.example.newsaggregator.data.db.Contract;
 
 public class SiteAdapter extends RecyclerView.Adapter<SiteAdapter.SiteViewHolder> {
     private Context context;
@@ -46,13 +46,13 @@ public class SiteAdapter extends RecyclerView.Adapter<SiteAdapter.SiteViewHolder
             return;
         }
 
-        String link = cursor.getString(cursor.getColumnIndex(NewsContract.NewsEntry.COLUMN_URL));
+        String link = cursor.getString(cursor.getColumnIndex(Contract.Entry.COLUMN_URL));
         holder.linkText.setText(link);
     }
 
     public String getItem(int id) {
         cursor.moveToPosition(id);
-        return cursor.getString(cursor.getColumnIndex(NewsContract.NewsEntry.COLUMN_URL));
+        return cursor.getString(cursor.getColumnIndex(Contract.Entry.COLUMN_URL));
     }
 
     @Override

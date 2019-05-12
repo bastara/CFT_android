@@ -21,29 +21,29 @@ public final class MySingleton extends Application {
 
     public Cursor getCursorNews() {
         return dataBase.query(
-                NewsContract.NewsEntry.TABLE_NEWS,
+                Contract.Entry.TABLE_NEWS,
                 null,
                 null,
                 null,
                 null,
                 null,
-                NewsContract.NewsEntry.COLUMN_ID + " DESC");
+                Contract.Entry.COLUMN_ID + " DESC");
     }
 
     public Cursor getCursorAllItem() {
-        return dataBase.query(NewsContract.NewsEntry.TABLE_SITES,
+        return dataBase.query(Contract.Entry.TABLE_SITES,
                 null,
                 null,
                 null,
                 null,
                 null,
-                NewsContract.NewsEntry.COLUMN_URL);
+                Contract.Entry.COLUMN_URL);
     }
 
     public Cursor getCursorCheckSite(String tmpStr) {
-        return dataBase.query(NewsContract.NewsEntry.TABLE_NEWS,
+        return dataBase.query(Contract.Entry.TABLE_NEWS,
                 null,
-                NewsContract.NewsEntry.COLUMN_LINK_NEWS + "=?",
+                Contract.Entry.COLUMN_LINK_NEWS + "=?",
                 new String[]{tmpStr},
                 null,
                 null,
@@ -51,7 +51,7 @@ public final class MySingleton extends Application {
     }
 
     public Cursor getCursorRefreshNews() {
-        return dataBase.rawQuery("select * from " + NewsContract.NewsEntry.TABLE_SITES,
+        return dataBase.rawQuery("select * from " + Contract.Entry.TABLE_SITES,
                 null);
     }
 }

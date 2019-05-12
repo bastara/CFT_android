@@ -7,17 +7,23 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 import android.util.Xml;
 
-import com.example.newsaggregator.MainActivity;
-
 import org.xmlpull.v1.XmlPullParser;
 
 import java.io.InputStream;
 import java.net.URL;
 
 public class ParseXML {
-    public static void parseXML(String src, Context context) {
-        final String TAG = "rssDB";
+    public static void parseXML(final String src, final Context context) {
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                doWork(src, context);
+            }
+        });
+        thread.start();
+    }
 
+    private static void doWork(String src, Context context) {
         MySingleton mySingleton = (MySingleton) context.getApplicationContext();
 
         SQLiteDatabase database = mySingleton.getDatabase();
@@ -43,14 +49,14 @@ public class ParseXML {
 
                 if (parser.getEventType() == XmlPullParser.END_TAG
                         && parser.getName().equals("item")) {
-                    Log.d(TAG, "Вношу данные БД ");
+                    Log.d(Contract.Entry.TAG, "Вношу данные БД ");
 //                        String tmpStr = src.substring(src.indexOf("//") + 2, src.indexOf(("/"), 8));
-//                        cv.put(NewsContract.NewsEntry.COLUMN_URL, tmpStr);
-                    cv.put(NewsContract.NewsEntry.COLUMN_URL, src);
-                    if (cv.get(NewsContract.NewsEntry.COLUMN_LINK_NEWS) != null) {
-                        long rowID = database.insert(NewsContract.NewsEntry.TABLE_NEWS, null, cv);
-                        Log.d(TAG, "НОМЕР ЗАПИСИ = " + rowID);
-                        MainActivity.newCursor = true;
+//                        cv.put(Contract.Entry.COLUMN_URL, tmpStr);
+                    cv.put(Contract.Entry.COLUMN_URL, src);
+                    if (cv.get(Contract.Entry.COLUMN_LINK_NEWS) != null) {
+                        long rowID = database.insert(Contract.Entry.TABLE_NEWS, null, cv);
+                        Log.d(Contract.Entry.TAG, "НОМЕР ЗАПИСИ = " + rowID);
+//                        MainActivity.newCursor = true;
                         isItem = false;
                     }
                     parser.next();
@@ -61,7 +67,7 @@ public class ParseXML {
                         && parser.getName().equals("title")
                         && parser.next() == XmlPullParser.TEXT
                         && isItem) {
-                    cv.put(NewsContract.NewsEntry.COLUMN_TITLE, parser.getText());
+                    cv.put(Contract.Entry.COLUMN_TITLE, parser.getText());
                 }
                 if (parser.getEventType() == XmlPullParser.START_TAG
                         && parser.getName().equals("link")
@@ -71,41 +77,41 @@ public class ParseXML {
 
 
                     // Проверкак обновления новостей
-//                    if (tmpStr.equals("http://www.garant.ru/article/1265576/")) {
-//                        tmpStr = null;
-//                        cv.put(NewsContract.NewsEntry.COLUMN_LINK_NEWS, tmpStr);
-//                        continue;
-////                    }
-//                    cursor = database.query(NewsContract.NewsEntry.TABLE_NEWS, null, NewsContract.NewsEntry.COLUMN_LINK_NEWS + "=?", new String[]{tmpStr}, null, null, null);
-                    cursor = mySingleton.getCursorCheckSite(tmpStr);
-                    if (cursor.moveToFirst()) {
-                        Log.d(TAG, "Данная новость уже добавлена");
+                    if (tmpStr.equals("http://2tura.ru/2лл019/05/10/%d0%b2%d0%b8%d0%b4-%d0%bd%d0%b0-%d0%b4%d0%be%d0%bb%d0%b8%d0%bd%d1%83-%d0%bd%d0%be%d1%80%d0%b2%d0%b5%d0%b3%d0%b8%d1%8f/")) {
+                        tmpStr = null;
+                        cv.put(Contract.Entry.COLUMN_LINK_NEWS, tmpStr);
                         continue;
                     }
-                    cv.put(NewsContract.NewsEntry.COLUMN_LINK_NEWS, tmpStr);
+//                    cursor = database.query(Contract.Entry.TABLE_NEWS, null, Contract.Entry.COLUMN_LINK_NEWS + "=?", new String[]{tmpStr}, null, null, null);
+                    cursor = mySingleton.getCursorCheckSite(tmpStr);
+                    if (cursor.moveToFirst()) {
+                        Log.d(Contract.Entry.TAG, "Данная новость уже добавлена " + tmpStr);
+                        continue;
+                    }
+                    cv.put(Contract.Entry.COLUMN_LINK_NEWS, tmpStr);
                 }
                 if (parser.getEventType() == XmlPullParser.START_TAG
                         && parser.getName().equals("description")
                         && parser.next() == XmlPullParser.TEXT
                         && isItem) {
-                    cv.put(NewsContract.NewsEntry.COLUMN_DESCRIPTION, parser.getText().replaceAll("\\<.*?\\>", "").replaceAll("\n", " "));
+                    cv.put(Contract.Entry.COLUMN_DESCRIPTION, parser.getText().replaceAll("\\<.*?\\>", "").replaceAll("\n", " "));
                 }
                 if (parser.getEventType() == XmlPullParser.START_TAG
                         && parser.getName().equals("category")
                         && parser.next() == XmlPullParser.TEXT
                         && isItem) {
-                    cv.put(NewsContract.NewsEntry.COLUMN_CATEGORY, parser.getText());
+                    cv.put(Contract.Entry.COLUMN_CATEGORY, parser.getText());
                 }
                 if (parser.getEventType() == XmlPullParser.START_TAG
                         && parser.getName().equals("pubDate")
                         && parser.next() == XmlPullParser.TEXT
                         && isItem) {
-                    cv.put(NewsContract.NewsEntry.COLUMN_PUBDATE, parser.getText());
+                    cv.put(Contract.Entry.COLUMN_PUBDATE, parser.getText());
                 }
                 parser.next();
             }
         } catch (Throwable t) {
-            Log.d(TAG, "Ошибка при загрузке XML-документа: " + t.toString());
+            Log.d(Contract.Entry.TAG, "Ошибка при загрузке XML-документа: " + t.toString());
         }
     }
 }
