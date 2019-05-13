@@ -5,6 +5,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import com.example.newsaggregator.data.Contract;
+
 public class DBHelper extends SQLiteOpenHelper {
 
     DBHelper(Context context) {
@@ -23,10 +25,10 @@ public class DBHelper extends SQLiteOpenHelper {
                 + Contract.Entry.COLUMN_URL + " text,"
                 + Contract.Entry.COLUMN_DESCRIPTION + " text,"
                 + Contract.Entry.COLUMN_CATEGORY + " text,"
-                + Contract.Entry.COLUMN_ISSHOW + " int DEFAULT \'0\',"
+                + Contract.Entry.COLUMN_IS_SHOW + " int DEFAULT \'0\',"
                 //TODO нужно в дату превращать? есть рекомендация как стринг
                 //TODO добавить поле просмотренная новость
-                + Contract.Entry.COLUMN_PUBDATE + " text" + ");");
+                + Contract.Entry.COLUMN_PUB_DATE + " text" + ");");
 
         db.execSQL("create table " + Contract.Entry.TABLE_SITES + "("
 //                + Contract.Entry.COLUMN_ID_SITE + " INTEGER primary key autoincrement,"

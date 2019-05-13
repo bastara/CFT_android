@@ -11,10 +11,11 @@ import android.widget.Toast;
 
 import androidx.core.app.NotificationCompat;
 
+import com.example.newsaggregator.DBRequest;
 import com.example.newsaggregator.MainActivity;
 import com.example.newsaggregator.R;
-import com.example.newsaggregator.data.db.Contract;
-import com.example.newsaggregator.data.db.MySingleton;
+import com.example.newsaggregator.data.Contract;
+import com.example.newsaggregator.data.db.DBAdapter;
 import com.example.newsaggregator.data.db.ParseXML;
 import com.example.newsaggregator.data.preference.Preference;
 
@@ -36,14 +37,14 @@ public class Update {
         }
 
         Cursor cursor;
-        MySingleton mySingleton = (MySingleton) context.getApplicationContext();
-        cursor = mySingleton.getCursorRefreshNews();
+        DBRequest dbRequest = new DBRequest(context);
+        cursor = dbRequest.getCursorRefreshNews();
 
         int max = cursor.getCount();
         cursor.moveToFirst();
 
         Preference preference = new Preference(context);
-        if (preference.getNotification().equals("вкл")) {
+        if (preference.getNotification()) {
             Intent resultIntent = new Intent(context, MainActivity.class);
             resultIntent.setAction("ru.startandroid.notifications.action_delete");
             PendingIntent resultPendingIntent = PendingIntent.getActivity(context, 0, resultIntent,

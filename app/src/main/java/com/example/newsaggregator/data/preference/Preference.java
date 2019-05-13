@@ -3,45 +3,35 @@ package com.example.newsaggregator.data.preference;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.example.newsaggregator.data.Contract;
+
 import static android.content.Context.MODE_PRIVATE;
 
 public class Preference {
 
-    private static final String APP_PREFERENCES = "mysettings";
-    private static final String APP_PREFERENCES_TIME_REFRESH = "refresher";
-    private static final String APP_PREFERENCES_NOTIFICATION = "notification";
     private SharedPreferences settings;
 
     public Preference(Context context) {
-        settings = context.getSharedPreferences(APP_PREFERENCES, MODE_PRIVATE);
+        settings = context.getSharedPreferences(Contract.Entry.PREFERENCES_FILE, MODE_PRIVATE);
     }
 
-    public String getTimeRefresh() {
-        String timeRefresh;
-        if (settings.contains(APP_PREFERENCES_TIME_REFRESH)) {
-            timeRefresh = settings.getString(APP_PREFERENCES_TIME_REFRESH, String.valueOf(0));
-        } else timeRefresh = "900000";
-        return timeRefresh;
+    public int getTimeRefresh() {
+        return settings.getInt(Contract.Entry.PREFERENCES_TIME_REFRESH, 900000);
     }
 
-    public void setTimeRefresh(String timeRefresh) {
+    public void setTimeRefresh(int timeRefresh) {
         SharedPreferences.Editor editor = settings.edit();
-        editor.putString(APP_PREFERENCES_TIME_REFRESH, timeRefresh);
+        editor.putInt(Contract.Entry.PREFERENCES_TIME_REFRESH, timeRefresh);
         editor.apply();
     }
 
-    //TODO возможно лучше на boolean переделать
-    public String getNotification() {
-        String notification;
-        if (settings.contains(APP_PREFERENCES_NOTIFICATION)) {
-            notification = settings.getString(APP_PREFERENCES_NOTIFICATION, String.valueOf(1));
-        } else notification = "вкл";
-        return notification;
+    public boolean getNotification() {
+        return settings.getBoolean(Contract.Entry.PREFERENCES_NOTIFICATION, true);
     }
 
-    public void setNotification(String notification) {
+    public void setNotification(boolean notification) {
         SharedPreferences.Editor editor = settings.edit();
-        editor.putString(APP_PREFERENCES_NOTIFICATION, notification);
+        editor.putBoolean(Contract.Entry.PREFERENCES_NOTIFICATION, notification);
         editor.apply();
     }
 }

@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.newsaggregator.R;
-import com.example.newsaggregator.data.db.Contract;
+import com.example.newsaggregator.data.Contract;
 
 public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder> {
     private Context context;
@@ -61,7 +61,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder
         }
 
         String name = cursor.getString(cursor.getColumnIndex(Contract.Entry.COLUMN_TITLE));
-        String date = cursor.getString(cursor.getColumnIndex(Contract.Entry.COLUMN_PUBDATE));
+        String date = cursor.getString(cursor.getColumnIndex(Contract.Entry.COLUMN_PUB_DATE));
         String news = cursor.getString(cursor.getColumnIndex(Contract.Entry.COLUMN_DESCRIPTION));
 
         holder.nameText.setText(name);

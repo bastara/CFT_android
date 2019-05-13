@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.view.View;
 
 import com.example.newsaggregator.R;
+import com.example.newsaggregator.data.Contract;
 
 public class RefreshActivity extends AppCompatActivity {
     @Override
@@ -15,22 +16,20 @@ public class RefreshActivity extends AppCompatActivity {
         setContentView(R.layout.activity_refresh);
     }
 
-    public final static String REFRESH_TIME = "com.example.newsAggregator.REFRESH_TIME";
-
     public void onRadioClick(View v) {
         Intent answerIntent = new Intent();
         switch (v.getId()) {
             case R.id.radio15min:
-                answerIntent.putExtra(REFRESH_TIME, "900000");
+                answerIntent.putExtra(Contract.Entry.REFRESH_TIME, 900000);
                 break;
             case R.id.radio60min:
-                answerIntent.putExtra(REFRESH_TIME, "3600000");
+                answerIntent.putExtra(Contract.Entry.REFRESH_TIME, 3600000);
                 break;
             case R.id.radio6hours:
-                answerIntent.putExtra(REFRESH_TIME, "21600000");
+                answerIntent.putExtra(Contract.Entry.REFRESH_TIME, 21600000);
                 break;
             case R.id.radio24hours:
-                answerIntent.putExtra(REFRESH_TIME, "86400000");
+                answerIntent.putExtra(Contract.Entry.REFRESH_TIME, 86400000);
                 break;
             default:
                 break;

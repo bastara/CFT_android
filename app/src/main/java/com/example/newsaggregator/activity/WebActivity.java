@@ -11,7 +11,6 @@ import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Message;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -23,8 +22,8 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Toast;
 
-import com.example.newsaggregator.data.db.Contract;
-import com.example.newsaggregator.data.db.MySingleton;
+import com.example.newsaggregator.data.Contract;
+import com.example.newsaggregator.data.db.DBAdapter;
 import com.example.newsaggregator.MainActivity;
 import com.example.newsaggregator.R;
 import com.example.newsaggregator.data.db.ParseXML;
@@ -32,7 +31,6 @@ import com.example.newsaggregator.data.db.ParseXML;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.lang.ref.WeakReference;
 import java.net.URL;
 
 import static android.content.ContentValues.TAG;
@@ -152,8 +150,8 @@ public class WebActivity extends AppCompatActivity {
         }
 
         void addPage() {
-            MySingleton mySingleton = (MySingleton) context.getApplicationContext();
-            SQLiteDatabase dataBase = mySingleton.getDatabase();
+            DBAdapter DBAdapter = (DBAdapter) context.getApplicationContext();
+            SQLiteDatabase dataBase = DBAdapter.getDatabase();
 
             final String TAG = "rssDB";
             ContentValues cv = new ContentValues();
@@ -221,21 +219,4 @@ public class WebActivity extends AppCompatActivity {
             }
         }
     }
-
-//    static class MyHandler extends Handler {
-//
-//        WeakReference wrActivity;
-//
-//        MyHandler(WebActivity activity) {
-//            wrActivity = new WeakReference<>(activity);
-//        }
-//
-//        @Override
-//        public void handleMessage(Message msg) {
-//            super.handleMessage(msg);
-//            WebActivity activity = (WebActivity) wrActivity.get();
-//            if (activity != null)
-//                activity.handleMessage(msg);
-//        }
-//    }
 }

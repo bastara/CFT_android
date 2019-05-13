@@ -7,6 +7,9 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 import android.util.Xml;
 
+import com.example.newsaggregator.DBRequest;
+import com.example.newsaggregator.data.Contract;
+
 import org.xmlpull.v1.XmlPullParser;
 
 import java.io.InputStream;
@@ -24,12 +27,13 @@ public class ParseXML {
     }
 
     private static void doWork(String src, Context context) {
-        MySingleton mySingleton = (MySingleton) context.getApplicationContext();
-
-        SQLiteDatabase database = mySingleton.getDatabase();
+        DBAdapter DBAdapter = (DBAdapter) context.getApplicationContext();
+        SQLiteDatabase database = DBAdapter.getDatabase();
+        DBRequest dbRequest = new DBRequest(context);
+        Cursor cursor;
 
         ContentValues cv = new ContentValues();
-        Cursor cursor;
+
         try {
             URL url = new URL(src);
             InputStream inputStream = url.openConnection().getInputStream();
@@ -56,7 +60,6 @@ public class ParseXML {
                     if (cv.get(Contract.Entry.COLUMN_LINK_NEWS) != null) {
                         long rowID = database.insert(Contract.Entry.TABLE_NEWS, null, cv);
                         Log.d(Contract.Entry.TAG, "НОМЕР ЗАПИСИ = " + rowID);
-//                        MainActivity.newCursor = true;
                         isItem = false;
                     }
                     parser.next();
@@ -83,7 +86,7 @@ public class ParseXML {
                         continue;
                     }
 //                    cursor = database.query(Contract.Entry.TABLE_NEWS, null, Contract.Entry.COLUMN_LINK_NEWS + "=?", new String[]{tmpStr}, null, null, null);
-                    cursor = mySingleton.getCursorCheckSite(tmpStr);
+                    cursor = dbRequest.getCursorCheckSite(tmpStr);
                     if (cursor.moveToFirst()) {
                         Log.d(Contract.Entry.TAG, "Данная новость уже добавлена " + tmpStr);
                         continue;
@@ -106,7 +109,7 @@ public class ParseXML {
                         && parser.getName().equals("pubDate")
                         && parser.next() == XmlPullParser.TEXT
                         && isItem) {
-                    cv.put(Contract.Entry.COLUMN_PUBDATE, parser.getText());
+                    cv.put(Contract.Entry.COLUMN_PUB_DATE, parser.getText());
                 }
                 parser.next();
             }

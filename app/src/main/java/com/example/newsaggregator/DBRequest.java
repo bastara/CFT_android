@@ -1,22 +1,18 @@
-package com.example.newsaggregator.data.db;
+package com.example.newsaggregator;
 
-import android.app.Application;
+import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-public final class MySingleton extends Application {
+import com.example.newsaggregator.data.Contract;
+import com.example.newsaggregator.data.db.DBAdapter;
 
+public class DBRequest {
     private SQLiteDatabase dataBase;
-    private DBHelper dbHelper = new DBHelper(this);
 
-    @Override
-    public void onCreate() {
-        super.onCreate();
-        dataBase = dbHelper.getWritableDatabase();
-    }
-
-    public SQLiteDatabase getDatabase() {
-        return dataBase;
+    public DBRequest(Context context) {
+        DBAdapter dbAdapter = (DBAdapter) context.getApplicationContext();
+        dataBase = dbAdapter.getDatabase();
     }
 
     public Cursor getCursorNews() {

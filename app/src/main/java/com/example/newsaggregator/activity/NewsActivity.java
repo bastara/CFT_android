@@ -8,8 +8,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.text.method.ScrollingMovementMethod;
 import android.widget.TextView;
 
-import com.example.newsaggregator.data.db.Contract;
-import com.example.newsaggregator.data.db.MySingleton;
+import com.example.newsaggregator.DBRequest;
+import com.example.newsaggregator.data.Contract;
 import com.example.newsaggregator.R;
 
 public class NewsActivity extends AppCompatActivity {
@@ -32,14 +32,13 @@ public class NewsActivity extends AppCompatActivity {
         Intent intent = getIntent();
         String position = intent.getStringExtra("id");
 
-        MySingleton mySingleton = (MySingleton) this.getApplication();
-
-        Cursor cursor = mySingleton.getCursorNews();
+        DBRequest dbRequest = new DBRequest(NewsActivity.this);
+        Cursor cursor = dbRequest.getCursorNews();
 
         cursor.moveToPosition(Integer.parseInt(position));
 
         String name = cursor.getString(cursor.getColumnIndex(Contract.Entry.COLUMN_TITLE));
-        String date = cursor.getString(cursor.getColumnIndex(Contract.Entry.COLUMN_PUBDATE)).substring(0, 16);
+        String date = cursor.getString(cursor.getColumnIndex(Contract.Entry.COLUMN_PUB_DATE)).substring(0, 16);
         String link = cursor.getString(cursor.getColumnIndex(Contract.Entry.COLUMN_LINK_NEWS));
         link = link.substring(link.indexOf("//") + 2, link.indexOf(("/"), 8));
         String text = cursor.getString(cursor.getColumnIndex(Contract.Entry.COLUMN_DESCRIPTION));

@@ -26,8 +26,8 @@
     <string name="refreshTime_24h">ежедневно</string>
     <string name="site_address">Введита адрес сайта или RSS файла</string>
     <string name="go_to_site">Перейти на сайт</string>
-    <string name="add_site">добавление сайта</string>
-    <string name="web">просмотр сайта</string>
+    <string name="add_site">Добавление сайта</string>
+    <string name="web">Просмотр сайта</string>
     <string name="IconAdd">добавить RSS</string>
     <string name="copy_value">Заполнить</string>
     <string name="delete_site">Выберите сайт для удаления</string>

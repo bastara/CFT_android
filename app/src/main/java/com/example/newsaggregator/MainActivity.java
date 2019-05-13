@@ -2,14 +2,12 @@ package com.example.newsaggregator;
 
 import android.content.Intent;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Typeface;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 
-import com.example.newsaggregator.data.db.Contract;
-import com.example.newsaggregator.data.db.MySingleton;
+import com.example.newsaggregator.data.Contract;
 import com.example.newsaggregator.worker.MyWorker;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
@@ -25,6 +23,7 @@ import androidx.work.ExistingPeriodicWorkPolicy;
 import androidx.work.PeriodicWorkRequest;
 import androidx.work.WorkManager;
 
+import android.os.Handler;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
@@ -44,6 +43,7 @@ import com.example.newsaggregator.activity.NewsActivity;
 import com.example.newsaggregator.activity.RefreshActivity;
 import com.example.newsaggregator.adapter.NewsAdapter;
 
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity
@@ -54,14 +54,14 @@ public class MainActivity extends AppCompatActivity
     private TextView refreshTextView;
     private TextView notificationTextView;
 
-    private static final String TAG = Contract.Entry.TAG;
 
-    private SQLiteDatabase dataBase;
     private NewsAdapter adapter;
 
     private RecyclerView recyclerView;
 
     Preference preference;
+
+    Handler handler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -117,27 +117,33 @@ public class MainActivity extends AppCompatActivity
         initializeCountDrawer(timeRefreshMenu(preference.getTimeRefresh()), preference.getNotification());
 //        drawer.openDrawer(GravityCompat.START);
 
+        handler = new MyHandlerMainActivity(this);
+
         doWorkManager();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        MySingleton mySingleton = (MySingleton) this.getApplication();
-        dataBase = mySingleton.getDatabase();
+
+//        Cursor cursor = DBRequest.getCursorNews();
+
+        DBRequest dbRequest = new DBRequest(MainActivity.this);
+
+        Cursor cursor = dbRequest.getCursorNews();
 
         recyclerView = findViewById(R.id.recyclerViewMain);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new NewsAdapter(this, getAllItems());
+        adapter = new NewsAdapter(this, cursor);
         adapter.setClickListener(this);
         recyclerView.setAdapter(adapter);
 
-        Log.d(TAG, "ONRESUME");
+        Log.d(Contract.Entry.TAG, "ONRESUME");
     }
 
     private void doWorkManager() {
         PeriodicWorkRequest request = new PeriodicWorkRequest.Builder
-                (MyWorker.class, Integer.parseInt(preference.getTimeRefresh()) / 60000, TimeUnit.MINUTES, 5, TimeUnit.MINUTES)
+                (MyWorker.class, preference.getTimeRefresh() / 60000, TimeUnit.MINUTES, 5, TimeUnit.MINUTES)
                 .addTag("TRSS")
                 .build();
         WorkManager.getInstance().enqueueUniquePeriodicWork
@@ -153,16 +159,16 @@ public class MainActivity extends AppCompatActivity
     }
 
 
-    private String timeRefreshMenu(String time1111) {
+    private String timeRefreshMenu(int time) {
         String timeRefreshMenu;
-        switch (time1111) {
-            case "900000":
+        switch (time) {
+            case 900000:
                 timeRefreshMenu = "15min";
                 break;
-            case "3600000":
+            case 3600000:
                 timeRefreshMenu = "60min";
                 break;
-            case "21600000":
+            case 21600000:
                 timeRefreshMenu = "6h";
                 break;
             default:
@@ -173,7 +179,7 @@ public class MainActivity extends AppCompatActivity
     }
 
 
-    private void initializeCountDrawer(String timeView, String notificationView) {
+    private void initializeCountDrawer(String timeView, boolean notificationView) {
         refreshTextView.setGravity(Gravity.CENTER_VERTICAL);
         refreshTextView.setTypeface(null, Typeface.BOLD);
         refreshTextView.setTextColor(getResources().getColor(R.color.colorAccent));
@@ -181,7 +187,11 @@ public class MainActivity extends AppCompatActivity
         notificationTextView.setGravity(Gravity.CENTER_VERTICAL);
         notificationTextView.setTypeface(null, Typeface.BOLD);
         notificationTextView.setTextColor(getResources().getColor(R.color.colorAccent));
-        notificationTextView.setText(notificationView);
+        if (notificationView) {
+            notificationTextView.setText("вкл");
+        } else {
+            notificationTextView.setText("выкл");
+        }
     }
 
     @Override
@@ -219,6 +229,7 @@ public class MainActivity extends AppCompatActivity
             update.upDate(MainActivity.this, true);
 
             //TODO не обновляется, потоки.
+            //TODO возм надо новый поток
             onPause();
             onResume();
         } else if (id == R.id.nav_addSite) {
@@ -232,11 +243,11 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_darkTheme) {
 
         } else if (id == R.id.nav_notification) {
-            if (preference.getNotification().equals("вкл")) {
-                preference.setNotification("выкл");
+            if (preference.getNotification()) {
+                preference.setNotification(false);
                 notificationTextView.setText("выкл");
             } else {
-                preference.setNotification("вкл");
+                preference.setNotification(true);
                 notificationTextView.setText("вкл");
             }
             fromNotification = true;
@@ -257,6 +268,16 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
+
+    //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    public void handleMessage(android.os.Message msg) {
+        if (msg.what == 2) {
+        } else if (msg.what == 1) {
+        } else {
+        }
+    }
+
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -266,12 +287,12 @@ public class MainActivity extends AppCompatActivity
 
         if (requestCode == 0) {
             if (resultCode == RESULT_OK) {
-                String timeRefreshMilli = data.getStringExtra(RefreshActivity.REFRESH_TIME);
+                int timeRefreshMilli = Objects.requireNonNull(data.getExtras()).getInt(Contract.Entry.REFRESH_TIME);
                 refreshTextView.setText(timeRefreshMenu(timeRefreshMilli));
                 preference.setTimeRefresh(timeRefreshMilli);
-                Log.d(TAG, timeRefreshMilli);
+                Log.d(Contract.Entry.TAG, "время обновления в настройки" + timeRefreshMilli);
             } else {
-                refreshTextView.setText(""); // стираем текст
+                refreshTextView.setText("");
             }
         }
     }
@@ -285,19 +306,7 @@ public class MainActivity extends AppCompatActivity
         startActivity(intent);
     }
 
-    private Cursor getAllItems() {
-        return dataBase.query(
-                Contract.Entry.TABLE_NEWS,
-                null,
-                null,
-                null,
-                null,
-                null,
-                Contract.Entry.COLUMN_ID + " DESC"
-        );
-    }
-
     public void onClickTop(MenuItem item) {
-        recyclerView.scrollBy(0, -10000000);
+        recyclerView.smoothScrollToPosition(0);
     }
 }
