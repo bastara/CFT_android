@@ -107,8 +107,10 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
         navigationView.setItemIconTintList(null);
 
-        MenuItem itemTimeRefresh = navigationView.getMenu().findItem(R.id.nav_refresh);
-        MenuItem itemToggleNotification = navigationView.getMenu().findItem(R.id.nav_notification);
+        MenuItem itemTimeRefresh = navigationView.getMenu()
+                                                 .findItem(R.id.nav_refresh);
+        MenuItem itemToggleNotification = navigationView.getMenu()
+                                                        .findItem(R.id.nav_notification);
         refreshTextView = (TextView) itemTimeRefresh.getActionView();
         notificationTextView = (TextView) itemToggleNotification.getActionView();
 
@@ -125,8 +127,6 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onResume() {
         super.onResume();
-
-//        Cursor cursor = DBRequest.getCursorNews();
 
         DBRequest dbRequest = new DBRequest(MainActivity.this);
 
@@ -146,8 +146,9 @@ public class MainActivity extends AppCompatActivity
                 (MyWorker.class, preference.getTimeRefresh() / 60000, TimeUnit.MINUTES, 5, TimeUnit.MINUTES)
                 .addTag("TRSS")
                 .build();
-        WorkManager.getInstance().enqueueUniquePeriodicWork
-                ("Refresh News", ExistingPeriodicWorkPolicy.REPLACE, request);
+        WorkManager.getInstance()
+                   .enqueueUniquePeriodicWork
+                           ("Refresh News", ExistingPeriodicWorkPolicy.REPLACE, request);
 //        LiveData<WorkInfo> info = WorkManager.getInstance().getWorkInfoByIdLiveData(request.getId());
 //        info.observe(this, new Observer<WorkInfo>() {
 //            @Override
@@ -157,7 +158,6 @@ public class MainActivity extends AppCompatActivity
 //        });
 
     }
-
 
     private String timeRefreshMenu(int time) {
         String timeRefreshMenu;
@@ -177,7 +177,6 @@ public class MainActivity extends AppCompatActivity
         }
         return timeRefreshMenu;
     }
-
 
     private void initializeCountDrawer(String timeView, boolean notificationView) {
         refreshTextView.setGravity(Gravity.CENTER_VERTICAL);
@@ -287,7 +286,8 @@ public class MainActivity extends AppCompatActivity
 
         if (requestCode == 0) {
             if (resultCode == RESULT_OK) {
-                int timeRefreshMilli = Objects.requireNonNull(data.getExtras()).getInt(Contract.Entry.REFRESH_TIME);
+                int timeRefreshMilli = Objects.requireNonNull(data.getExtras())
+                                              .getInt(Contract.Entry.REFRESH_TIME);
                 refreshTextView.setText(timeRefreshMenu(timeRefreshMilli));
                 preference.setTimeRefresh(timeRefreshMilli);
                 Log.d(Contract.Entry.TAG, "время обновления в настройки" + timeRefreshMilli);
@@ -299,7 +299,8 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onItemClick(View view, int position) {
-        Toast.makeText(this, "You clicked " + adapter.getItem(position) + " on row number " + position, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "You clicked " + adapter.getItem(position) + " on row number " + position, Toast.LENGTH_SHORT)
+             .show();
         Intent intent = new Intent(MainActivity.this,
                 NewsActivity.class);
         intent.putExtra("id", String.valueOf(position));

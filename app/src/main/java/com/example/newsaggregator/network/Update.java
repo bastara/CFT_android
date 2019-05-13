@@ -62,7 +62,6 @@ public class Update {
                     .addAction(android.R.drawable.ic_delete, "Прервать", resultPendingIntent)
                     .setContentIntent(resultPendingIntent);
 
-
             notificationManager.notify(1, builder.build());
 
             //оставил для наглядности, как напоминание о Значимости выполняемого действия,

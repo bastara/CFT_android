@@ -54,9 +54,9 @@ public class WebActivity extends AppCompatActivity {
 
     public void handleMessage(android.os.Message msg) {
         Toast.makeText(getApplicationContext(), url, Toast.LENGTH_SHORT).show();
-        if (msg.what == 2) {
+        if (msg.what == Contract.Entry.SOURCE_ADDED) {
             Toast.makeText(getApplicationContext(), "RSS файл добавлен в вашу библиотеку", Toast.LENGTH_SHORT).show();
-        } else if (msg.what == 1) {
+        } else if (msg.what == Contract.Entry.SOURCE_ALREADY_ADDED) {
             Toast.makeText(getApplicationContext(), "Данный ресурс уже добавлен!", Toast.LENGTH_SHORT).show();
         } else {
             Toast.makeText(getApplicationContext(), "Это не RSS файл", Toast.LENGTH_SHORT).show();
@@ -116,7 +116,6 @@ public class WebActivity extends AppCompatActivity {
             return true;
         }
 
-        // Для старых устройств
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
             view.loadUrl(url);
@@ -168,10 +167,10 @@ public class WebActivity extends AppCompatActivity {
                 long rowID = dataBase.insert(Contract.Entry.TABLE_SITES, null, cv);
                 if (rowID == -1) {
                     Log.d(TAG, "Данный ресурс уже добавлен ");
-                    handler.sendEmptyMessage(1);
+                    handler.sendEmptyMessage(Contract.Entry.SOURCE_ALREADY_ADDED);
                     return;
                 } else {
-                    handler.sendEmptyMessage(2);
+                    handler.sendEmptyMessage(Contract.Entry.SOURCE_ADDED);
                     Log.d(TAG, "НОМЕР ЗАПИСИ САЙТА = " + rowID);
                 }
             } catch (SQLException t) {

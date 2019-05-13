@@ -29,5 +29,9 @@ public class Contract {
         public static final String PREFERENCES_NOTIFICATION = "notification";
 
         public final static String REFRESH_TIME = "com.example.newsAggregator.REFRESH_TIME";
+
+        public static final int SOURCE_ALREADY_ADDED = 1;
+        public static final int SOURCE_ADDED = 2;
+
     }
 }
