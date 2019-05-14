@@ -54,5 +54,15 @@ public class Preference {
         editor.putString(Contract.Entry.PREFERENCES_LAST_SITE, lastSite);
         editor.apply();
     }
+
+    public String getUserURL() {
+        return settings.getString(Contract.Entry.PREFERENCES_URL, "http://rss.garant.ru/article/");
+    }
+
+    public void setUserURL(String url) {
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putString(Contract.Entry.PREFERENCES_URL, url);
+        editor.apply();
+    }
 }
 

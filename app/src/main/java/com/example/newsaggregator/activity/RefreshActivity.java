@@ -4,12 +4,16 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.view.View;
+import android.widget.RadioButton;
 
 import com.example.newsaggregator.R;
 import com.example.newsaggregator.data.Contract;
+import com.example.newsaggregator.data.preference.Preference;
 
 public class RefreshActivity extends AppCompatActivity {
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

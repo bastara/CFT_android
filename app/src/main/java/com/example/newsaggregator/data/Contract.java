@@ -6,8 +6,10 @@ public class Contract {
     }
 
     public static final class Entry {
+        //TAG
         public static final String TAG = "rss";
 
+        //DB
         public static final String DATABASE_NAME = "RSSDB22";
         public static final int DATABASE_VERSION = 1;
 
@@ -23,15 +25,18 @@ public class Contract {
 
         public static final String TABLE_SITES = "tableOfSite";
 
-
+        //Preference
         public static final String PREFERENCES_FILE = "my_settings_3";
-        public static final String PREFERENCES_TIME_REFRESH = "refresher";
+        public static final String PREFERENCES_TIME_REFRESH = "aaaaaarefresher";
         public static final String PREFERENCES_NOTIFICATION = "notification";
         public static final String PREFERENCES_LAST_SCREEN = "lastScreen";
         public static final String PREFERENCES_LAST_SITE = "lastSite";
+        public static final String PREFERENCES_URL = "userUrl";
 
+        //Refresh time
         public final static String REFRESH_TIME = "com.example.newsAggregator.REFRESH_TIME";
 
+        //Check status
         public static final int SOURCE_ALREADY_ADDED = 1;
         public static final int SOURCE_ADDED = 2;
 

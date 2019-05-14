@@ -4,10 +4,14 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.example.newsaggregator.MainActivity;
 import com.example.newsaggregator.R;
 import com.example.newsaggregator.data.preference.Preference;
 
@@ -30,6 +34,9 @@ public class AddSiteActivity extends AppCompatActivity {
         preference.setLastScreen("AddSiteActivity");
 
         editText = findViewById(R.id.editSiteAddress);
+        editText.setText(preference.getUserURL());
+        editText.addTextChangedListener(urlWatcher);
+
         textView1 = findViewById(R.id.textView2);
         textView2 = findViewById(R.id.textView3);
         textView3 = findViewById(R.id.textView4);
@@ -38,25 +45,59 @@ public class AddSiteActivity extends AppCompatActivity {
 
     public void onClick(View view) {
         Intent intent = new Intent(this, WebActivity.class);
-        intent.putExtra("url", editText.getText().toString());
+        intent.putExtra("url", editText.getText()
+                                       .toString());
         preference.setLastSite(editText.getText()
                                        .toString());
+        preference.setUserURL(editText.getText()
+                                      .toString());
         startActivity(intent);
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        preference.setUserURL(editText.getText()
+                                      .toString());
+        Intent intent = new Intent(AddSiteActivity.this,
+                MainActivity.class);
+        preference.setLastScreen("MainActivity");
+        startActivity(intent);
+    }
+
+    private final TextWatcher urlWatcher = new TextWatcher() {
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+        }
+
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+        }
+
+        public void afterTextChanged(Editable s) {
+            if (s.length() != 0) {
+                preference.setUserURL(editText.getText()
+                                              .toString());
+            }
+        }
+    };
+
+
     public void onClick2(View view) {
-        editText.setText(textView1.getText().toString());
+        editText.setText(textView1.getText()
+                                  .toString());
     }
 
     public void onClick3(View view) {
-        editText.setText(textView2.getText().toString());
+        editText.setText(textView2.getText()
+                                  .toString());
     }
 
     public void onClick4(View view) {
-        editText.setText(textView3.getText().toString());
+        editText.setText(textView3.getText()
+                                  .toString());
     }
 
     public void onClick5(View view) {
-        editText.setText(textView4.getText().toString());
+        editText.setText(textView4.getText()
+                                  .toString());
     }
 }

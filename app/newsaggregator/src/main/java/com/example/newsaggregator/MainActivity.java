@@ -165,7 +165,7 @@ public class MainActivity extends AppCompatActivity
     // это имя файла настроек
     public static final String APP_PREFERENCES = "mysettings";
     //время обновления
-    public static final String APP_PREFERENCES_TIME_REFRESH = "refresher";
+    public static final String APP_PREFERENCES_TIME_REFRESH = "aaaaaarefresher";
     //Создаём переменную, представляющую экземпляр класса SharedPreferences,
     // который отвечает за работу с настройками:
     private SharedPreferences mSettings;

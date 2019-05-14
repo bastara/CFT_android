@@ -115,7 +115,7 @@ public class MainActivity extends AppCompatActivity
 
         preference = new Preference(MainActivity.this);
 
-        initializeCountDrawer(timeRefreshMenu(preference.getTimeRefresh()), preference.getNotification());
+//        initializeCountDrawer(timeRefreshMenu(preference.getTimeRefresh()), preference.getNotification());
 //        drawer.openDrawer(GravityCompat.START);
 
         handler = new MyHandlerMainActivity(this);
@@ -152,6 +152,8 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void refreshData() {
+        initializeCountDrawer(timeRefreshMenu(preference.getTimeRefresh()), preference.getNotification());
+
         DBRequest dbRequest = new DBRequest(MainActivity.this);
 
         Cursor cursor = dbRequest.getCursorNews();
