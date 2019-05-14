@@ -27,6 +27,8 @@ import com.example.newsaggregator.data.db.DBAdapter;
 import com.example.newsaggregator.MainActivity;
 import com.example.newsaggregator.R;
 import com.example.newsaggregator.data.db.ParseXML;
+import com.example.newsaggregator.data.preference.Preference;
+import com.example.newsaggregator.handler.MyHandler;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -39,9 +41,15 @@ public class WebActivity extends AppCompatActivity {
     private WebView webView;
     Handler handler;
 
+    Preference preference;
+
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_web);
+
+        preference = new Preference(WebActivity.this);
+        preference.setLastScreen("WebActivity");
+
         final String url = getIntent().getStringExtra("url");
         webView = findViewById(R.id.webView);
 //        поддержка JavaScript
@@ -78,6 +86,7 @@ public class WebActivity extends AppCompatActivity {
     public void onClickBack(MenuItem item) {
         Intent intent = new Intent(WebActivity.this,
                 MainActivity.class);
+        preference.setLastScreen("MainActivity");
         startActivity(intent);
     }
 

@@ -19,15 +19,21 @@ import com.example.newsaggregator.data.Contract;
 import com.example.newsaggregator.data.db.DBAdapter;
 import com.example.newsaggregator.R;
 import com.example.newsaggregator.adapter.SiteAdapter;
+import com.example.newsaggregator.data.preference.Preference;
 
 public class DeleteSiteActivity extends AppCompatActivity {
 
     private SQLiteDatabase dataBase;
     private SiteAdapter adapter;
+    Preference preference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        preference = new Preference(DeleteSiteActivity.this);
+        preference.setLastScreen("DeleteSiteActivity");
+
         setContentView(R.layout.activity_delete_site);
         DBAdapter DBAdapter = (DBAdapter) this.getApplication();
         dataBase = DBAdapter.getDatabase();

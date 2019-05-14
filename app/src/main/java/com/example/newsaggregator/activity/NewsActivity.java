@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.example.newsaggregator.DBRequest;
 import com.example.newsaggregator.data.Contract;
 import com.example.newsaggregator.R;
+import com.example.newsaggregator.data.preference.Preference;
 
 public class NewsActivity extends AppCompatActivity {
 

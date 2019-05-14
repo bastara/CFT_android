@@ -1,15 +1,17 @@
-package com.example.newsaggregator.activity;
+package com.example.newsaggregator.handler;
 
 import android.os.Handler;
 import android.os.Message;
 
+import com.example.newsaggregator.activity.WebActivity;
+
 import java.lang.ref.WeakReference;
 
-class MyHandler extends Handler {
+public class MyHandler extends Handler {
 
     WeakReference wrActivity;
 
-    MyHandler(WebActivity activity) {
+    public MyHandler(WebActivity activity) {
         wrActivity = new WeakReference<>(activity);
     }
 

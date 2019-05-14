@@ -9,6 +9,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.newsaggregator.R;
+import com.example.newsaggregator.data.preference.Preference;
 
 public class AddSiteActivity extends AppCompatActivity {
 
@@ -18,10 +19,15 @@ public class AddSiteActivity extends AppCompatActivity {
     TextView textView3;
     TextView textView4;
 
+    Preference preference;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_site);
+
+        preference = new Preference(AddSiteActivity.this);
+        preference.setLastScreen("AddSiteActivity");
 
         editText = findViewById(R.id.editSiteAddress);
         textView1 = findViewById(R.id.textView2);
@@ -33,6 +39,8 @@ public class AddSiteActivity extends AppCompatActivity {
     public void onClick(View view) {
         Intent intent = new Intent(this, WebActivity.class);
         intent.putExtra("url", editText.getText().toString());
+        preference.setLastSite(editText.getText()
+                                       .toString());
         startActivity(intent);
     }
 

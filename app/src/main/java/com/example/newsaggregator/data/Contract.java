@@ -27,6 +27,8 @@ public class Contract {
         public static final String PREFERENCES_FILE = "my_settings_3";
         public static final String PREFERENCES_TIME_REFRESH = "refresher";
         public static final String PREFERENCES_NOTIFICATION = "notification";
+        public static final String PREFERENCES_LAST_SCREEN = "lastScreen";
+        public static final String PREFERENCES_LAST_SITE = "lastSite";
 
         public final static String REFRESH_TIME = "com.example.newsAggregator.REFRESH_TIME";
 

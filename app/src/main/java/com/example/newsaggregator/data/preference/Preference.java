@@ -34,5 +34,25 @@ public class Preference {
         editor.putBoolean(Contract.Entry.PREFERENCES_NOTIFICATION, notification);
         editor.apply();
     }
+
+    public String getLastScreen() {
+        return settings.getString(Contract.Entry.PREFERENCES_LAST_SCREEN, "MainActivity");
+    }
+
+    public void setLastScreen(String lastScreen) {
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putString(Contract.Entry.PREFERENCES_LAST_SCREEN, lastScreen);
+        editor.apply();
+    }
+
+    public String getLastSite() {
+        return settings.getString(Contract.Entry.PREFERENCES_LAST_SITE, "www.yandex.ru");
+    }
+
+    public void setLastSite(String lastSite) {
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putString(Contract.Entry.PREFERENCES_LAST_SITE, lastSite);
+        editor.apply();
+    }
 }
 

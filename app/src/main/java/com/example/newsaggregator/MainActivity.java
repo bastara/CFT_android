@@ -7,6 +7,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 
+import com.example.newsaggregator.activity.WebActivity;
 import com.example.newsaggregator.data.Contract;
 import com.example.newsaggregator.worker.MyWorker;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -43,20 +44,17 @@ import com.example.newsaggregator.activity.NewsActivity;
 import com.example.newsaggregator.activity.RefreshActivity;
 import com.example.newsaggregator.adapter.NewsAdapter;
 
+import java.net.ConnectException;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, NewsAdapter.ItemClickListener {
 
-
-    //TODO проверить закрытие ресурсов.
     private TextView refreshTextView;
     private TextView notificationTextView;
 
-
     private NewsAdapter adapter;
-
     private RecyclerView recyclerView;
 
     Preference preference;
@@ -75,6 +73,7 @@ public class MainActivity extends AppCompatActivity
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         final Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -122,12 +121,37 @@ public class MainActivity extends AppCompatActivity
         handler = new MyHandlerMainActivity(this);
 
         doWorkManager();
+
+        switch (preference.getLastScreen()) {
+            case "AddSiteActivity":
+                Intent intent = new Intent(MainActivity.this,
+                        AddSiteActivity.class);
+                startActivity(intent);
+                break;
+            case "DeleteSiteActivity":
+                intent = new Intent(MainActivity.this,
+                        DeleteSiteActivity.class);
+                startActivity(intent);
+                break;
+            case "WebActivity":
+                intent = new Intent(MainActivity.this,
+                        WebActivity.class);
+                intent.putExtra("url", preference.getLastSite());
+                startActivity(intent);
+                break;
+            default:
+                break;
+        }
     }
 
     @Override
     protected void onResume() {
         super.onResume();
 
+        refreshData();
+    }
+
+    private void refreshData() {
         DBRequest dbRequest = new DBRequest(MainActivity.this);
 
         Cursor cursor = dbRequest.getCursorNews();
@@ -137,6 +161,8 @@ public class MainActivity extends AppCompatActivity
         adapter = new NewsAdapter(this, cursor);
         adapter.setClickListener(this);
         recyclerView.setAdapter(adapter);
+
+        preference.setLastScreen("MainActivity");
 
         Log.d(Contract.Entry.TAG, "ONRESUME");
     }
@@ -149,14 +175,6 @@ public class MainActivity extends AppCompatActivity
         WorkManager.getInstance()
                    .enqueueUniquePeriodicWork
                            ("Refresh News", ExistingPeriodicWorkPolicy.REPLACE, request);
-//        LiveData<WorkInfo> info = WorkManager.getInstance().getWorkInfoByIdLiveData(request.getId());
-//        info.observe(this, new Observer<WorkInfo>() {
-//            @Override
-//            public void onChanged(@Nullable WorkInfo workInfo) {
-//                Log.d(MyWorker.TAG, "onChanged " + Thread.currentThread().getName() + " " + workInfo.getState());
-//            }
-//        });
-
     }
 
     private String timeRefreshMenu(int time) {
@@ -225,8 +243,13 @@ public class MainActivity extends AppCompatActivity
 
         if (id == R.id.nav_upDate) {
             Update update = new Update();
-            update.upDate(MainActivity.this, true);
-
+            try {
+                update.upDate(MainActivity.this, true);
+            } catch (ConnectException e) {
+                Toast.makeText(this, "Проверьте подключение к интернету", Toast.LENGTH_SHORT)
+                     .show();
+                e.printStackTrace();
+            }
             //TODO не обновляется, потоки.
             //TODO возм надо новый поток
             onPause();

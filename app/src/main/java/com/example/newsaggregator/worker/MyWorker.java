@@ -9,6 +9,7 @@ import androidx.work.WorkerParameters;
 
 import com.example.newsaggregator.network.Update;
 
+import java.net.ConnectException;
 import java.util.concurrent.TimeUnit;
 
 public class MyWorker extends Worker {
@@ -21,12 +22,18 @@ public class MyWorker extends Worker {
     @NonNull
     @Override
     public Result doWork() {
-        Log.d(TAG, "doWork: start " + Thread.currentThread().getName());
-//TODO проверить потоки
+        Log.d(TAG, "worker: start " + Thread.currentThread()
+                                            .getName());
         Update update = new Update();
-        update.upDate(getApplicationContext(), false);
+        try {
+            update.upDate(getApplicationContext(), false);
+            Log.d(TAG, "worker: end " + Thread.currentThread()
+                                              .getName());
+            return Result.success();
+        } catch (ConnectException e) {
+            e.printStackTrace();
+        }
 
-        Log.d(TAG, "doWork: end " + Thread.currentThread().getName());
-        return Result.success();
+        return Result.failure();
     }
 }
