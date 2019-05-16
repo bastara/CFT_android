@@ -61,13 +61,18 @@ public class WebActivity extends AppCompatActivity {
     }
 
     public void handleMessage(android.os.Message msg) {
-        Toast.makeText(getApplicationContext(), url, Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext(), url, Toast.LENGTH_SHORT)
+             .show();
         if (msg.what == Contract.Entry.SOURCE_ADDED) {
-            Toast.makeText(getApplicationContext(), "RSS файл добавлен в вашу библиотеку", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "Ресурс добавлен в вашу библиотеку", Toast.LENGTH_SHORT)
+                 .show();
         } else if (msg.what == Contract.Entry.SOURCE_ALREADY_ADDED) {
-            Toast.makeText(getApplicationContext(), "Данный ресурс уже добавлен!", Toast.LENGTH_SHORT).show();
-        } else {
-            Toast.makeText(getApplicationContext(), "Это не RSS файл", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "Данный ресурс уже добавлен!", Toast.LENGTH_SHORT)
+                 .show();
+        }
+        if (msg.what == Contract.Entry.SOURCE_NOT_VALID) {
+            Toast.makeText(getApplicationContext(), "Это не RSS-ATOM ресурс", Toast.LENGTH_SHORT)
+                 .show();
         }
     }
 
@@ -104,7 +109,8 @@ public class WebActivity extends AppCompatActivity {
             });
             thread.start();
         } else {
-            Toast.makeText(getApplicationContext(), "Дождитесь полной загрузки страницы!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "Дождитесь полной загрузки страницы!", Toast.LENGTH_SHORT)
+                 .show();
         }
     }
 
@@ -121,7 +127,8 @@ public class WebActivity extends AppCompatActivity {
         @TargetApi(Build.VERSION_CODES.N)
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
-            view.loadUrl(request.getUrl().toString());
+            view.loadUrl(request.getUrl()
+                                .toString());
             return true;
         }
 
@@ -134,7 +141,8 @@ public class WebActivity extends AppCompatActivity {
         @Override
         public void onPageFinished(WebView view, String url) {
             super.onPageFinished(view, url);
-            Toast.makeText(getApplicationContext(), "Страница загружена!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "Страница загружена!", Toast.LENGTH_SHORT)
+                 .show();
             WebActivity.this.url = url;
             pageIsLoaded = true;
         }
@@ -143,7 +151,7 @@ public class WebActivity extends AppCompatActivity {
         public void onPageStarted(WebView view, String url, Bitmap favicon) {
             super.onPageStarted(view, url, favicon);
             Toast.makeText(getApplicationContext(), "Начата загрузка страницы", Toast.LENGTH_SHORT)
-                    .show();
+                 .show();
             pageIsLoaded = false;
         }
     }
@@ -157,7 +165,7 @@ public class WebActivity extends AppCompatActivity {
             this.src = src;
         }
 
-        void addPage() {
+        String addPage() {
             DBAdapter DBAdapter = (DBAdapter) context.getApplicationContext();
             SQLiteDatabase dataBase = DBAdapter.getDatabase();
 
@@ -177,21 +185,20 @@ public class WebActivity extends AppCompatActivity {
                 if (rowID == -1) {
                     Log.d(TAG, "Данный ресурс уже добавлен ");
                     handler.sendEmptyMessage(Contract.Entry.SOURCE_ALREADY_ADDED);
-                    return;
                 } else {
                     handler.sendEmptyMessage(Contract.Entry.SOURCE_ADDED);
                     Log.d(TAG, "НОМЕР ЗАПИСИ САЙТА = " + rowID);
                 }
             } catch (SQLException t) {
                 Log.d(TAG, "Ошибка при добалении адреса в базу данных: " + t.toString());
-                return;
             }
-            doWork(src, context);
+//            doWork(src, context);
+            return src;
         }
 
-        private void doWork(final String src, final Context context) {
-            ParseXML.parseXML(src, context);
-        }
+//        private void doWork(final String src, final Context context) {
+//            ParseXML.parseXML(src, context);
+//        }
     }
 
     class CheckRSS {
@@ -202,22 +209,32 @@ public class WebActivity extends AppCompatActivity {
         }
 
         void checkRSS() {
-            System.out.println("Поток начал работу:::" + Thread.currentThread().getName());
+            System.out.println("Поток начал работу:::" + Thread.currentThread()
+                                                               .getName());
             try {
                 URL url = new URL(link);
-                InputStream inputStream = url.openConnection().getInputStream();
+                InputStream inputStream = url.openConnection()
+                                             .getInputStream();
 
                 ByteArrayOutputStream result = new ByteArrayOutputStream();
                 byte[] buffer = new byte[224];
                 int length;
-                Log.d(TAG, "Начало проверки РСС: ");
+                Log.d(TAG, "Начало проверки RSS-ATOM: ");
                 if ((length = inputStream.read(buffer)) != -1) {
-                    Log.d(TAG, "итерация проверки РСС: ");
+                    Log.d(TAG, "итерация проверки : ");
                     result.write(buffer, 0, length);
-                    if (result.toString("UTF-8").contains("rss")) {
+                    if (result.toString("UTF-8")
+                              .toLowerCase()
+                              .contains("rss")) {
                         Log.d(TAG, result.toString("UTF-8"));
                         AddPage addPage = new AddPage(link, WebActivity.this);
-                        addPage.addPage();
+                        ParseXML.parseXML(addPage.addPage(), getApplicationContext().getApplicationContext());
+                    } else if (result.toString("UTF-8")
+                                     .toLowerCase()
+                                     .contains("atom")) {
+                        Log.d(TAG, result.toString("UTF-8"));
+                        AddPage addPage = new AddPage(link, WebActivity.this);
+                        ParseAtom.parseAtom(addPage.addPage(), getApplicationContext().getApplicationContext());
                     } else {
                         handler.sendEmptyMessage(0);
                     }

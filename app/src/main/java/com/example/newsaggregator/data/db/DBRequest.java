@@ -1,18 +1,17 @@
-package com.example.newsaggregator;
+package com.example.newsaggregator.data.db;
 
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.example.newsaggregator.data.Contract;
-import com.example.newsaggregator.data.db.DBAdapter;
 
 public class DBRequest {
-    private SQLiteDatabase dataBase;
+    public SQLiteDatabase dataBase;
 
     public DBRequest(Context context) {
-        DBAdapter dbAdapter = (DBAdapter) context.getApplicationContext();
-        dataBase = dbAdapter.getDatabase();
+        DBHelper dbHelper = new DBHelper(context);
+        dataBase = dbHelper.getWritableDatabase();
     }
 
     public Cursor getCursorNews() {

@@ -11,7 +11,6 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.example.newsaggregator.MainActivity;
 import com.example.newsaggregator.R;
 import com.example.newsaggregator.data.preference.Preference;
 
@@ -22,6 +21,8 @@ public class AddSiteActivity extends AppCompatActivity {
     TextView textView2;
     TextView textView3;
     TextView textView4;
+    TextView textView7;
+    TextView textView8;
 
     Preference preference;
 
@@ -41,6 +42,8 @@ public class AddSiteActivity extends AppCompatActivity {
         textView2 = findViewById(R.id.textView3);
         textView3 = findViewById(R.id.textView4);
         textView4 = findViewById(R.id.textView5);
+        textView7 = findViewById(R.id.textView7);
+        textView8 = findViewById(R.id.textView8);
     }
 
     public void onClick(View view) {
@@ -49,19 +52,6 @@ public class AddSiteActivity extends AppCompatActivity {
                                        .toString());
         preference.setLastSite(editText.getText()
                                        .toString());
-        preference.setUserURL(editText.getText()
-                                      .toString());
-        startActivity(intent);
-    }
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        preference.setUserURL(editText.getText()
-                                      .toString());
-        Intent intent = new Intent(AddSiteActivity.this,
-                MainActivity.class);
-        preference.setLastScreen("MainActivity");
         startActivity(intent);
     }
 
@@ -98,6 +88,16 @@ public class AddSiteActivity extends AppCompatActivity {
 
     public void onClick5(View view) {
         editText.setText(textView4.getText()
+                                  .toString());
+    }
+
+    public void onClick7(View view) {
+        editText.setText(textView7.getText()
+                                  .toString());
+    }
+
+    public void onClick8(View view) {
+        editText.setText(textView8.getText()
                                   .toString());
     }
 }

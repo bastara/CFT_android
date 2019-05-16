@@ -37,8 +37,9 @@ public class Contract {
         public final static String REFRESH_TIME = "com.example.newsAggregator.REFRESH_TIME";
 
         //Check status
-        public static final int SOURCE_ALREADY_ADDED = 1;
         public static final int SOURCE_ADDED = 2;
+        public static final int SOURCE_ALREADY_ADDED = 1;
+        public static final int SOURCE_NOT_VALID = 0;
 
     }
 }

@@ -9,6 +9,8 @@ import androidx.annotation.NonNull;
 
 import com.example.newsaggregator.activity.WebActivity;
 import com.example.newsaggregator.data.Contract;
+import com.example.newsaggregator.data.db.DBAdapter;
+import com.example.newsaggregator.data.db.DBRequest;
 import com.example.newsaggregator.worker.MyWorker;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
@@ -154,9 +156,13 @@ public class MainActivity extends AppCompatActivity
     private void refreshData() {
         initializeCountDrawer(timeRefreshMenu(preference.getTimeRefresh()), preference.getNotification());
 
-        DBRequest dbRequest = new DBRequest(MainActivity.this);
+//        DBRequest dbRequest = new DBRequest(MainActivity.this);
+        DBAdapter dbAdapter = (DBAdapter) getApplication();
 
-        Cursor cursor = dbRequest.getCursorNews();
+//        Cursor cursor = dbRequest.getCursorNews();
+        Cursor cursor = dbAdapter.dbRequest.getCursorNews();
+
+
 
         recyclerView = findViewById(R.id.recyclerViewMain);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));

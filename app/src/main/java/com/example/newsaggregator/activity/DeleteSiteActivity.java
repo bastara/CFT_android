@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 
 import android.widget.Toast;
 
-import com.example.newsaggregator.DBRequest;
+import com.example.newsaggregator.data.db.DBRequest;
 import com.example.newsaggregator.data.Contract;
 import com.example.newsaggregator.data.db.DBAdapter;
 import com.example.newsaggregator.R;
