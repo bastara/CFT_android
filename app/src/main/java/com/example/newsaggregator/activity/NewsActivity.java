@@ -40,7 +40,7 @@ public class NewsActivity extends AppCompatActivity {
         String name = cursor.getString(cursor.getColumnIndex(Contract.Entry.COLUMN_TITLE));
         String date = cursor.getString(cursor.getColumnIndex(Contract.Entry.COLUMN_PUB_DATE)).substring(0, 16);
         String link = cursor.getString(cursor.getColumnIndex(Contract.Entry.COLUMN_LINK_NEWS));
-        link = link.substring(link.indexOf("//") + 2, link.indexOf(("/"), 8));
+//        link = link.substring(link.indexOf("//") + 2, link.indexOf(("/"), 8));
         String text = cursor.getString(cursor.getColumnIndex(Contract.Entry.COLUMN_DESCRIPTION));
 
         nameText.setText(name);

@@ -10,7 +10,6 @@ import androidx.annotation.NonNull;
 import com.example.newsaggregator.activity.WebActivity;
 import com.example.newsaggregator.data.Contract;
 import com.example.newsaggregator.data.db.DBAdapter;
-import com.example.newsaggregator.data.db.DBRequest;
 import com.example.newsaggregator.worker.MyWorker;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
@@ -27,6 +26,7 @@ import androidx.work.PeriodicWorkRequest;
 import androidx.work.WorkManager;
 
 import android.os.Handler;
+import android.os.Parcelable;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
@@ -63,8 +63,13 @@ public class MainActivity extends AppCompatActivity
 
     Handler handler;
 
+    Parcelable listState;
+    private Bundle recyclerViewState;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+
 //        setTheme(R.style.AppThemeLight);
 
 //        LinearLayout linearLayout = findViewById(R.id.SSS);
@@ -157,11 +162,13 @@ public class MainActivity extends AppCompatActivity
         initializeCountDrawer(timeRefreshMenu(preference.getTimeRefresh()), preference.getNotification());
 
 //        DBRequest dbRequest = new DBRequest(MainActivity.this);
+
+// почему так не создается экземпляр???
+//        DBAdapter dbAdapter = new DBAdapter();
         DBAdapter dbAdapter = (DBAdapter) getApplication();
 
 //        Cursor cursor = dbRequest.getCursorNews();
         Cursor cursor = dbAdapter.dbRequest.getCursorNews();
-
 
 
         recyclerView = findViewById(R.id.recyclerViewMain);
@@ -173,7 +180,14 @@ public class MainActivity extends AppCompatActivity
         preference.setLastScreen("MainActivity");
 
         Log.d(Contract.Entry.TAG, "ONRESUME");
+
+
+        if (listState != null) {
+            Objects.requireNonNull(recyclerView.getLayoutManager())
+                   .onRestoreInstanceState(listState);
+        }
     }
+
 
     private void doWorkManager() {
         PeriodicWorkRequest request = new PeriodicWorkRequest.Builder
@@ -285,10 +299,6 @@ public class MainActivity extends AppCompatActivity
             Intent questionIntent = new Intent(MainActivity.this,
                     RefreshActivity.class);
             startActivityForResult(questionIntent, 0);
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
         }
 
         if (!fromNotification) {
@@ -306,7 +316,6 @@ public class MainActivity extends AppCompatActivity
         } else {
         }
     }
-
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -340,5 +349,25 @@ public class MainActivity extends AppCompatActivity
 
     public void onClickTop(MenuItem item) {
         recyclerView.smoothScrollToPosition(0);
+
     }
+
+    protected void onSaveInstanceState(Bundle state) {
+        super.onSaveInstanceState(state);
+
+        listState = Objects.requireNonNull(recyclerView.getLayoutManager())
+                           .onSaveInstanceState();
+        state.putParcelable(Contract.Entry.KEY_RECYCLER_STATE, listState);
+    }
+
+    protected void onRestoreInstanceState(Bundle state) {
+        super.onRestoreInstanceState(state);
+
+        if (state != null)
+            listState = state.getParcelable(Contract.Entry.KEY_RECYCLER_STATE);
+    }
+
 }
+
+
+

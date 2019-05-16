@@ -9,6 +9,9 @@ public class Contract {
         //TAG
         public static final String TAG = "rss";
 
+        //Bundle
+        public static final String KEY_RECYCLER_STATE = "recycler_state";
+
         //DB
         public static final String DATABASE_NAME = "RSSDB22";
         public static final int DATABASE_VERSION = 1;

@@ -23,7 +23,6 @@
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <action android:name="android.intent.action.VIEW" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -33,6 +32,7 @@
         <activity
             android:name=".activity.AddSiteActivity"
             android:label="@string/add_site" />
+
         <activity
             android:name=".activity.WebActivity"
             android:configChanges="orientation|screenSize"
@@ -46,3 +46,6 @@
     </application>
 
 </manifest>
+
+
+    <!--<intent-filter android:label="@string/app_name">--><!--<action android:name="android.intent.action.SEND"/>--><!--<category android:name="android.intent.category.DEFAULT"/>--><!--<category android:name="android.intent.category.BROWSABLE" />--><!--<data android:mimeType="text/plain"/>--><!--</intent-filter>--><!--<intent-filter android:label="Easy News">--><!--<action android:name="android.intent.action.VIEW" />--><!--<category android:name="android.intent.category.DEFAULT" />--><!--<category android:name="android.intent.category.BROWSABLE" />--><!--<data--><!--android:host="news.yandex.ru"--><!--android:pathPattern="/.*.rss"--><!--android:scheme="https" />--><!--<data--><!--android:host="news.google.com"--><!--android:pathPattern="/.*/.*rss"--><!--android:scheme="https" />--><!--<data--><!--android:pathPattern="/.*/.*/.*rss"--><!--android:scheme="https" />--><!--</intent-filter>-->
