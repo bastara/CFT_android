@@ -64,7 +64,6 @@ public class MainActivity extends AppCompatActivity
     Handler handler;
 
     Parcelable listState;
-    private Bundle recyclerViewState;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -181,13 +180,11 @@ public class MainActivity extends AppCompatActivity
 
         Log.d(Contract.Entry.TAG, "ONRESUME");
 
-
         if (listState != null) {
             Objects.requireNonNull(recyclerView.getLayoutManager())
                    .onRestoreInstanceState(listState);
         }
     }
-
 
     private void doWorkManager() {
         PeriodicWorkRequest request = new PeriodicWorkRequest.Builder

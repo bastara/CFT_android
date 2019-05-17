@@ -186,8 +186,8 @@ public class WebActivity extends AppCompatActivity {
                 Log.d(TAG, "Вношу данные БД сайта");
                 long rowID = dataBase.insert(Contract.Entry.TABLE_SITES, null, cv);
                 if (rowID == -1) {
-                    Log.d(TAG, "Данный ресурс уже добавлен ");
                     handler.sendEmptyMessage(Contract.Entry.SOURCE_ALREADY_ADDED);
+                    Log.d(TAG, "Данный ресурс уже добавлен ");
                 } else {
                     handler.sendEmptyMessage(Contract.Entry.SOURCE_ADDED);
                     Log.d(TAG, "НОМЕР ЗАПИСИ САЙТА = " + rowID);
@@ -198,10 +198,6 @@ public class WebActivity extends AppCompatActivity {
 //            doWork(src, context);
             return src;
         }
-
-//        private void doWork(final String src, final Context context) {
-//            ParseXML.parseXML(src, context);
-//        }
     }
 
     class CheckRSS {
