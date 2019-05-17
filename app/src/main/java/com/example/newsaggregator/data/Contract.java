@@ -13,7 +13,7 @@ public class Contract {
         public static final String KEY_RECYCLER_STATE = "recycler_state";
 
         //DB
-        public static final String DATABASE_NAME = "RSSDB22";
+        public static final String DATABASE_NAME = "RSSDB24";
         public static final int DATABASE_VERSION = 1;
 
         public static final String TABLE_NEWS = "news";
@@ -27,6 +27,8 @@ public class Contract {
         public static final String COLUMN_URL = "url";
 
         public static final String TABLE_SITES = "tableOfSite";
+
+        public static final String COLUMN_TYPE_RESOURCE = "type";
 
         //Preference
         public static final String PREFERENCES_FILE = "my_settings_3";

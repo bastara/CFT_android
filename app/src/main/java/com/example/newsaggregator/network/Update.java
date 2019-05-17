@@ -10,6 +10,7 @@ import android.util.Log;
 
 import androidx.core.app.NotificationCompat;
 
+import com.example.newsaggregator.activity.ParseAtom;
 import com.example.newsaggregator.data.db.DBRequest;
 import com.example.newsaggregator.MainActivity;
 import com.example.newsaggregator.R;
@@ -88,7 +89,12 @@ public class Update {
                         notificationManager.notify(1, builder.build());
 
                         String url = cursor.getString(cursor.getColumnIndex(Contract.Entry.COLUMN_URL));
-                        ParseXML.parseXML(url, context);
+                        String type = cursor.getString(cursor.getColumnIndex(Contract.Entry.COLUMN_TYPE_RESOURCE));
+                        if (type.equals("RSS")) {
+                            ParseXML.parseXML(url, context);
+                        } else {
+                            ParseAtom.parseAtom(url, context);
+                        }
                         cursor.moveToNext();
                     }
                     builder.setProgress(0, 10, false)

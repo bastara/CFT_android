@@ -16,9 +16,9 @@ import org.xmlpull.v1.XmlPullParser;
 import java.io.InputStream;
 import java.net.URL;
 
-class ParseAtom {
+public class ParseAtom {
 
-    static void parseAtom(final String src, final Context context) {
+    public static void parseAtom(final String src, final Context context) {
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -93,15 +93,21 @@ class ParseAtom {
                     }
 
                     // Проверкак обновления новостей
-//                    if (tmpStr.equals("http://2tura.ru/2лл019/05/10/%d0%b2%d0%b8%d0%b4-%d0%bd%d0%b0-%d0%b4%d0%be%d0%bb%d0%b8%d0%bd%d1%83-%d0%bd%d0%be%d1%80%d0%b2%d0%b5%d0%b3%d0%b8%d1%8f/")) {
+//                    if (tmpStr.equals("http://fratria.ru/news/2019/05/15/spartak_vedet_peregovory_s_genkom_o_perekhode_khavbeka/")) {
 //                        tmpStr = null;
 //                        cv.put(Contract.Entry.COLUMN_LINK_NEWS, tmpStr);
+//                        parser.next();
 //                        continue;
+//
+//
+////                        String s = "sssss" + "dddd";
+////                        String k = s;
 //                    }
-//                    cursor = database.query(Contract.Entry.TABLE_NEWS, null, Contract.Entry.COLUMN_LINK_NEWS + "=?", new String[]{tmpStr}, null, null, null);
+
                     cursor = dbRequest.getCursorCheckSite(tmpStr);
                     if (cursor.moveToFirst()) {
                         Log.d(Contract.Entry.TAG, "Данная новость уже добавлена " + tmpStr);
+                        parser.next();
                         continue;
                     }
                     cv.put(Contract.Entry.COLUMN_LINK_NEWS, tmpStr);
@@ -114,10 +120,12 @@ class ParseAtom {
                         && isEntry) {
                     cv.put(Contract.Entry.COLUMN_DESCRIPTION, parser.getText()
                                                                     .replaceAll("\\<.*?\\>", "")
-                                                                    .replaceAll("\n", " "));
+                                                                    .replaceAll("\n", " ")
+                                                                    .replace("&quot;", "\""));
                     Log.d(Contract.Entry.TAG, "summary   " + parser.getText()
                                                                    .replaceAll("\\<.*?\\>", "")
-                                                                   .replaceAll("\n", " "));
+                                                                   .replaceAll("\n", " ")
+                                                                   .replace("&quot;", "\""));
                 }
 
                 if (parser.getEventType() == XmlPullParser.START_TAG
@@ -127,10 +135,12 @@ class ParseAtom {
                         && isEntry) {
                     cv.put(Contract.Entry.COLUMN_DESCRIPTION, parser.getText()
                                                                     .replaceAll("\\<.*?\\>", "")
-                                                                    .replaceAll("\n", " "));
+                                                                    .replaceAll("\n", " ")
+                                                                    .replace("&quot;", "\""));
                     Log.d(Contract.Entry.TAG, "content   " + parser.getText()
                                                                    .replaceAll("\\<.*?\\>", "")
-                                                                   .replaceAll("\n", " "));
+                                                                   .replaceAll("\n", " ")
+                                                                   .replace("&quot;", "\""));
                 }
 
                 if (parser.getEventType() == XmlPullParser.START_TAG

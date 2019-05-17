@@ -23,11 +23,15 @@
     <autoscroll-to-editor value="false" />
     <autoscroll-from-editor value="true" />
     <show-object-properties value="false" />
-    <loaded-nodes />
+    <loaded-nodes>
+      <connection connection-id="b93e2654-d4a5-4385-a4e5-59dedd371fe6">
+        <schema name="main" object-types="column, table, view" />
+      </connection>
+    </loaded-nodes>
   </component>
   <component name="DBNavigator.Project.DatabaseConsoleManager">
     <connection id="b93e2654-d4a5-4385-a4e5-59dedd371fe6">
-      <console name="Connection" type="STANDARD" schema="main" session="Main"><![CDATA[select * from news limit 200, 200;
+      <console name="Connection" type="STANDARD" schema="main" session="Main"><![CDATA[select * from news limit 0, 200;
 
 
 
@@ -43,21 +47,21 @@ delete from news;
 SELECT rowid, id FROM news;]]></console>
     </connection>
     <connection id="d242a603-28e8-48c8-903b-46561fbbb12e">
-      <console name="Connection 12" type="STANDARD" schema="main" session="Main"><![CDATA[select * from news limit 0, 200;
+      <console name="Connection 12" type="STANDARD" schema="main" session="Main">select * from news limit 0, 200;
 
-delete from news where link="http://www.garant.ru/article/1265576/"
+delete from news where link=&quot;http://www.garant.ru/article/1265576/&quot;
 
 
 
-select * from "tableOfSite";
-insert into "tableOfSite"(url_rss) values ("sssddd");
+select * from &quot;tableOfSite&quot;;
+insert into &quot;tableOfSite&quot;(url_rss) values (&quot;sssddd&quot;);
 
 
 
 
 delete from news;
 
-select rowid, id from news;]]></console>
+select rowid, id from news;</console>
     </connection>
   </component>
   <component name="DBNavigator.Project.DatabaseFileManager">
@@ -105,7 +109,7 @@ select rowid, id from news;]]></console>
           <port value="" />
           <database value="" />
           <files>
-            <file path="C:\Users\Shurik\Documents\AndroidStudio\DeviceExplorer\unknown-custom_phone-192.168.19.101_5555\data\data\com.example.newsaggregator\databases\RSSDB11" schema="main" />
+            <file path="C:\Users\Shurik\Documents\AndroidStudio\DeviceExplorer\unknown-custom_phone-192.168.19.101_5555\data\data\com.example.newsaggregator\databases\RSSDB24" schema="main" />
           </files>
           <os-authentication value="false" />
           <empty-authentication value="false" />

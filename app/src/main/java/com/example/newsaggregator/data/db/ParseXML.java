@@ -15,6 +15,7 @@ import java.io.InputStream;
 import java.net.URL;
 
 public class ParseXML {
+
     public static void parseXML(final String src, final Context context) {
         Thread thread = new Thread(new Runnable() {
             @Override
@@ -35,7 +36,8 @@ public class ParseXML {
 
         try {
             URL url = new URL(src);
-            InputStream inputStream = url.openConnection().getInputStream();
+            InputStream inputStream = url.openConnection()
+                                         .getInputStream();
 
             XmlPullParser parser = Xml.newPullParser();
             parser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false);
@@ -44,14 +46,16 @@ public class ParseXML {
             boolean isItem = false;
             while (parser.getEventType() != XmlPullParser.END_DOCUMENT) {
                 if (parser.getEventType() == XmlPullParser.START_TAG
-                        && parser.getName().equals("item")) {
+                        && parser.getName()
+                                 .equals("item")) {
                     isItem = true;
                     parser.next();
                     continue;
                 }
 
                 if (parser.getEventType() == XmlPullParser.END_TAG
-                        && parser.getName().equals("item")) {
+                        && parser.getName()
+                                 .equals("item")) {
                     Log.d(Contract.Entry.TAG, "Вношу данные БД ");
                     cv.put(Contract.Entry.COLUMN_URL, src);
                     if (cv.get(Contract.Entry.COLUMN_LINK_NEWS) != null) {
@@ -64,46 +68,56 @@ public class ParseXML {
                 }
 
                 if (parser.getEventType() == XmlPullParser.START_TAG
-                        && parser.getName().equals("title")
+                        && parser.getName()
+                                 .equals("title")
                         && parser.next() == XmlPullParser.TEXT
                         && isItem) {
                     cv.put(Contract.Entry.COLUMN_TITLE, parser.getText());
                 }
                 if (parser.getEventType() == XmlPullParser.START_TAG
-                        && parser.getName().equals("link")
+                        && parser.getName()
+                                 .equals("link")
                         && parser.next() == XmlPullParser.TEXT
                         && isItem) {
                     String tmpStr = parser.getText();
 
 
                     // Проверкак обновления новостей
-//                    if (tmpStr.equals("http://2tura.ru/2лл019/05/10/%d0%b2%d0%b8%d0%b4-%d0%bd%d0%b0-%d0%b4%d0%be%d0%bb%d0%b8%d0%bd%d1%83-%d0%bd%d0%be%d1%80%d0%b2%d0%b5%d0%b3%d0%b8%d1%8f/")) {
+//                    if (tmpStr.equals("http://www.garant.ru/news/1272770/")) {
 //                        tmpStr = null;
 //                        cv.put(Contract.Entry.COLUMN_LINK_NEWS, tmpStr);
+//                        parser.next();
 //                        continue;
 //                    }
-//                    cursor = database.query(Contract.Entry.TABLE_NEWS, null, Contract.Entry.COLUMN_LINK_NEWS + "=?", new String[]{tmpStr}, null, null, null);
+
                     cursor = dbRequest.getCursorCheckSite(tmpStr);
                     if (cursor.moveToFirst()) {
                         Log.d(Contract.Entry.TAG, "Данная новость уже добавлена " + tmpStr);
+                        parser.next();
                         continue;
                     }
                     cv.put(Contract.Entry.COLUMN_LINK_NEWS, tmpStr);
                 }
                 if (parser.getEventType() == XmlPullParser.START_TAG
-                        && parser.getName().equals("description")
+                        && parser.getName()
+                                 .equals("description")
                         && parser.next() == XmlPullParser.TEXT
                         && isItem) {
-                    cv.put(Contract.Entry.COLUMN_DESCRIPTION, parser.getText().replaceAll("\\<.*?\\>", "").replaceAll("\n", " "));
+                    cv.put(Contract.Entry.COLUMN_DESCRIPTION, parser.getText()
+                                                                    .replaceAll("\\<.*?\\>", "")
+                                                                    .replaceAll("\n", " ")
+                                                                    .replace("&quot;", "\""));
                 }
                 if (parser.getEventType() == XmlPullParser.START_TAG
-                        && parser.getName().equals("category")
+                        && parser.getName()
+                                 .equals("category")
                         && parser.next() == XmlPullParser.TEXT
                         && isItem) {
                     cv.put(Contract.Entry.COLUMN_CATEGORY, parser.getText());
                 }
                 if (parser.getEventType() == XmlPullParser.START_TAG
-                        && parser.getName().equals("pubDate")
+                        && parser.getName()
+                                 .equals("pubDate")
                         && parser.next() == XmlPullParser.TEXT
                         && isItem) {
                     cv.put(Contract.Entry.COLUMN_PUB_DATE, parser.getText());

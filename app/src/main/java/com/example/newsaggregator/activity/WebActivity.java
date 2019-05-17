@@ -159,10 +159,12 @@ public class WebActivity extends AppCompatActivity {
     public class AddPage {
         Context context;
         String src;
+        String type;
 
-        AddPage(String src, Context context) {
+        AddPage(String src, String type, Context context) {
             this.context = context;
             this.src = src;
+            this.type = type;
         }
 
         String addPage() {
@@ -177,8 +179,9 @@ public class WebActivity extends AppCompatActivity {
             }
 
             try {
-                Log.d(TAG, "Добавляю в источники RSS " + src);
+                Log.d(TAG, "Добавляю ресурсы  " + src);
                 cv.put(Contract.Entry.COLUMN_URL, src);
+                cv.put(Contract.Entry.COLUMN_TYPE_RESOURCE, type);
 
                 Log.d(TAG, "Вношу данные БД сайта");
                 long rowID = dataBase.insert(Contract.Entry.TABLE_SITES, null, cv);
@@ -227,13 +230,13 @@ public class WebActivity extends AppCompatActivity {
                               .toLowerCase()
                               .contains("rss")) {
                         Log.d(TAG, result.toString("UTF-8"));
-                        AddPage addPage = new AddPage(link, WebActivity.this);
+                        AddPage addPage = new AddPage(link, "RSS", WebActivity.this);
                         ParseXML.parseXML(addPage.addPage(), getApplicationContext().getApplicationContext());
                     } else if (result.toString("UTF-8")
                                      .toLowerCase()
                                      .contains("atom")) {
                         Log.d(TAG, result.toString("UTF-8"));
-                        AddPage addPage = new AddPage(link, WebActivity.this);
+                        AddPage addPage = new AddPage(link, "ATOM", WebActivity.this);
                         ParseAtom.parseAtom(addPage.addPage(), getApplicationContext().getApplicationContext());
                     } else {
                         handler.sendEmptyMessage(0);
