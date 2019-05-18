@@ -6,16 +6,21 @@ import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.view.View;
-import android.widget.RadioButton;
 
 import com.example.newsaggregator.R;
 import com.example.newsaggregator.data.Contract;
 import com.example.newsaggregator.data.preference.Preference;
 
 public class RefreshActivity extends AppCompatActivity {
-
+    Preference preference;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        preference = new Preference(RefreshActivity.this);
+
+        if (preference.getTheme()) {
+            setTheme(R.style.DT);
+        }
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_refresh);
     }

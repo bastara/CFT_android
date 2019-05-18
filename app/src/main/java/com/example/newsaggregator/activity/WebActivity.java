@@ -8,6 +8,7 @@ import android.content.res.Configuration;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -26,6 +27,7 @@ import com.example.newsaggregator.data.Contract;
 import com.example.newsaggregator.MyApplication;
 import com.example.newsaggregator.MainActivity;
 import com.example.newsaggregator.R;
+import com.example.newsaggregator.data.db.ParseAtom;
 import com.example.newsaggregator.data.db.ParseXML;
 import com.example.newsaggregator.data.preference.Preference;
 import com.example.newsaggregator.handler.HandlerInterface;
@@ -35,6 +37,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.util.Objects;
 
 import static android.content.ContentValues.TAG;
 
@@ -45,8 +48,18 @@ public class WebActivity extends AppCompatActivity implements HandlerInterface {
     Preference preference;
 
     public void onCreate(Bundle savedInstanceState) {
+        preference = new Preference(WebActivity.this);
+
+        if (preference.getTheme()) {
+            setTheme(R.style.DTA);
+        }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_web);
+
+        if (!preference.getTheme()) {
+            Objects.requireNonNull(getSupportActionBar())
+                   .setBackgroundDrawable(new ColorDrawable(0xFF757575));
+        }
 
         preference = new Preference(WebActivity.this);
         preference.setLastScreen("WebActivity");

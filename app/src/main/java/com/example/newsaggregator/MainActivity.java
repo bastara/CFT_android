@@ -119,9 +119,8 @@ public class MainActivity extends AppCompatActivity
         refreshTextView = (TextView) itemTimeRefresh.getActionView();
         notificationTextView = (TextView) itemToggleNotification.getActionView();
 
-        View view1 = findViewById(R.id.drawer_layout);
         if (preference.getTheme()) {
-            view1.setBackgroundColor(0xFF303030);
+            drawer.setBackgroundColor(0xFF303030);
             navigationView.getHeaderView(0)
                           .setBackgroundResource(R.drawable.side_nav_bar_dark);
             navigationView.getMenu()
@@ -153,7 +152,6 @@ public class MainActivity extends AppCompatActivity
 //        drawer.openDrawer(GravityCompat.START);
 
         doWorkManager();
-
 
         switch (preference.getLastScreen()) {
             case "AddSiteActivity":
@@ -266,14 +264,6 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-////        if (id == R.id.action_settings) {
-////            return true;
-////        }
-//        return super.onOptionsItemSelected(item);
-//    }
-
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
@@ -294,7 +284,6 @@ public class MainActivity extends AppCompatActivity
                 }
             });
             thread.start();
-
 
             onResume();
         } else if (id == R.id.nav_addSite) {
@@ -390,7 +379,6 @@ public class MainActivity extends AppCompatActivity
         if (state != null)
             listState = state.getParcelable(Contract.Entry.KEY_RECYCLER_STATE);
     }
-
 }
 
 

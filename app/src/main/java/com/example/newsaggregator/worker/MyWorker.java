@@ -10,7 +10,6 @@ import androidx.work.WorkerParameters;
 import com.example.newsaggregator.network.Update;
 
 import java.net.ConnectException;
-import java.util.concurrent.TimeUnit;
 
 public class MyWorker extends Worker {
     private static final String TAG = "rss1LogsUniq4";

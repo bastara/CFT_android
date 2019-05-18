@@ -82,15 +82,6 @@ public class ParseXML {
                         && isItem) {
                     String tmpStr = parser.getText();
 
-
-                    // Проверкак обновления новостей
-//                    if (tmpStr.equals("http://www.garant.ru/news/1272827/")) {
-//                        tmpStr = null;
-//                        cv.put(Contract.Entry.COLUMN_LINK_NEWS, tmpStr);
-//                        parser.next();
-//                        continue;
-//                    }
-
                     cursor = dbRequest.getCursorCheckSite(tmpStr);
                     if (cursor.moveToFirst()) {
                         Log.d(Contract.Entry.TAG, "Данная новость уже добавлена " + tmpStr);
@@ -122,9 +113,6 @@ public class ParseXML {
                         && parser.next() == XmlPullParser.TEXT
                         && isItem) {
                     cv.put(Contract.Entry.COLUMN_PUB_DATE, parser.getText());
-
-//                    SimpleDateFormat sdf = new SimpleDateFormat("MM/dd - hh:mm:ss");
-//                    String result =  sdf.format(this.getPubDate());
                 }
                 parser.next();
             }

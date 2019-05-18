@@ -8,7 +8,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.text.method.ScrollingMovementMethod;
 import android.widget.TextView;
 
-import com.example.newsaggregator.MainActivity;
 import com.example.newsaggregator.data.db.DBRequest;
 import com.example.newsaggregator.data.Contract;
 import com.example.newsaggregator.R;
@@ -24,12 +23,12 @@ public class NewsActivity extends AppCompatActivity {
     Preference preference;
 
     public void onCreate(Bundle savedInstanceState) {
+
         preference = new Preference(NewsActivity.this);
 
         if (preference.getTheme()) {
             setTheme(R.style.DT);
         }
-
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_news);
@@ -51,7 +50,6 @@ public class NewsActivity extends AppCompatActivity {
         String name = cursor.getString(cursor.getColumnIndex(Contract.Entry.COLUMN_TITLE));
         String date = cursor.getString(cursor.getColumnIndex(Contract.Entry.COLUMN_PUB_DATE)).substring(0, 16);
         String link = cursor.getString(cursor.getColumnIndex(Contract.Entry.COLUMN_LINK_NEWS));
-//        link = link.substring(link.indexOf("//") + 2, link.indexOf(("/"), 8));
         String text = cursor.getString(cursor.getColumnIndex(Contract.Entry.COLUMN_DESCRIPTION));
 
         nameText.setText(name);

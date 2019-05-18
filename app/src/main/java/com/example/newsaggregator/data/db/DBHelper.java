@@ -31,7 +31,6 @@ public class DBHelper extends SQLiteOpenHelper {
                 + Contract.Entry.COLUMN_PUB_DATE + " text" + ");");
 
         db.execSQL("create table " + Contract.Entry.TABLE_SITES + "("
-//                + Contract.Entry.COLUMN_ID_SITE + " INTEGER primary key autoincrement,"
                 + Contract.Entry.COLUMN_URL + " text primary key,"
                 + Contract.Entry.COLUMN_TYPE_RESOURCE + " text" + ");");
     }

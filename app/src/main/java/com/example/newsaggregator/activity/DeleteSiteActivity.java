@@ -29,6 +29,12 @@ public class DeleteSiteActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        preference = new Preference(DeleteSiteActivity.this);
+
+        if (preference.getTheme()) {
+            setTheme(R.style.DT);
+        }
+
         super.onCreate(savedInstanceState);
 
         preference = new Preference(DeleteSiteActivity.this);

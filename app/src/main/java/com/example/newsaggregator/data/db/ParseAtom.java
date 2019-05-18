@@ -1,4 +1,4 @@
-package com.example.newsaggregator.activity;
+package com.example.newsaggregator.data.db;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -92,18 +92,6 @@ public class ParseAtom {
                         }
                     }
 
-                    // Проверкак обновления новостей
-//                    if (tmpStr.equals("http://fratria.ru/news/2019/05/15/spartak_vedet_peregovory_s_genkom_o_perekhode_khavbeka/")) {
-//                        tmpStr = null;
-//                        cv.put(Contract.Entry.COLUMN_LINK_NEWS, tmpStr);
-//                        parser.next();
-//                        continue;
-//
-//
-////                        String s = "sssss" + "dddd";
-////                        String k = s;
-//                    }
-
                     cursor = dbRequest.getCursorCheckSite(tmpStr);
                     if (cursor.moveToFirst()) {
                         Log.d(Contract.Entry.TAG, "Данная новость уже добавлена " + tmpStr);
@@ -157,9 +145,6 @@ public class ParseAtom {
                         && isEntry) {
                     cv.put(Contract.Entry.COLUMN_PUB_DATE, parser.getText());
                     Log.d(Contract.Entry.TAG, "updated    " + parser.getText());
-
-//                    SimpleDateFormat sdf = new SimpleDateFormat("MM/dd - hh:mm:ss");
-//                    String result =  sdf.format(this.getPubDate());
                 }
                 parser.next();
             }

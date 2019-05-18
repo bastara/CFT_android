@@ -5,6 +5,14 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
 
+    <TextView
+        android:id="@+id/textView9"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:textSize="20sp"
+        android:text="@string/refresh" />
+
     <RadioButton
         android:id="@+id/radio15min"
         android:layout_width="wrap_content"

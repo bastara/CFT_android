@@ -46,6 +46,5 @@ public class Contract {
         public static final int SOURCE_ADDED = 2;
         public static final int SOURCE_ALREADY_ADDED = 1;
         public static final int SOURCE_NOT_VALID = 0;
-
     }
 }

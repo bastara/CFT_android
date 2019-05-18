@@ -32,4 +32,5 @@
     <string name="copy_value">Заполнить</string>
     <string name="delete_site">Выберите сайт для удаления</string>
     <string name="topic">Статья</string>
+    <string name="refresh">Веедите время обновления новостей</string>
 </resources>

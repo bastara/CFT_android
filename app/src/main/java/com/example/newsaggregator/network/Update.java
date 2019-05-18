@@ -10,7 +10,7 @@ import android.util.Log;
 
 import androidx.core.app.NotificationCompat;
 
-import com.example.newsaggregator.activity.ParseAtom;
+import com.example.newsaggregator.data.db.ParseAtom;
 import com.example.newsaggregator.data.db.DBRequest;
 import com.example.newsaggregator.MainActivity;
 import com.example.newsaggregator.R;
