@@ -8,7 +8,7 @@
 
 
     <application
-        android:name=".data.db.DBAdapter"
+        android:name=".MyApplication"
         android:allowBackup="true"
         android:icon="@drawable/ic_android"
         android:label="@string/app_name"
@@ -31,6 +31,7 @@
             android:label="@string/timeRefresh" />
         <activity
             android:name=".activity.AddSiteActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
             android:label="@string/add_site" />
 
         <activity
@@ -42,10 +43,9 @@
             android:label="@string/delete_site" />
         <activity
             android:name=".activity.NewsActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
             android:label="@string/topic" />
     </application>
-
 </manifest>
 
-
-    <!--<intent-filter android:label="@string/app_name">--><!--<action android:name="android.intent.action.SEND"/>--><!--<category android:name="android.intent.category.DEFAULT"/>--><!--<category android:name="android.intent.category.BROWSABLE" />--><!--<data android:mimeType="text/plain"/>--><!--</intent-filter>--><!--<intent-filter android:label="Easy News">--><!--<action android:name="android.intent.action.VIEW" />--><!--<category android:name="android.intent.category.DEFAULT" />--><!--<category android:name="android.intent.category.BROWSABLE" />--><!--<data--><!--android:host="news.yandex.ru"--><!--android:pathPattern="/.*.rss"--><!--android:scheme="https" />--><!--<data--><!--android:host="news.google.com"--><!--android:pathPattern="/.*/.*rss"--><!--android:scheme="https" />--><!--<data--><!--android:pathPattern="/.*/.*/.*rss"--><!--android:scheme="https" />--><!--</intent-filter>-->
+    <!--android:theme="@style/Theme.AppCompat.NoActionBar"-->

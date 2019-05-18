@@ -8,7 +8,7 @@ import android.util.Log;
 import android.util.Xml;
 
 import com.example.newsaggregator.data.Contract;
-import com.example.newsaggregator.data.db.DBAdapter;
+import com.example.newsaggregator.MyApplication;
 import com.example.newsaggregator.data.db.DBRequest;
 
 import org.xmlpull.v1.XmlPullParser;
@@ -29,8 +29,8 @@ public class ParseAtom {
     }
 
     private static void doWork(String src, Context context) {
-        DBAdapter DBAdapter = (DBAdapter) context.getApplicationContext();
-        SQLiteDatabase database = DBAdapter.getDatabase();
+        MyApplication MyApplication = (MyApplication) context.getApplicationContext();
+        SQLiteDatabase database = MyApplication.getDatabase();
         DBRequest dbRequest = new DBRequest(context);
         Cursor cursor;
 

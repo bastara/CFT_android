@@ -10,6 +10,11 @@
     <color name="divider">#BDBDBD</color>
 
     <color name="colorPrimary1">#8D2222</color>
-    <color name="colorPrimaryDark1">#998F35</color>
+    <color name="colorPrimaryDark1">#303030</color>
     <color name="colorAccent1">#2A4745</color>
+
+    <color name="colorBackground">#303030</color>
+
+    <color name="actionbar_background">#303030</color>
+
 </resources>

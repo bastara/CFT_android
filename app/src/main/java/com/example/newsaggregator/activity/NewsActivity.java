@@ -8,9 +8,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.text.method.ScrollingMovementMethod;
 import android.widget.TextView;
 
+import com.example.newsaggregator.MainActivity;
 import com.example.newsaggregator.data.db.DBRequest;
 import com.example.newsaggregator.data.Contract;
 import com.example.newsaggregator.R;
+import com.example.newsaggregator.data.preference.Preference;
 
 public class NewsActivity extends AppCompatActivity {
 
@@ -19,7 +21,16 @@ public class NewsActivity extends AppCompatActivity {
     TextView linkText;
     TextView textText;
 
+    Preference preference;
+
     public void onCreate(Bundle savedInstanceState) {
+        preference = new Preference(NewsActivity.this);
+
+        if (preference.getTheme()) {
+            setTheme(R.style.DT);
+        }
+
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_news);
 

@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 import android.util.Xml;
 
+import com.example.newsaggregator.MyApplication;
 import com.example.newsaggregator.data.Contract;
 
 import org.xmlpull.v1.XmlPullParser;
@@ -27,8 +28,8 @@ public class ParseXML {
     }
 
     private static void doWork(String src, Context context) {
-        DBAdapter DBAdapter = (DBAdapter) context.getApplicationContext();
-        SQLiteDatabase database = DBAdapter.getDatabase();
+        MyApplication MyApplication = (MyApplication) context.getApplicationContext();
+        SQLiteDatabase database = MyApplication.getDatabase();
         DBRequest dbRequest = new DBRequest(context);
         Cursor cursor;
 
@@ -83,7 +84,7 @@ public class ParseXML {
 
 
                     // Проверкак обновления новостей
-//                    if (tmpStr.equals("http://www.garant.ru/news/1272770/")) {
+//                    if (tmpStr.equals("http://www.garant.ru/news/1272827/")) {
 //                        tmpStr = null;
 //                        cv.put(Contract.Entry.COLUMN_LINK_NEWS, tmpStr);
 //                        parser.next();

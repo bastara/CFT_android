@@ -23,11 +23,12 @@ import android.webkit.WebViewClient;
 import android.widget.Toast;
 
 import com.example.newsaggregator.data.Contract;
-import com.example.newsaggregator.data.db.DBAdapter;
+import com.example.newsaggregator.MyApplication;
 import com.example.newsaggregator.MainActivity;
 import com.example.newsaggregator.R;
 import com.example.newsaggregator.data.db.ParseXML;
 import com.example.newsaggregator.data.preference.Preference;
+import com.example.newsaggregator.handler.HandlerInterface;
 import com.example.newsaggregator.handler.MyHandler;
 
 import java.io.ByteArrayOutputStream;
@@ -37,7 +38,7 @@ import java.net.URL;
 
 import static android.content.ContentValues.TAG;
 
-public class WebActivity extends AppCompatActivity {
+public class WebActivity extends AppCompatActivity implements HandlerInterface {
     private WebView webView;
     Handler handler;
 
@@ -168,8 +169,8 @@ public class WebActivity extends AppCompatActivity {
         }
 
         String addPage() {
-            DBAdapter DBAdapter = (DBAdapter) context.getApplicationContext();
-            SQLiteDatabase dataBase = DBAdapter.getDatabase();
+            MyApplication MyApplication = (MyApplication) context.getApplicationContext();
+            SQLiteDatabase dataBase = MyApplication.getDatabase();
 
             final String TAG = "rssDB";
             ContentValues cv = new ContentValues();

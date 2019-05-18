@@ -16,7 +16,7 @@ import android.widget.Toast;
 
 import com.example.newsaggregator.data.db.DBRequest;
 import com.example.newsaggregator.data.Contract;
-import com.example.newsaggregator.data.db.DBAdapter;
+import com.example.newsaggregator.MyApplication;
 import com.example.newsaggregator.R;
 import com.example.newsaggregator.adapter.SiteAdapter;
 import com.example.newsaggregator.data.preference.Preference;
@@ -35,8 +35,8 @@ public class DeleteSiteActivity extends AppCompatActivity {
         preference.setLastScreen("DeleteSiteActivity");
 
         setContentView(R.layout.activity_delete_site);
-        DBAdapter DBAdapter = (DBAdapter) this.getApplication();
-        dataBase = DBAdapter.getDatabase();
+        MyApplication MyApplication = (MyApplication) this.getApplication();
+        dataBase = MyApplication.getDatabase();
 
         RecyclerView recyclerView = findViewById(R.id.recyclerViewDel);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));

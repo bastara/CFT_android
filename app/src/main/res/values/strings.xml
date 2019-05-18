@@ -9,7 +9,7 @@
     <string name="upDate">Обновить новости</string>
     <string name="addSite">Добавить сайт</string>
     <string name="deleteSite">Удалить сайт</string>
-    <string name="lightTheme">Темная тема</string>
+    <string name="Theme">Темная тема</string>
     <string name="timeRefresh">Время обновления</string>
     <string name="notification">Уведомления</string>
     <string name="archives">Архив новостей</string>

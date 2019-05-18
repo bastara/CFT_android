@@ -28,6 +28,12 @@ public class AddSiteActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        preference = new Preference(AddSiteActivity.this);
+
+        if (preference.getTheme()) {
+            setTheme(R.style.DT);
+        }
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_site);
 

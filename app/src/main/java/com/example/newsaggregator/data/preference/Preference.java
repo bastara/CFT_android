@@ -64,5 +64,15 @@ public class Preference {
         editor.putString(Contract.Entry.PREFERENCES_URL, url);
         editor.apply();
     }
+
+    public boolean getTheme() {
+        return settings.getBoolean(Contract.Entry.PREFERENCES_THEME, true);
+    }
+
+    public void setTheme(boolean theme) {
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putBoolean(Contract.Entry.PREFERENCES_THEME, theme);
+        editor.apply();
+    }
 }
 

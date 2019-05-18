@@ -9,7 +9,8 @@ import androidx.annotation.NonNull;
 
 import com.example.newsaggregator.activity.WebActivity;
 import com.example.newsaggregator.data.Contract;
-import com.example.newsaggregator.data.db.DBAdapter;
+import com.example.newsaggregator.handler.HandlerInterface;
+import com.example.newsaggregator.handler.MyHandler;
 import com.example.newsaggregator.worker.MyWorker;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
@@ -51,7 +52,7 @@ import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, NewsAdapter.ItemClickListener {
+        implements NavigationView.OnNavigationItemSelectedListener, NewsAdapter.ItemClickListener, HandlerInterface {
 
     private TextView refreshTextView;
     private TextView notificationTextView;
@@ -68,20 +69,19 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
+        preference = new Preference(MainActivity.this);
 
-//        setTheme(R.style.AppThemeLight);
-
-//        LinearLayout linearLayout = findViewById(R.id.SSS);
-
-//        NavigationView navigationVw = (NavigationView) findViewById(R.id.nav_view);
-//        View hView =  navigationVw.getHeaderView(0);
-//
+        if (preference.getTheme()) {
+            setTheme(R.style.DarkTheme);
+        }
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         final Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        handler = new MyHandler(MainActivity.this);
 
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -119,14 +119,41 @@ public class MainActivity extends AppCompatActivity
         refreshTextView = (TextView) itemTimeRefresh.getActionView();
         notificationTextView = (TextView) itemToggleNotification.getActionView();
 
-        preference = new Preference(MainActivity.this);
+        View view1 = findViewById(R.id.drawer_layout);
+        if (preference.getTheme()) {
+            view1.setBackgroundColor(0xFF303030);
+            navigationView.getHeaderView(0)
+                          .setBackgroundResource(R.drawable.side_nav_bar_dark);
+            navigationView.getMenu()
+                          .getItem(3)
+                          .setIcon(getResources().getDrawable(R.drawable.ic_assignment_black_24dp_w));
+            navigationView.getMenu()
+                          .getItem(3)
+                          .setTitle("Светлая тема");
+            navigationView.getMenu()
+                          .getItem(0)
+                          .setIcon(getResources().getDrawable(R.drawable.ic_face_black_24dp_w));
+            navigationView.getMenu()
+                          .getItem(1)
+                          .setIcon(getResources().getDrawable(R.drawable.ic_add_black_24dp_w));
+            navigationView.getMenu()
+                          .getItem(2)
+                          .setIcon(getResources().getDrawable(R.drawable.ic_remove_black_24dp_w));
+            navigationView.getMenu()
+                          .getItem(4)
+                          .setIcon(getResources().getDrawable(R.drawable.ic_autorenew_black_24dp_w));
+            navigationView.getMenu()
+                          .getItem(5)
+                          .setIcon(getResources().getDrawable(R.drawable.ic_add_alert_black_24dp_w));
+            navigationView.getMenu()
+                          .getItem(6)
+                          .setIcon(getResources().getDrawable(R.drawable.ic_business_center_black_24dp_w));
 
-//        initializeCountDrawer(timeRefreshMenu(preference.getTimeRefresh()), preference.getNotification());
+        }
 //        drawer.openDrawer(GravityCompat.START);
 
-        handler = new MyHandlerMainActivity(this);
-
         doWorkManager();
+
 
         switch (preference.getLastScreen()) {
             case "AddSiteActivity":
@@ -160,15 +187,8 @@ public class MainActivity extends AppCompatActivity
     private void refreshData() {
         initializeCountDrawer(timeRefreshMenu(preference.getTimeRefresh()), preference.getNotification());
 
-//        DBRequest dbRequest = new DBRequest(MainActivity.this);
-
-// почему так не создается экземпляр???
-//        DBAdapter dbAdapter = new DBAdapter();
-        DBAdapter dbAdapter = (DBAdapter) getApplication();
-
-//        Cursor cursor = dbRequest.getCursorNews();
-        Cursor cursor = dbAdapter.dbRequest.getCursorNews();
-
+        MyApplication myApplication = (MyApplication) getApplication();
+        Cursor cursor = myApplication.dbRequest.getCursorNews();
 
         recyclerView = findViewById(R.id.recyclerViewMain);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -246,32 +266,36 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-//        if (id == R.id.action_settings) {
-//            return true;
-//        }
-        return super.onOptionsItemSelected(item);
-    }
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+////        if (id == R.id.action_settings) {
+////            return true;
+////        }
+//        return super.onOptionsItemSelected(item);
+//    }
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        // Handle navigation view item clicks here.
         int id = item.getItemId();
         boolean fromNotification = false;
 
         if (id == R.id.nav_upDate) {
-            Update update = new Update();
-            try {
-                update.upDate(MainActivity.this, true);
-            } catch (ConnectException e) {
-                Toast.makeText(this, "Проверьте подключение к интернету", Toast.LENGTH_SHORT)
-                     .show();
-                e.printStackTrace();
-            }
-            //TODO не обновляется, потоки.
-            //TODO возм надо новый поток
-            onPause();
+            Thread thread = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    Update update = new Update();
+                    try {
+                        update.upDate(MainActivity.this, true);
+                        handler.sendEmptyMessage(1);
+                    } catch (ConnectException e) {
+                        e.printStackTrace();
+                    }
+                    Log.d(Contract.Entry.TAG, "HANDLER+");
+                }
+            });
+            thread.start();
+
+
             onResume();
         } else if (id == R.id.nav_addSite) {
             Intent intent = new Intent(MainActivity.this,
@@ -281,8 +305,13 @@ public class MainActivity extends AppCompatActivity
             Intent intent = new Intent(MainActivity.this,
                     DeleteSiteActivity.class);
             startActivity(intent);
-        } else if (id == R.id.nav_darkTheme) {
-
+        } else if (id == R.id.nav_Theme) {
+            if (preference.getTheme()) {
+                preference.setTheme(false);
+            } else preference.setTheme(true);
+            Intent i = new Intent(this, this.getClass());
+            finish();
+            this.startActivity(i);
         } else if (id == R.id.nav_notification) {
             if (preference.getNotification()) {
                 preference.setNotification(false);
@@ -306,11 +335,9 @@ public class MainActivity extends AppCompatActivity
     }
 
 
-    //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     public void handleMessage(android.os.Message msg) {
-        if (msg.what == 2) {
-        } else if (msg.what == 1) {
-        } else {
+        if (msg.what == 1) {
+            refreshData();
         }
     }
 

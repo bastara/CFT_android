@@ -37,6 +37,7 @@ public class Contract {
         public static final String PREFERENCES_LAST_SCREEN = "lastScreen";
         public static final String PREFERENCES_LAST_SITE = "lastSite";
         public static final String PREFERENCES_URL = "userUrl";
+        public static final String PREFERENCES_THEME = "theme";
 
         //Refresh time
         public final static String REFRESH_TIME = "com.example.newsAggregator.REFRESH_TIME";

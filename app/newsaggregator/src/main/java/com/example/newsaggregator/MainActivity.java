@@ -125,7 +125,7 @@ public class MainActivity extends AppCompatActivity
             startActivity(intent);
         } else if (id == R.id.nav_deleteSite) {
 
-        } else if (id == R.id.nav_darkTheme) {
+        } else if (id == R.id.nav_Theme) {
 
         } else if (id == R.id.nav_refresh) {
             Intent questionIntent = new Intent(MainActivity.this,
