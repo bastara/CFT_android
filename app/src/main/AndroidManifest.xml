@@ -20,26 +20,11 @@
             android:name=".MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <action android:name="android.intent.action.VIEW" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
 
             <intent-filter android:label="@string/app_name">
-                <action android:name="android.intent.action.SEND" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <data android:mimeType="text/plain" />
-            </intent-filter>
-            <intent-filter android:label="@string/app_name">
                 <action android:name="android.intent.action.VIEW" />
-
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-
                 <data
                     android:host="news.yandex.ru"
                     android:pathPattern="/.*.rss"
@@ -52,19 +37,11 @@
                     android:pathPattern="/.*/.*/.*rss"
                     android:scheme="https" />
             </intent-filter>
-
-            <intent-filter android:label="@string/app_name">
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <data android:scheme="http" />
-                <data android:mimeType="application/rss+xml" />
-                <data android:mimeType="application/atom+xml" />
-                <data android:mimeType="application/xml" />
-                <data android:mimeType="text/xml" />
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
 
         </activity>
         <activity
@@ -73,6 +50,8 @@
         <activity
             android:name=".activity.AddSiteActivity"
             android:label="@string/add_site" />
+
+
         <activity
             android:name=".activity.WebActivity"
             android:theme="@style/ACL"

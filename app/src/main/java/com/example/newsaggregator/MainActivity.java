@@ -153,9 +153,23 @@ public class MainActivity extends AppCompatActivity
 
         doWorkManager();
 
+        Intent intent = getIntent();
+        String action = intent.getAction();
+        String url = null;
+        if (Intent.ACTION_VIEW.equals(action)) {
+            url = intent.getData()
+                        .toString();
+        }
+        if (url != null) {
+            intent = new Intent(MainActivity.this,
+                    WebActivity.class);
+            intent.putExtra("url", url);
+            startActivity(intent);
+        }
+
         switch (preference.getLastScreen()) {
             case "AddSiteActivity":
-                Intent intent = new Intent(MainActivity.this,
+                intent = new Intent(MainActivity.this,
                         AddSiteActivity.class);
                 startActivity(intent);
                 break;
@@ -270,20 +284,17 @@ public class MainActivity extends AppCompatActivity
         boolean fromNotification = false;
 
         if (id == R.id.nav_upDate) {
-            Thread thread = new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    Update update = new Update();
-                    try {
-                        update.upDate(MainActivity.this, true);
-                        handler.sendEmptyMessage(1);
-                    } catch (ConnectException e) {
-                        e.printStackTrace();
-                    }
-                    Log.d(Contract.Entry.TAG, "HANDLER+");
-                }
-            });
-            thread.start();
+
+            Update update = new Update();
+            try {
+                update.upDate(MainActivity.this, true);
+                handler.sendEmptyMessage(1);
+            } catch (ConnectException e) {
+                Toast.makeText(this, "Проверьте соединение с интернетом", Toast.LENGTH_SHORT)
+                     .show();
+
+                e.printStackTrace();
+            }
 
             onResume();
         } else if (id == R.id.nav_addSite) {

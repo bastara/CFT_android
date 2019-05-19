@@ -33,6 +33,7 @@ public class Update {
             if (fromMain) {
                 throw new ConnectException("нет соединения с интернетом");
             }
+            return;
         }
 
         Thread thread = new Thread(new Runnable() {
