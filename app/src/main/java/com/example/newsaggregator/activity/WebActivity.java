@@ -16,6 +16,7 @@ import android.os.Handler;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.util.Log;
+import android.util.Xml;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.webkit.WebResourceRequest;
@@ -32,6 +33,9 @@ import com.example.newsaggregator.data.db.ParseXML;
 import com.example.newsaggregator.data.preference.Preference;
 import com.example.newsaggregator.handler.HandlerInterface;
 import com.example.newsaggregator.handler.MyHandler;
+
+import org.xmlpull.v1.XmlPullParser;
+import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -222,38 +226,32 @@ public class WebActivity extends AppCompatActivity implements HandlerInterface {
         }
 
         void checkRSS() {
-            System.out.println("Поток начал работу:::" + Thread.currentThread()
-                                                               .getName());
             try {
                 URL url = new URL(link);
                 InputStream inputStream = url.openConnection()
                                              .getInputStream();
 
-                ByteArrayOutputStream result = new ByteArrayOutputStream();
-                byte[] buffer = new byte[224];
-                int length;
-                Log.d(TAG, "Начало проверки RSS-ATOM: ");
-                if ((length = inputStream.read(buffer)) != -1) {
-                    Log.d(TAG, "итерация проверки : ");
-                    result.write(buffer, 0, length);
-                    if (result.toString("UTF-8")
-                              .toLowerCase()
-                              .contains("rss")) {
-                        Log.d(TAG, result.toString("UTF-8"));
-                        AddPage addPage = new AddPage(link, "RSS", WebActivity.this);
-                        ParseXML.parseXML(addPage.addPage(), getApplicationContext().getApplicationContext());
-                    } else if (result.toString("UTF-8")
-                                     .toLowerCase()
-                                     .contains("atom")) {
-                        Log.d(TAG, result.toString("UTF-8"));
-                        AddPage addPage = new AddPage(link, "ATOM", WebActivity.this);
-                        ParseAtom.parseAtom(addPage.addPage(), getApplicationContext().getApplicationContext());
-                    } else {
-                        handler.sendEmptyMessage(0);
-                    }
+                XmlPullParser parser = Xml.newPullParser();
+                parser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false);
+                parser.setInput(inputStream, null);
+                parser.next();
+
+                if (parser.getName()
+                          .equalsIgnoreCase("rss")) {
+                    AddPage addPage = new AddPage(link, "RSS", WebActivity.this);
+                    ParseXML.parseXML(addPage.addPage(), getApplicationContext().getApplicationContext());
+                } else if (parser.getName()
+                                 .equalsIgnoreCase("feed")) {
+                    AddPage addPage = new AddPage(link, "ATOM", WebActivity.this);
+                    ParseAtom.parseAtom(addPage.addPage(), getApplicationContext().getApplicationContext());
+                } else {
+                    handler.sendEmptyMessage(0);
                 }
+
             } catch (IOException t) {
                 Log.d(TAG, "Ошибка при проверке документа на RSS: " + t.toString());
+            } catch (XmlPullParserException e) {
+                e.printStackTrace();
             }
         }
     }
