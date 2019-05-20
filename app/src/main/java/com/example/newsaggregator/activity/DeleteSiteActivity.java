@@ -25,14 +25,13 @@ public class DeleteSiteActivity extends AppCompatActivity {
 
     private SQLiteDatabase dataBase;
     private SiteAdapter adapter;
-    Preference preference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        preference = new Preference(DeleteSiteActivity.this);
+        Preference preference = new Preference(DeleteSiteActivity.this);
 
         if (preference.getTheme()) {
-            setTheme(R.style.DT);
+            setTheme(R.style.DarkTheme);
         }
 
         super.onCreate(savedInstanceState);

@@ -9,27 +9,19 @@
     </style>
 
     <style name="DarkTheme" parent="ThemeOverlay.AppCompat.Dark">
-        <item name="colorPrimaryDark">@color/colorPrimaryDark1</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:textColor">@color/colorPrimary</item>
-    </style>
-
-    <style name="DT" parent="Theme.AppCompat.NoActionBar">
         <item name="android:textColorLink">@color/colorAccent</item>
     </style>
 
-    <style name="DTA" parent="Theme.AppCompat">
+    <style name="DarkThemeToolbar" parent="Theme.AppCompat">
         <item name="android:textColorLink">@color/colorAccent</item>
     </style>
 
-    <style name="ACL" parent="Theme.AppCompat.Light">
+    <style name="AppCompatLightToolbar" parent="Theme.AppCompat.Light">
         <item name="android:colorPrimary">@color/colorAccent</item>
         <item name="android:textColorPrimary">@color/primary_light</item>
-    </style>
-
-    <style name="Toolbar" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
-        <item name="android:textColorPrimary">@android:color/white</item>
-        <item name="android:textColorSecondary">@android:color/white</item>
     </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />

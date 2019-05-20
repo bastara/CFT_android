@@ -7,7 +7,7 @@ import android.util.Log;
 
 import com.example.newsaggregator.data.Contract;
 
-public class DBHelper extends SQLiteOpenHelper {
+class DBHelper extends SQLiteOpenHelper {
 
     DBHelper(Context context) {
         super(context, Contract.Entry.DATABASE_NAME, null, Contract.Entry.DATABASE_VERSION);

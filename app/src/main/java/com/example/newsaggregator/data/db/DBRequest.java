@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import com.example.newsaggregator.data.Contract;
 
 public class DBRequest {
-    public SQLiteDatabase dataBase;
+    public final SQLiteDatabase dataBase;
 
     public DBRequest(Context context) {
         DBHelper dbHelper = new DBHelper(context);

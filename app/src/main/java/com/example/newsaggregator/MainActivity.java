@@ -60,11 +60,11 @@ public class MainActivity extends AppCompatActivity
     private NewsAdapter adapter;
     private RecyclerView recyclerView;
 
-    Preference preference;
+    private Preference preference;
 
-    Handler handler;
+    private Handler handler;
 
-    Parcelable listState;
+    private Parcelable listState;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -149,7 +149,6 @@ public class MainActivity extends AppCompatActivity
                           .setIcon(getResources().getDrawable(R.drawable.ic_business_center_black_24dp_w));
 
         }
-//        drawer.openDrawer(GravityCompat.START);
 
         doWorkManager();
 
@@ -157,8 +156,8 @@ public class MainActivity extends AppCompatActivity
         String action = intent.getAction();
         String url = null;
         if (Intent.ACTION_VIEW.equals(action)) {
-            url = intent.getData()
-                        .toString();
+            url = Objects.requireNonNull(intent.getData())
+                         .toString();
         }
         if (url != null) {
             intent = new Intent(MainActivity.this,
@@ -362,7 +361,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public void onItemClick(View view, int position) {
+    public void onItemClick(int position) {
         Toast.makeText(this, "You clicked " + adapter.getItem(position) + " on row number " + position, Toast.LENGTH_SHORT)
              .show();
         Intent intent = new Intent(MainActivity.this,
@@ -391,6 +390,3 @@ public class MainActivity extends AppCompatActivity
             listState = state.getParcelable(Contract.Entry.KEY_RECYCLER_STATE);
     }
 }
-
-
-

@@ -96,7 +96,7 @@ public class ParseXML {
                         && parser.next() == XmlPullParser.TEXT
                         && isItem) {
                     cv.put(Contract.Entry.COLUMN_DESCRIPTION, parser.getText()
-                                                                    .replaceAll("\\<.*?\\>", "")
+                                                                    .replaceAll("<.*?>", "")
                                                                     .replaceAll("\n", " ")
                                                                     .replace("&quot;", "\""));
                 }

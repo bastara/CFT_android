@@ -12,13 +12,12 @@ import com.example.newsaggregator.data.Contract;
 import com.example.newsaggregator.data.preference.Preference;
 
 public class RefreshActivity extends AppCompatActivity {
-    Preference preference;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        preference = new Preference(RefreshActivity.this);
+        Preference preference = new Preference(RefreshActivity.this);
 
         if (preference.getTheme()) {
-            setTheme(R.style.DT);
+            setTheme(R.style.DarkTheme);
         }
 
         super.onCreate(savedInstanceState);

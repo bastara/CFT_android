@@ -8,24 +8,24 @@
         <item
             android:id="@+id/nav_watchSite"
             android:icon="@drawable/ic_face_black_24dp"
-            android:title="@string/upDate" />
+            android:title="@string/update" />
         <item
             android:id="@+id/nav_addSite"
             android:icon="@drawable/ic_add_black_24dp"
-            android:title="@string/addSite" />
+            android:title="@string/add_site" />
         <item
             android:id="@+id/nav_deleteSite"
             android:icon="@drawable/ic_remove_black_24dp"
-            android:title="@string/deleteSite" />
+            android:title="@string/delete_site" />
         <item
             android:id="@+id/nav_darkTheme"
             android:icon="@drawable/ic_assignment_black_24dp"
-            android:title="@string/Theme" />
+            android:title="@string/theme" />
         <item
             android:id="@+id/nav_refresh"
             android:icon="@drawable/ic_autorenew_black_24dp"
             app:actionViewClass="android.widget.TextView"
-            android:title="@string/timeRefresh" />
+            android:title="@string/time_refresh" />
         <item
             android:id="@+id/nav_notification"
             android:icon="@drawable/ic_add_alert_black_24dp"

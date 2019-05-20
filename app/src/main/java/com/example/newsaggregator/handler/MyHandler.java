@@ -7,7 +7,7 @@ import java.lang.ref.WeakReference;
 
 public class MyHandler extends Handler {
 
-    private WeakReference<HandlerInterface> wrActivity;
+    private final WeakReference<HandlerInterface> wrActivity;
 
     public MyHandler(HandlerInterface activity) {
         wrActivity = new WeakReference<>(activity);

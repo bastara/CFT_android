@@ -15,28 +15,21 @@ import com.example.newsaggregator.data.preference.Preference;
 
 public class NewsActivity extends AppCompatActivity {
 
-    TextView nameText;
-    TextView dateText;
-    TextView linkText;
-    TextView textText;
-
-    Preference preference;
-
     public void onCreate(Bundle savedInstanceState) {
 
-        preference = new Preference(NewsActivity.this);
+        Preference preference = new Preference(NewsActivity.this);
 
         if (preference.getTheme()) {
-            setTheme(R.style.DT);
+            setTheme(R.style.DarkTheme);
         }
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_news);
 
-        nameText = findViewById(R.id.textName);
-        dateText = findViewById(R.id.textDate);
-        linkText = findViewById(R.id.textLink);
-        textText = findViewById(R.id.textText);
+        TextView nameText = findViewById(R.id.textName);
+        TextView dateText = findViewById(R.id.textDate);
+        TextView linkText = findViewById(R.id.textLink);
+        TextView textText = findViewById(R.id.textText);
         textText.setMovementMethod(new ScrollingMovementMethod());
 
         Intent intent = getIntent();

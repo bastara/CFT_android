@@ -9,7 +9,7 @@ import static android.content.Context.MODE_PRIVATE;
 
 public class Preference {
 
-    private SharedPreferences settings;
+    private final SharedPreferences settings;
 
     public Preference(Context context) {
         settings = context.getSharedPreferences(Contract.Entry.PREFERENCES_FILE, MODE_PRIVATE);

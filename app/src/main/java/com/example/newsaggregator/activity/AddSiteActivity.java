@@ -16,22 +16,22 @@ import com.example.newsaggregator.data.preference.Preference;
 
 public class AddSiteActivity extends AppCompatActivity {
 
-    EditText editText;
-    TextView textView1;
-    TextView textView2;
-    TextView textView3;
-    TextView textView4;
-    TextView textView7;
-    TextView textView8;
+    private EditText editText;
+    private TextView textView1;
+    private TextView textView2;
+    private TextView textView3;
+    private TextView textView4;
+    private TextView textView7;
+    private TextView textView8;
 
-    Preference preference;
+    private Preference preference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         preference = new Preference(AddSiteActivity.this);
 
         if (preference.getTheme()) {
-            setTheme(R.style.DT);
+            setTheme(R.style.DarkTheme);
         }
 
         super.onCreate(savedInstanceState);

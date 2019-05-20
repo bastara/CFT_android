@@ -14,7 +14,7 @@ import com.example.newsaggregator.R;
 import com.example.newsaggregator.data.Contract;
 
 public class SiteAdapter extends RecyclerView.Adapter<SiteAdapter.SiteViewHolder> {
-    private Context context;
+    private final Context context;
     private Cursor cursor;
 
     public SiteAdapter(Context context, Cursor cursor) {
@@ -23,7 +23,7 @@ public class SiteAdapter extends RecyclerView.Adapter<SiteAdapter.SiteViewHolder
     }
 
     class SiteViewHolder extends RecyclerView.ViewHolder {
-        TextView linkText;
+        final TextView linkText;
 
         SiteViewHolder(View itemView) {
             super(itemView);

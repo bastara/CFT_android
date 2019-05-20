@@ -14,8 +14,8 @@ import com.example.newsaggregator.R;
 import com.example.newsaggregator.data.Contract;
 
 public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder> {
-    private Context context;
-    private Cursor cursor;
+    private final Context context;
+    private final Cursor cursor;
     private ItemClickListener itemClickListener;
 
     public NewsAdapter(Context context, Cursor cursor) {
@@ -24,9 +24,9 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder
     }
 
     class NewsViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        TextView nameText;
-        TextView dateText;
-        TextView newsText;
+        final TextView nameText;
+        final TextView dateText;
+        final TextView newsText;
 
         NewsViewHolder(View itemView) {
             super(itemView);
@@ -41,7 +41,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder
         @Override
         public void onClick(View view) {
             if (itemClickListener != null) {
-                itemClickListener.onItemClick(view, getAdapterPosition());
+                itemClickListener.onItemClick(getAdapterPosition());
             }
         }
     }
@@ -85,7 +85,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder
     }
 
     public interface ItemClickListener {
-        void onItemClick(View view, int position);
+        void onItemClick(int position);
     }
 
     @Override

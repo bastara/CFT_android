@@ -9,7 +9,6 @@ import android.util.Xml;
 
 import com.example.newsaggregator.data.Contract;
 import com.example.newsaggregator.MyApplication;
-import com.example.newsaggregator.data.db.DBRequest;
 
 import org.xmlpull.v1.XmlPullParser;
 
@@ -107,11 +106,11 @@ public class ParseAtom {
                         && parser.next() == XmlPullParser.TEXT
                         && isEntry) {
                     cv.put(Contract.Entry.COLUMN_DESCRIPTION, parser.getText()
-                                                                    .replaceAll("\\<.*?\\>", "")
+                                                                    .replaceAll("<.*?>", "")
                                                                     .replaceAll("\n", " ")
                                                                     .replace("&quot;", "\""));
                     Log.d(Contract.Entry.TAG, "summary   " + parser.getText()
-                                                                   .replaceAll("\\<.*?\\>", "")
+                                                                   .replaceAll("<.*?>", "")
                                                                    .replaceAll("\n", " ")
                                                                    .replace("&quot;", "\""));
                 }
@@ -122,11 +121,11 @@ public class ParseAtom {
                         && parser.next() == XmlPullParser.TEXT
                         && isEntry) {
                     cv.put(Contract.Entry.COLUMN_DESCRIPTION, parser.getText()
-                                                                    .replaceAll("\\<.*?\\>", "")
+                                                                    .replaceAll("<.*?>", "")
                                                                     .replaceAll("\n", " ")
                                                                     .replace("&quot;", "\""));
                     Log.d(Contract.Entry.TAG, "content   " + parser.getText()
-                                                                   .replaceAll("\\<.*?\\>", "")
+                                                                   .replaceAll("<.*?>", "")
                                                                    .replaceAll("\n", " ")
                                                                    .replace("&quot;", "\""));
                 }

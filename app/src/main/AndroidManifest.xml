@@ -41,25 +41,21 @@
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
-
         </activity>
         <activity
             android:name=".activity.RefreshActivity"
-            android:label="@string/timeRefresh" />
+            android:label="@string/time_refresh" />
         <activity
             android:name=".activity.AddSiteActivity"
             android:label="@string/add_site" />
-
-
         <activity
             android:name=".activity.WebActivity"
-            android:theme="@style/ACL"
+            android:theme="@style/AppCompatLightToolbar"
             android:configChanges="orientation|screenSize"
             android:label="@string/web" />
         <activity
             android:name=".activity.DeleteSiteActivity"
-            android:label="@string/delete_site" />
+            android:label="@string/delete_resource" />
         <activity
             android:name=".activity.NewsActivity"
             android:label="@string/topic" />

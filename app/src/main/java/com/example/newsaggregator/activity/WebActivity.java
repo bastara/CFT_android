@@ -43,15 +43,15 @@ import static android.content.ContentValues.TAG;
 
 public class WebActivity extends AppCompatActivity implements HandlerInterface {
     private WebView webView;
-    Handler handler;
+    private Handler handler;
 
-    Preference preference;
+    private Preference preference;
 
     public void onCreate(Bundle savedInstanceState) {
         preference = new Preference(WebActivity.this);
 
         if (preference.getTheme()) {
-            setTheme(R.style.DTA);
+            setTheme(R.style.DarkThemeToolbar);
         }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_web);
@@ -170,10 +170,10 @@ public class WebActivity extends AppCompatActivity implements HandlerInterface {
         }
     }
 
-    public class AddPage {
-        Context context;
+    class AddPage {
+        final Context context;
         String src;
-        String type;
+        final String type;
 
         AddPage(String src, String type, Context context) {
             this.context = context;
@@ -215,7 +215,7 @@ public class WebActivity extends AppCompatActivity implements HandlerInterface {
     }
 
     class CheckRSS {
-        public String link;
+        final String link;
 
         CheckRSS(String link) {
             this.link = link;
