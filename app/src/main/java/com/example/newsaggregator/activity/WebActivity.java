@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.database.SQLException;
-import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
@@ -37,7 +36,6 @@ import com.example.newsaggregator.handler.MyHandler;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -186,10 +184,8 @@ public class WebActivity extends AppCompatActivity implements HandlerInterface {
         }
 
         String addPage() {
-            MyApplication MyApplication = (MyApplication) context.getApplicationContext();
-            SQLiteDatabase dataBase = MyApplication.getDatabase();
+            MyApplication myApplication = (MyApplication) getApplication();
 
-            final String TAG = "rssDB";
             ContentValues cv = new ContentValues();
 
             if (!src.startsWith("http://") && !src.startsWith("https://")) {
@@ -197,37 +193,37 @@ public class WebActivity extends AppCompatActivity implements HandlerInterface {
             }
 
             try {
-                Log.d(TAG, "Добавляю ресурсы  " + src);
+                Log.d(Contract.Entry.TAG, "Добавляю ресурсы  " + src);
                 cv.put(Contract.Entry.COLUMN_URL, src);
                 cv.put(Contract.Entry.COLUMN_TYPE_RESOURCE, type);
 
-                Log.d(TAG, "Вношу данные БД сайта");
-                long rowID = dataBase.insert(Contract.Entry.TABLE_SITES, null, cv);
+                Log.d(Contract.Entry.TAG, "Вношу данные БД сайта");
+                long rowID = myApplication.getDatabase()
+                                          .insert(Contract.Entry.TABLE_SITES, null, cv);
                 if (rowID == -1) {
                     handler.sendEmptyMessage(Contract.Entry.SOURCE_ALREADY_ADDED);
-                    Log.d(TAG, "Данный ресурс уже добавлен ");
+                    Log.d(Contract.Entry.TAG, "Данный ресурс уже добавлен ");
                 } else {
                     handler.sendEmptyMessage(Contract.Entry.SOURCE_ADDED);
-                    Log.d(TAG, "НОМЕР ЗАПИСИ САЙТА = " + rowID);
+                    Log.d(Contract.Entry.TAG, "НОМЕР ЗАПИСИ САЙТА = " + rowID);
                 }
             } catch (SQLException t) {
-                Log.d(TAG, "Ошибка при добалении адреса в базу данных: " + t.toString());
+                Log.d(Contract.Entry.TAG, "Ошибка при добалении адреса в базу данных: " + t.toString());
             }
-//            doWork(src, context);
             return src;
         }
     }
 
     class CheckRSS {
-        final String link;
+        final String src;
 
-        CheckRSS(String link) {
-            this.link = link;
+        CheckRSS(String src) {
+            this.src = src;
         }
 
         void checkRSS() {
             try {
-                URL url = new URL(link);
+                URL url = new URL(src);
                 InputStream inputStream = url.openConnection()
                                              .getInputStream();
 
@@ -238,11 +234,11 @@ public class WebActivity extends AppCompatActivity implements HandlerInterface {
 
                 if (parser.getName()
                           .equalsIgnoreCase("rss")) {
-                    AddPage addPage = new AddPage(link, "RSS", WebActivity.this);
+                    AddPage addPage = new AddPage(src, "RSS", WebActivity.this);
                     ParseXML.parseXML(addPage.addPage(), getApplicationContext().getApplicationContext());
                 } else if (parser.getName()
                                  .equalsIgnoreCase("feed")) {
-                    AddPage addPage = new AddPage(link, "ATOM", WebActivity.this);
+                    AddPage addPage = new AddPage(src, "ATOM", WebActivity.this);
                     ParseAtom.parseAtom(addPage.addPage(), getApplicationContext().getApplicationContext());
                 } else {
                     handler.sendEmptyMessage(0);

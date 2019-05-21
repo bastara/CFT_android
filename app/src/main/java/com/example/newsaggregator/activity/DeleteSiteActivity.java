@@ -1,7 +1,6 @@
 package com.example.newsaggregator.activity;
 
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,7 +13,6 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 
 import android.widget.Toast;
 
-import com.example.newsaggregator.data.db.DBRequest;
 import com.example.newsaggregator.data.Contract;
 import com.example.newsaggregator.MyApplication;
 import com.example.newsaggregator.R;
@@ -23,7 +21,8 @@ import com.example.newsaggregator.data.preference.Preference;
 
 public class DeleteSiteActivity extends AppCompatActivity {
 
-    private SQLiteDatabase dataBase;
+    private MyApplication myApplication;
+
     private SiteAdapter adapter;
 
     @Override
@@ -40,8 +39,8 @@ public class DeleteSiteActivity extends AppCompatActivity {
         preference.setLastScreen("DeleteSiteActivity");
 
         setContentView(R.layout.activity_delete_site);
-        MyApplication MyApplication = (MyApplication) this.getApplication();
-        dataBase = MyApplication.getDatabase();
+
+        myApplication = (MyApplication) getApplication();
 
         RecyclerView recyclerView = findViewById(R.id.recyclerViewDel);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -65,14 +64,14 @@ public class DeleteSiteActivity extends AppCompatActivity {
     }
 
     private void removeItem(String str) {
-        dataBase.delete(Contract.Entry.TABLE_SITES, Contract.Entry.COLUMN_URL + "=?", new String[]{String.valueOf(str)});
-        dataBase.delete(Contract.Entry.TABLE_NEWS, Contract.Entry.COLUMN_URL + "=?", new String[]{String.valueOf(str)});
+        myApplication.getDatabase()
+                     .delete(Contract.Entry.TABLE_SITES, Contract.Entry.COLUMN_URL + "=?", new String[]{String.valueOf(str)});
+        myApplication.getDatabase()
+                     .delete(Contract.Entry.TABLE_NEWS, Contract.Entry.COLUMN_URL + "=?", new String[]{String.valueOf(str)});
         adapter.swapCursor(getAllItems());
     }
 
     private Cursor getAllItems() {
-        DBRequest dbRequest = new DBRequest(DeleteSiteActivity.this);
-
-        return dbRequest.getCursorAllItem();
+        return myApplication.dbRequest.getCursorAllItem();
     }
 }

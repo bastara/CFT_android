@@ -16,7 +16,8 @@ import com.example.newsaggregator.data.preference.Preference;
 
 public class AddSiteActivity extends AppCompatActivity {
 
-    private EditText editText;
+    private EditText editSiteAddress;
+    //данные поля оставлены для проверки, в релиз не пойдут, потому и названия такие-1,2,3...
     private TextView textView1;
     private TextView textView2;
     private TextView textView3;
@@ -40,9 +41,9 @@ public class AddSiteActivity extends AppCompatActivity {
         preference = new Preference(AddSiteActivity.this);
         preference.setLastScreen("AddSiteActivity");
 
-        editText = findViewById(R.id.editSiteAddress);
-        editText.setText(preference.getUserURL());
-        editText.addTextChangedListener(urlWatcher);
+        editSiteAddress = findViewById(R.id.editSiteAddress);
+        editSiteAddress.setText(preference.getUserURL());
+        editSiteAddress.addTextChangedListener(urlWatcher);
 
         textView1 = findViewById(R.id.textView2);
         textView2 = findViewById(R.id.textView3);
@@ -54,10 +55,10 @@ public class AddSiteActivity extends AppCompatActivity {
 
     public void onClick(View view) {
         Intent intent = new Intent(this, WebActivity.class);
-        intent.putExtra("url", editText.getText()
-                                       .toString());
-        preference.setLastSite(editText.getText()
-                                       .toString());
+        intent.putExtra("url", editSiteAddress.getText()
+                                              .toString());
+        preference.setLastSite(editSiteAddress.getText()
+                                              .toString());
         startActivity(intent);
     }
 
@@ -70,40 +71,40 @@ public class AddSiteActivity extends AppCompatActivity {
 
         public void afterTextChanged(Editable s) {
             if (s.length() != 0) {
-                preference.setUserURL(editText.getText()
-                                              .toString());
+                preference.setUserURL(editSiteAddress.getText()
+                                                     .toString());
             }
         }
     };
 
 
     public void onClick2(View view) {
-        editText.setText(textView1.getText()
-                                  .toString());
+        editSiteAddress.setText(textView1.getText()
+                                         .toString());
     }
 
     public void onClick3(View view) {
-        editText.setText(textView2.getText()
-                                  .toString());
+        editSiteAddress.setText(textView2.getText()
+                                         .toString());
     }
 
     public void onClick4(View view) {
-        editText.setText(textView3.getText()
-                                  .toString());
+        editSiteAddress.setText(textView3.getText()
+                                         .toString());
     }
 
     public void onClick5(View view) {
-        editText.setText(textView4.getText()
-                                  .toString());
+        editSiteAddress.setText(textView4.getText()
+                                         .toString());
     }
 
     public void onClick7(View view) {
-        editText.setText(textView7.getText()
-                                  .toString());
+        editSiteAddress.setText(textView7.getText()
+                                         .toString());
     }
 
     public void onClick8(View view) {
-        editText.setText(textView8.getText()
-                                  .toString());
+        editSiteAddress.setText(textView8.getText()
+                                         .toString());
     }
 }

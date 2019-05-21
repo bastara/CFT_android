@@ -9,8 +9,6 @@ import androidx.annotation.NonNull;
 
 import com.example.newsaggregator.activity.WebActivity;
 import com.example.newsaggregator.data.Contract;
-import com.example.newsaggregator.handler.HandlerInterface;
-import com.example.newsaggregator.handler.MyHandler;
 import com.example.newsaggregator.worker.MyWorker;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
@@ -26,7 +24,6 @@ import androidx.work.ExistingPeriodicWorkPolicy;
 import androidx.work.PeriodicWorkRequest;
 import androidx.work.WorkManager;
 
-import android.os.Handler;
 import android.os.Parcelable;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -52,7 +49,7 @@ import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, NewsAdapter.ItemClickListener, HandlerInterface {
+        implements NavigationView.OnNavigationItemSelectedListener, NewsAdapter.ItemClickListener {
 
     private TextView refreshTextView;
     private TextView notificationTextView;
@@ -61,8 +58,6 @@ public class MainActivity extends AppCompatActivity
     private RecyclerView recyclerView;
 
     private Preference preference;
-
-    private Handler handler;
 
     private Parcelable listState;
 
@@ -80,8 +75,6 @@ public class MainActivity extends AppCompatActivity
 
         final Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        handler = new MyHandler(MainActivity.this);
 
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -280,22 +273,19 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
-        boolean fromNotification = false;
+        boolean fromMenuItemNotification = false;
 
         if (id == R.id.nav_upDate) {
 
             Update update = new Update();
             try {
                 update.upDate(MainActivity.this, true);
-                handler.sendEmptyMessage(1);
             } catch (ConnectException e) {
                 Toast.makeText(this, "Проверьте соединение с интернетом", Toast.LENGTH_SHORT)
                      .show();
 
                 e.printStackTrace();
             }
-
-            onResume();
         } else if (id == R.id.nav_addSite) {
             Intent intent = new Intent(MainActivity.this,
                     AddSiteActivity.class);
@@ -319,25 +309,18 @@ public class MainActivity extends AppCompatActivity
                 preference.setNotification(true);
                 notificationTextView.setText("вкл");
             }
-            fromNotification = true;
+            fromMenuItemNotification = true;
         } else if (id == R.id.nav_refresh) {
             Intent questionIntent = new Intent(MainActivity.this,
                     RefreshActivity.class);
             startActivityForResult(questionIntent, 0);
         }
 
-        if (!fromNotification) {
+        if (!fromMenuItemNotification) {
             DrawerLayout drawer = findViewById(R.id.drawer_layout);
             drawer.closeDrawer(GravityCompat.START);
         }
         return true;
-    }
-
-
-    public void handleMessage(android.os.Message msg) {
-        if (msg.what == 1) {
-            refreshData();
-        }
     }
 
     @Override

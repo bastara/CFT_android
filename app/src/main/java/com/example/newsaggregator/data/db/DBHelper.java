@@ -15,8 +15,7 @@ class DBHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String LOG_TAG = "Лог!";
-        Log.d(LOG_TAG, "--- onCreate database ---");
+        Log.d(Contract.Entry.TAG, "--- onCreate database ---");
         db.execSQL("create table "
                 + Contract.Entry.TABLE_NEWS + "("
                 + Contract.Entry.COLUMN_ID + " INTEGER primary key autoincrement,"

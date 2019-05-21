@@ -8,7 +8,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.text.method.ScrollingMovementMethod;
 import android.widget.TextView;
 
-import com.example.newsaggregator.data.db.DBRequest;
+import com.example.newsaggregator.MyApplication;
 import com.example.newsaggregator.data.Contract;
 import com.example.newsaggregator.R;
 import com.example.newsaggregator.data.preference.Preference;
@@ -35,8 +35,8 @@ public class NewsActivity extends AppCompatActivity {
         Intent intent = getIntent();
         String position = intent.getStringExtra("id");
 
-        DBRequest dbRequest = new DBRequest(NewsActivity.this);
-        Cursor cursor = dbRequest.getCursorNews();
+        MyApplication myApplication = (MyApplication) getApplication();
+        Cursor cursor = myApplication.dbRequest.getCursorNews();
 
         cursor.moveToPosition(Integer.parseInt(position));
 

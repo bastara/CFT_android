@@ -7,7 +7,6 @@ import com.example.newsaggregator.data.db.DBRequest;
 
 public final class MyApplication extends Application {
 
-
     public DBRequest dbRequest;
 
     @Override

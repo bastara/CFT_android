@@ -3,7 +3,6 @@ package com.example.newsaggregator.data.db;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 import android.util.Xml;
 
@@ -28,9 +27,7 @@ public class ParseAtom {
     }
 
     private static void doWork(String src, Context context) {
-        MyApplication MyApplication = (MyApplication) context.getApplicationContext();
-        SQLiteDatabase database = MyApplication.getDatabase();
-        DBRequest dbRequest = new DBRequest(context);
+        MyApplication myApplication = (MyApplication) context.getApplicationContext();
         Cursor cursor;
 
         ContentValues cv = new ContentValues();
@@ -61,7 +58,8 @@ public class ParseAtom {
                     Log.d(Contract.Entry.TAG, "________________________________");
                     cv.put(Contract.Entry.COLUMN_URL, src);
                     if (cv.get(Contract.Entry.COLUMN_LINK_NEWS) != null) {
-                        long rowID = database.insert(Contract.Entry.TABLE_NEWS, null, cv);
+                        long rowID = myApplication.getDatabase()
+                                                  .insert(Contract.Entry.TABLE_NEWS, null, cv);
                         Log.d(Contract.Entry.TAG, "НОМЕР ЗАПИСИ = " + rowID);
                         isEntry = false;
                     }
@@ -91,7 +89,7 @@ public class ParseAtom {
                         }
                     }
 
-                    cursor = dbRequest.getCursorCheckSite(tmpStr);
+                    cursor = myApplication.dbRequest.getCursorCheckSite(tmpStr);
                     if (cursor.moveToFirst()) {
                         Log.d(Contract.Entry.TAG, "Данная новость уже добавлена " + tmpStr);
                         parser.next();
