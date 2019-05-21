@@ -1,9 +1,9 @@
 <resources>
-    <string name="app_name">News Aggregator</string>
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="nav_header_title">CFT Focus Start</string>
-    <string name="nav_header_subtitle">News aggregator</string>
+    <string name="app_name">Агрегатор новостей</string>
+    <string name="navigation_drawer_open">Открыть шторку</string>
+    <string name="navigation_drawer_close">Закрыть шторку</string>
+    <string name="nav_header_title">ЦФТ фокус старт</string>
+    <string name="nav_header_subtitle">Агрегатор новостей</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="update">Обновить новости</string>
     <string name="add_site">Добавить сайт</string>
@@ -12,13 +12,13 @@
     <string name="time_refresh">Время обновления</string>
     <string name="notification">Уведомления</string>
     <string name="archives">Архив новостей</string>
-    <string name="language">Язык</string>
+    <string name="language">English</string>
     <string name="arrowIcon">стрелка</string>
-    <string name="refreshTime_15">каждые 15 миннут</string>
+    <string name="refreshTime_15">каждые 15 минут</string>
     <string name="refreshTime_60">каждый час</string>
     <string name="refreshTime_6h">каждые 6 часов</string>
     <string name="refreshTime_24h">ежедневно</string>
-    <string name="site_address">Введита адрес сайта или RSS файла</string>
+    <string name="site_address">Введита адрес сайта или RSS-ATOM файла</string>
     <string name="go_to_site">Перейти на сайт</string>
     <string name="web">Просмотр сайта</string>
     <string name="icon_add">добавить RSS</string>
@@ -26,4 +26,12 @@
     <string name="topic">Статья</string>
     <string name="refresh">Введите время обновления новостей</string>
     <string name="delete_resource">Удалите ресурсы(смахнуть)</string>
+    <string name="light_theme">Светлая тема</string>
+    <string name="page_loaded">Страница загружена!</string>
+    <string name="start_download">Начата загрузка страницы</string>
+    <string name="resource_added">Ресурс добавлен в вашу библиотеку</string>
+    <string name="already_added">Данный ресурс уже добавлен</string>
+    <string name="not_rss_atom">Это не RSS-ATOM ресурс</string>
+    <string name="wait_page_loaded">Дождитесь полной загрузки страницы!</string>
+    <string name="check_internet">Проверьте соединение с интернетом</string>
 </resources>

@@ -74,5 +74,15 @@ public class Preference {
         editor.putBoolean(Contract.Entry.PREFERENCES_THEME, theme);
         editor.apply();
     }
+
+    public String getLocale() {
+        return settings.getString(Contract.Entry.PREFERENCES_LOCALE, "ru");
+    }
+
+    public void setLocale(String locale) {
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putString(Contract.Entry.PREFERENCES_LOCALE, locale);
+        editor.apply();
+    }
 }
 

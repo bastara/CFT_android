@@ -35,7 +35,8 @@
             android:icon="@drawable/ic_business_center_black_24dp"
             android:title="@string/archives" />
         <item
-            android:icon="@drawable/ic_united_kingdom"
+            android:id="@+id/nav_language"
+            android:icon="@drawable/ic_country"
             android:title="@string/language"
             app:itemIconTint="@color/colorAccent"
             app:itemTextColor="@color/colorPrimaryDark" />

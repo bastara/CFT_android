@@ -55,6 +55,7 @@ public class WebActivity extends AppCompatActivity implements HandlerInterface {
         if (preference.getTheme()) {
             setTheme(R.style.DarkThemeToolbar);
         }
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_web);
 
@@ -80,14 +81,14 @@ public class WebActivity extends AppCompatActivity implements HandlerInterface {
         Toast.makeText(getApplicationContext(), url, Toast.LENGTH_SHORT)
              .show();
         if (msg.what == Contract.Entry.SOURCE_ADDED) {
-            Toast.makeText(getApplicationContext(), "Ресурс добавлен в вашу библиотеку", Toast.LENGTH_SHORT)
+            Toast.makeText(getApplicationContext(), R.string.resource_added, Toast.LENGTH_SHORT)
                  .show();
         } else if (msg.what == Contract.Entry.SOURCE_ALREADY_ADDED) {
-            Toast.makeText(getApplicationContext(), "Данный ресурс уже добавлен!", Toast.LENGTH_SHORT)
+            Toast.makeText(getApplicationContext(), R.string.already_added, Toast.LENGTH_SHORT)
                  .show();
         }
         if (msg.what == Contract.Entry.SOURCE_NOT_VALID) {
-            Toast.makeText(getApplicationContext(), "Это не RSS-ATOM ресурс", Toast.LENGTH_SHORT)
+            Toast.makeText(getApplicationContext(), R.string.not_rss_atom, Toast.LENGTH_SHORT)
                  .show();
         }
     }
@@ -125,7 +126,7 @@ public class WebActivity extends AppCompatActivity implements HandlerInterface {
             });
             thread.start();
         } else {
-            Toast.makeText(getApplicationContext(), "Дождитесь полной загрузки страницы!", Toast.LENGTH_SHORT)
+            Toast.makeText(getApplicationContext(), R.string.wait_page_loaded, Toast.LENGTH_SHORT)
                  .show();
         }
     }
@@ -157,7 +158,7 @@ public class WebActivity extends AppCompatActivity implements HandlerInterface {
         @Override
         public void onPageFinished(WebView view, String url) {
             super.onPageFinished(view, url);
-            Toast.makeText(getApplicationContext(), "Страница загружена!", Toast.LENGTH_SHORT)
+            Toast.makeText(getApplicationContext(), R.string.page_loaded, Toast.LENGTH_SHORT)
                  .show();
             WebActivity.this.url = url;
             pageIsLoaded = true;
@@ -166,7 +167,7 @@ public class WebActivity extends AppCompatActivity implements HandlerInterface {
         @Override
         public void onPageStarted(WebView view, String url, Bitmap favicon) {
             super.onPageStarted(view, url, favicon);
-            Toast.makeText(getApplicationContext(), "Начата загрузка страницы", Toast.LENGTH_SHORT)
+            Toast.makeText(getApplicationContext(), R.string.start_download, Toast.LENGTH_SHORT)
                  .show();
             pageIsLoaded = false;
         }

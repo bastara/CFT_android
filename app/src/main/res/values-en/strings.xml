@@ -1,0 +1,37 @@
+<resources>
+    <string name="app_name">News Aggregator</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">CFT Focus Start</string>
+    <string name="nav_header_subtitle">News aggregator</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="update">Update news</string>
+    <string name="delete_site">Remote site</string>
+    <string name="theme">Dark theme</string>
+    <string name="time_refresh">Refresh time</string>
+    <string name="notification">Notification</string>
+    <string name="archives">News archive</string>
+    <string name="language">Русский</string>
+    <string name="arrowIcon">arrow</string>
+    <string name="refreshTime_15">every 15 minutes</string>
+    <string name="refreshTime_60">every hour</string>
+    <string name="refreshTime_6h">every 6 hours</string>
+    <string name="refreshTime_24h">everyday</string>
+    <string name="site_address">Enter the address of the site or RSS-ATOM file</string>
+    <string name="go_to_site">Go to website</string>
+    <string name="web">Site view</string>
+    <string name="icon_add">Add RSS</string>
+    <string name="copy_value">Fill</string>
+    <string name="topic">Article</string>
+    <string name="refresh">Enter the time of news updates</string>
+    <string name="delete_resource">Delete resources(swipe)</string>
+    <string name="add_site">Add site</string>
+    <string name="light_theme">Light theme</string>
+    <string name="page_loaded">Page loaded!</string>
+    <string name="start_download">Started the download of the page</string>
+    <string name="resource_added">Resource added to your library</string>
+    <string name="already_added">This resource has already been added</string>
+    <string name="not_rss_atom">This is not an RSS ATOM feed resource</string>
+    <string name="wait_page_loaded">Wait until the page is fully loaded!</string>
+    <string name="check_internet">Check your Internet connection</string>
+</resources>

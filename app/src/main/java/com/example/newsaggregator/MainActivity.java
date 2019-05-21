@@ -1,6 +1,7 @@
 package com.example.newsaggregator;
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.database.Cursor;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -45,6 +46,7 @@ import com.example.newsaggregator.activity.RefreshActivity;
 import com.example.newsaggregator.adapter.NewsAdapter;
 
 import java.net.ConnectException;
+import java.util.Locale;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
@@ -54,7 +56,6 @@ public class MainActivity extends AppCompatActivity
     private TextView refreshTextView;
     private TextView notificationTextView;
 
-    private NewsAdapter adapter;
     private RecyclerView recyclerView;
 
     private Preference preference;
@@ -70,11 +71,20 @@ public class MainActivity extends AppCompatActivity
             setTheme(R.style.DarkTheme);
         }
 
+        Configuration configuration = getResources().getConfiguration();
+        if (preference.getLocale()
+                      .equals("ru")) {
+            configuration.locale = Locale.getDefault();
+        } else configuration.locale = Locale.ENGLISH;
+        getResources().updateConfiguration(configuration, null);
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         final Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        Objects.requireNonNull(getSupportActionBar())
+               .setTitle(R.string.app_name);
 
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -121,7 +131,7 @@ public class MainActivity extends AppCompatActivity
                           .setIcon(getResources().getDrawable(R.drawable.ic_assignment_black_24dp_w));
             navigationView.getMenu()
                           .getItem(3)
-                          .setTitle("Светлая тема");
+                          .setTitle(R.string.light_theme);
             navigationView.getMenu()
                           .getItem(0)
                           .setIcon(getResources().getDrawable(R.drawable.ic_face_black_24dp_w));
@@ -196,7 +206,7 @@ public class MainActivity extends AppCompatActivity
 
         recyclerView = findViewById(R.id.recyclerViewMain);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new NewsAdapter(this, cursor);
+        NewsAdapter adapter = new NewsAdapter(this, cursor);
         adapter.setClickListener(this);
         recyclerView.setAdapter(adapter);
 
@@ -273,7 +283,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
-        boolean fromMenuItemNotification = false;
+        boolean needToCloseDrawer = false;
 
         if (id == R.id.nav_upDate) {
 
@@ -281,7 +291,7 @@ public class MainActivity extends AppCompatActivity
             try {
                 update.upDate(MainActivity.this, true);
             } catch (ConnectException e) {
-                Toast.makeText(this, "Проверьте соединение с интернетом", Toast.LENGTH_SHORT)
+                Toast.makeText(this, R.string.check_internet, Toast.LENGTH_SHORT)
                      .show();
 
                 e.printStackTrace();
@@ -309,19 +319,35 @@ public class MainActivity extends AppCompatActivity
                 preference.setNotification(true);
                 notificationTextView.setText("вкл");
             }
-            fromMenuItemNotification = true;
+            needToCloseDrawer = true;
         } else if (id == R.id.nav_refresh) {
             Intent questionIntent = new Intent(MainActivity.this,
                     RefreshActivity.class);
             startActivityForResult(questionIntent, 0);
+        } else if (id == R.id.nav_language) {
+            if (preference.getLocale()
+                          .equals("ru")) {
+                preference.setLocale("en");
+                changeLocale();
+            } else {
+                preference.setLocale("ru");
+                changeLocale();
+            }
         }
 
-        if (!fromMenuItemNotification) {
+        if (!needToCloseDrawer) {
             DrawerLayout drawer = findViewById(R.id.drawer_layout);
             drawer.closeDrawer(GravityCompat.START);
         }
         return true;
     }
+
+    private void changeLocale() {
+        Intent intent = getIntent();
+        finish();
+        startActivity(intent);
+    }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -345,8 +371,6 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onItemClick(int position) {
-        Toast.makeText(this, "You clicked " + adapter.getItem(position) + " on row number " + position, Toast.LENGTH_SHORT)
-             .show();
         Intent intent = new Intent(MainActivity.this,
                 NewsActivity.class);
         intent.putExtra("id", String.valueOf(position));
