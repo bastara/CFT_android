@@ -286,7 +286,6 @@ public class MainActivity extends AppCompatActivity
         boolean needToCloseDrawer = false;
 
         if (id == R.id.nav_upDate) {
-
             Update update = new Update();
             try {
                 update.upDate(MainActivity.this, true);
