@@ -34,4 +34,9 @@
     <string name="not_rss_atom">Это не RSS-ATOM ресурс</string>
     <string name="wait_page_loaded">Дождитесь полной загрузки страницы!</string>
     <string name="check_internet">Проверьте соединение с интернетом</string>
+    <string name="news_update">Обновление новостей</string>
+    <string name="preparation">Подготовка</string>
+    <string name="break_operation">Прервать</string>
+    <string name="of"> из </string>
+    <string name="ready">Готово</string>
 </resources>

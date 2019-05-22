@@ -58,11 +58,14 @@ public class Update {
 
                     NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "channelId")
                             .setSmallIcon(R.drawable.ic_android)
-                            .setContentTitle("Обновление новостей")
-                            .setContentText("Подготовка")
+                            .setContentTitle(context.getResources()
+                                                    .getString(R.string.news_update))
+                            .setContentText(context.getResources()
+                                                   .getString(R.string.preparation))
                             .setProgress(max, 0, true)
                             .setAutoCancel(true)
-                            .addAction(android.R.drawable.ic_delete, "Прервать", resultPendingIntent)
+                            .addAction(android.R.drawable.ic_delete, context.getResources()
+                                                                            .getString(R.string.break_operation), resultPendingIntent)
                             .setContentIntent(resultPendingIntent);
 
                     notificationManager.notify(1, builder.build());
@@ -77,7 +80,8 @@ public class Update {
 
                     int progress = 0;
                     for (int i = 0; i < max; i++) {
-                        Log.d(Contract.Entry.TAG, "Обновление новостей-" + i);
+                        Log.d(Contract.Entry.TAG, context.getResources()
+                                                         .getString(R.string.news_update) + i);
                         //оставил для наглядности, в дальнейшем удалю, иначе все быстро отрабатывает и не видно прогрессбара.
                         try {
                             TimeUnit.MILLISECONDS.sleep(500);
@@ -86,7 +90,8 @@ public class Update {
                         }
                         progress += 1;
                         builder.setProgress(max, progress, false)
-                               .setContentText(progress + " из " + max);
+                               .setContentText(progress + context.getResources()
+                                                                 .getString(R.string.of) + max);
                         notificationManager.notify(1, builder.build());
 
                         String url = cursor.getString(cursor.getColumnIndex(Contract.Entry.COLUMN_URL));
@@ -99,7 +104,8 @@ public class Update {
                         cursor.moveToNext();
                     }
                     builder.setProgress(0, 10, false)
-                           .setContentText("Готово");
+                           .setContentText(context.getResources()
+                                                  .getString(R.string.ready));
                     notificationManager.notify(1, builder.build());
                 } else {
                     for (int i = 0; i < max; i++) {

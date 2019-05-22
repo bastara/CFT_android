@@ -34,4 +34,9 @@
     <string name="not_rss_atom">This is not an RSS ATOM feed resource</string>
     <string name="wait_page_loaded">Wait until the page is fully loaded!</string>
     <string name="check_internet">Check your Internet connection</string>
+    <string name="news_update">News update</string>
+    <string name="preparation">Preparation</string>
+    <string name="break_operation">Break</string>
+    <string name="of"> of </string>
+    <string name="ready">Ready</string>
 </resources>
