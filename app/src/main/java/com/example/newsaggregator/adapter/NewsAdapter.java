@@ -75,11 +75,6 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder
         }
     }
 
-    public String getItem(int id) {
-        cursor.moveToPosition(id);
-        return cursor.getString(cursor.getColumnIndex(Contract.Entry.COLUMN_ID));
-    }
-
     public void setClickListener(ItemClickListener itemClickListener) {
         this.itemClickListener = itemClickListener;
     }
